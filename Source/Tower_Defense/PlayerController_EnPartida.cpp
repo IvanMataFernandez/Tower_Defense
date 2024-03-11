@@ -3,6 +3,7 @@
 
 #include "PlayerController_EnPartida.h"
 #include "Casilla.h"
+#include "Torre_Disparador.h"
 
 
 
@@ -26,5 +27,15 @@ void APlayerController_EnPartida::Pinchar() {
         UE_LOG(LogTemp, Display, TEXT("Pincha en una casilla bumfuzzle"));
     }
 
+
+    /*
+
+    ATorre_Disparador* Torre = Cast<ATorre_Disparador>(Target);
+
+    if (Torre) {
+        Torre->ClearTimer();
+    }
+    */
+    
 
 }

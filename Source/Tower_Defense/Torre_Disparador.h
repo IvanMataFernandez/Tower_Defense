@@ -41,6 +41,8 @@ private:
 	float TiempoEntreTiros;
 	int TirosRestantes;
 	float SigTiroEn;
+
+
 // Métodos
 
 public:
@@ -48,9 +50,11 @@ public:
 	void Idle();
 	bool EnRango();
 	void InicializacionAtaque();
-	void Atacar(float DeltaTime);
+	void Atacar(float FrameRate);
+
 
 private:
 	void Disparar();
+	void AtacarFrame(float DeltaTime);
 
 };

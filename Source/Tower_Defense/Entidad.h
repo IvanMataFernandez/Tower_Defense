@@ -26,11 +26,12 @@ public:
 
 
 
-//protected:
+protected:
 
 	float Timer;
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float Ciclo;
+	FTimerHandle TimerFrame;
 
 	UPROPERTY(EditDefaultsOnly)
 	USceneComponent* PosicionBase;
@@ -47,6 +48,7 @@ public:
 
 public:
 	virtual void Matar();
+	void ClearTimer();
 
 
 

@@ -29,7 +29,7 @@ public:
 
 private:
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")

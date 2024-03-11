@@ -38,7 +38,7 @@ void AEntidad::Matar() {
 void AEntidad::BeginPlay() {
 	Super::BeginPlay();
 
-
+	int A = 8;
 	// Dar controller de IA
 
 	AIControllerClass = AMandoDeIA::StaticClass();
@@ -47,10 +47,10 @@ void AEntidad::BeginPlay() {
     Mando->Possess(this);
 
 
+}
 
-
-
-
+void AEntidad::ClearTimer() {
+    GetWorld()->GetTimerManager().ClearTimer(this->TimerFrame);
 }
 
 
