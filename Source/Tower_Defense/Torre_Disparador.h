@@ -29,15 +29,15 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	USceneComponent* SpawnProyectiles;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "ClasesNecesarias")
 	TSubclassOf<AProyectil> ClaseBlueprintProyectil;
 
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	int CadenciaDeDisparo;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float CooldownInicial;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float TiempoEntreTiros;
 	int TirosRestantes;
 	float SigTiroEn;
@@ -46,7 +46,7 @@ private:
 public:
 	void PrepararIdle();
 	void Idle();
-	void EnRango();
+	bool EnRango();
 	void InicializacionAtaque();
 	void Atacar(float DeltaTime);
 

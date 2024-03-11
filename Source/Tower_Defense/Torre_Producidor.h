@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Torre.h"
 #include "Torre_Producidor.generated.h"
+class UStaticMeshComponent;
 
 /**
  * 
@@ -13,6 +14,10 @@ UCLASS()
 class TOWER_DEFENSE_API ATorre_Producidor : public ATorre
 {
 	GENERATED_BODY()
+
+
+public:
+	ATorre_Producidor();
 	
 protected:
 	// Called when the game starts or when spawned
@@ -23,8 +28,14 @@ protected:
 
 private:
 
+
 	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* Placas;
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float TiempoParaAnimacion;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float CantidadProducida;
 
 
 // Métodos

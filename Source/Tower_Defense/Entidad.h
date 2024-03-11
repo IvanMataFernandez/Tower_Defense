@@ -19,12 +19,17 @@ public:
 	AEntidad();
 
 
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
 // Atrubutos:
 
-protected:
+
+
+//protected:
 
 	float Timer;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float Ciclo;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -33,10 +38,16 @@ protected:
 	UBoxComponent* Hitbox;
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* CuerpoBase;
-//	UPROPERTY(EditDefaultsOnly)
-//	UHealthComponent* Vida;
+
 
 //	UPROPERTY(EditDefaultsOnly)
 //  UAnimacionComponent Animador;
+
+// Métodos:
+
+public:
+	virtual void Matar();
+
+
 
 };

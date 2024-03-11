@@ -32,11 +32,11 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* Mesh;
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	int CapacidadDestruccion; // Daño, compilador no acepta ñ
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float Velocidad; // En eje Y.  Torres usan +, Robots usan -
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	int ObjetivosMaximos;
 
 	int ObjetivosRestantes;

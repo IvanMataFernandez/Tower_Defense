@@ -13,5 +13,12 @@ UCLASS()
 class TOWER_DEFENSE_API ATorre : public AEntidad
 {
 	GENERATED_BODY()
-	
+
+
+
+// Métodos
+
+public:
+
+	virtual void Matar() override;
 };

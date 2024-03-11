@@ -2,6 +2,13 @@
 
 
 #include "Torre_Producidor.h"
+#include "Components/StaticMeshComponent.h"
+
+
+ATorre_Producidor::ATorre_Producidor() {
+    this->Placas = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Placas"));
+    this->Placas->SetupAttachment(PosicionBase);
+}
 
 void ATorre_Producidor::BeginPlay() {
     Super::BeginPlay();

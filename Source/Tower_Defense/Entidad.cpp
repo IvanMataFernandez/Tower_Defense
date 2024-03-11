@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
+#include "MandoDeIA.h"
 
 // Sets default values
 AEntidad::AEntidad()
@@ -17,11 +18,40 @@ AEntidad::AEntidad()
 	RootComponent = this->PosicionBase;
 	this->Hitbox->SetupAttachment(this->PosicionBase);
 	this->CuerpoBase->SetupAttachment(this->PosicionBase);
+
+
+
+}
+
+
+
+
+void AEntidad::Matar() {
+	// Se llama a este método cuando vida = 0
+	AActor::Destroy(); // Eliminar la entidad (Robot o Torre, debe eliminarse igual)
+
 }
 
 // TODO: Settear BTTree en BeginPlay()
 
 
+void AEntidad::BeginPlay() {
+	Super::BeginPlay();
+
+
+	// Dar controller de IA
+
+	AIControllerClass = AMandoDeIA::StaticClass();
+	AMandoDeIA* Mando = GetWorld()->SpawnActor<AMandoDeIA>();
+	Mando->SettearIA(this->GetClass()->GetName()); // Decirle que clase es para settear el Behavior Tree adecuado
+    Mando->Possess(this);
+
+
+
+
+
+
+}
 
 
 

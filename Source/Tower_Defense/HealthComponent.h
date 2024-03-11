@@ -1,0 +1,38 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Components/ActorComponent.h"
+#include "HealthComponent.generated.h"
+class GameMode_EnPartida;
+
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class TOWER_DEFENSE_API UHealthComponent : public UActorComponent
+{
+	GENERATED_BODY()
+
+public:	
+	// Sets default values for this component's properties
+	UHealthComponent();
+
+protected:
+	// Called when the game starts
+	virtual void BeginPlay() override;
+
+
+// Atrubutos
+
+private:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float VidaMaxima;
+	float Vida;
+// Métodos
+
+public:
+
+	UFUNCTION()
+	void AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador);
+		
+};

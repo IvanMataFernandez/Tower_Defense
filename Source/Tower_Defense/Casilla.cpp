@@ -2,6 +2,8 @@
 
 
 #include "Casilla.h"
+#include "BehaviorTree/BehaviorTree.h"
+
 
 // Sets default values
 ACasilla::ACasilla()
@@ -20,7 +22,7 @@ ACasilla::ACasilla()
 void ACasilla::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -50,6 +52,8 @@ bool ACasilla::IntentarColocarTorre() {
         UE_LOG(LogTemp, Warning, TEXT("Spawned!"));
 
 
+
+
         return true;
     } else {
 
@@ -70,3 +74,5 @@ bool ACasilla::IntentarColocarTorre() {
 
 
 }
+
+

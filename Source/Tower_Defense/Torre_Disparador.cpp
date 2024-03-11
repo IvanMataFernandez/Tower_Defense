@@ -20,7 +20,6 @@ ATorre_Disparador::ATorre_Disparador() {
 
     this->SpawnProyectiles = CreateDefaultSubobject<USceneComponent>(TEXT("SpawnProyectiles"));
     this->SpawnProyectiles->SetupAttachment(CuerpoBase);
-
 }
 
 void ATorre_Disparador::PrepararIdle() {
@@ -31,8 +30,10 @@ void ATorre_Disparador::Idle() {
     // NOP
 
 }
-void ATorre_Disparador::EnRango() {
+bool ATorre_Disparador::EnRango() {
     // Calcular linetrace
+
+    return false;
 }
 void ATorre_Disparador::InicializacionAtaque() {
     Timer = 0.f;
@@ -41,6 +42,8 @@ void ATorre_Disparador::InicializacionAtaque() {
 
 }
 void ATorre_Disparador::Atacar(float DeltaTime) {
+    Timer = 0;
+
     if (Timer == 0) {
         this->SigTiroEn = this->CooldownInicial;
     
@@ -58,6 +61,7 @@ void ATorre_Disparador::Atacar(float DeltaTime) {
 
     if (Timer > Ciclo) {Timer = 0;}
     else {Timer = Timer + DeltaTime;}
+    UE_LOG(LogTemp, Display, TEXT("%f"), Timer);
 
 }
 

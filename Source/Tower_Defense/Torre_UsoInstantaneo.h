@@ -32,7 +32,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* ZonaDeAfecto;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float TiempoParaAnimacion;
 
 
