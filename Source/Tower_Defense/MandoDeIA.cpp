@@ -15,9 +15,14 @@ void AMandoDeIA::SettearIA(FString Clase) {
     FString RutaBT;
     UE_LOG(LogTemp, Display, TEXT("%s"),*Clase);
     if (Clase.Equals(TEXT("BP_Cañon_C")) || Clase.Equals(TEXT("BP_CañonDoble_C")) || Clase.Equals(TEXT("BP_PistolaLaser_C"))) {
-        RutaBT = TEXT("/Game/Blueprints/IA/TorreDisparador/BT_TorreDisparador"); // Las rutas absolutas funcionan tambien en el juego exportado final
+        RutaBT = TEXT("/Game/Blueprints/IA/Torres/TorreDisparador/BT_TorreDisparador"); // Las rutas absolutas funcionan tambien en el juego exportado final
 
-    } /* else if (Bla bla) { [...] }
+    } else if (Clase.Equals(TEXT("BP_PanelSolar_C")) || Clase.Equals(TEXT("BP_PanelSolarDoble_C"))) {
+        RutaBT = TEXT("/Game/Blueprints/IA/Torres/TorreProducidor/BT_TorreProducidor"); 
+
+    }
+    
+    /* else if (Bla bla) { [...] }
 
      */
     UBehaviorTree* BT = LoadObject<UBehaviorTree>(nullptr, *RutaBT);

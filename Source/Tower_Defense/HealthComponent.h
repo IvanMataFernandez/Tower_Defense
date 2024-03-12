@@ -34,5 +34,4 @@ public:
 
 	UFUNCTION()
 	void AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador);
-		
 };

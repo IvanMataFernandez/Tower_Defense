@@ -28,11 +28,11 @@ AEntidad::AEntidad()
 
 void AEntidad::Matar() {
 	// Se llama a este método cuando vida = 0
+	this->ClearTimer(); // Apagar el timer de la clase
 	AActor::Destroy(); // Eliminar la entidad (Robot o Torre, debe eliminarse igual)
 
 }
 
-// TODO: Settear BTTree en BeginPlay()
 
 
 void AEntidad::BeginPlay() {
@@ -55,3 +55,14 @@ void AEntidad::ClearTimer() {
 
 
 
+/*
+// PARA OBTENER COMPONENTES C++ AÑADIDOS EN BLUEPRINT (LOS ACTORCOMPONENT NON SCENECOMPONENT)
+
+UHealthComponent* HealthComponent = FindComponentByClass<UHealthComponent>();
+if (HealthComponent)
+{
+    // Has encontrado el componente, puedes hacer lo que necesites con él
+    // Por ejemplo, puedes cambiar la malla asignada al componente de la siguiente manera:
+    HealthComponent->Hello();
+} 
+*/

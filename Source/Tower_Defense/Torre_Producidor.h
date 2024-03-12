@@ -45,6 +45,6 @@ private:
 
 public:
 	void Idle(float DeltaTime);
-
+	void PrepararTorre(float FrameRate);
 };
 

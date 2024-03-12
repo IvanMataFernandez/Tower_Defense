@@ -40,3 +40,4 @@ void UHealthComponent::AplicarDano(AActor* Danado, float DanoBase, const UDamage
 
 
 
+

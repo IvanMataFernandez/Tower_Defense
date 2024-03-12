@@ -32,7 +32,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "ClasesNecesarias")
 	TSubclassOf<AProyectil> ClaseBlueprintProyectil;
 
-
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	int RangoEnCasillas;
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	int CadenciaDeDisparo;
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
@@ -47,14 +48,12 @@ private:
 
 public:
 	void PrepararIdle();
-	void Idle();
 	bool EnRango();
-	void InicializacionAtaque();
-	void Atacar(float FrameRate);
+	void InicializacionAtaque(float FrameRate);
 
 
 private:
 	void Disparar();
-	void AtacarFrame(float DeltaTime);
+	void Atacar(float DeltaTime);
 
 };

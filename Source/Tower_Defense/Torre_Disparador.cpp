@@ -6,12 +6,16 @@
 #include "Proyectil.h"
 #include "TimerManager.h"
 
+#include "DrawDebugHelpers.h"
 
 
 void ATorre_Disparador::BeginPlay() {
     Super::BeginPlay();
 
-}
+
+    this->EnRango();
+
+} 
 
 
 
@@ -24,37 +28,41 @@ ATorre_Disparador::ATorre_Disparador() {
 }
 
 void ATorre_Disparador::PrepararIdle() {
+    Super::ClearTimer();
 
     // TODO: Empezar Idle
 }
-void ATorre_Disparador::Idle() {
-    Super::ClearTimer();
-    // NOP
 
-}
 bool ATorre_Disparador::EnRango() {
-    // Calcular linetrace
 
-    return false;
+    FVector Start = this->GetActorLocation();
+    FVector End = Start + (FVector(0,256.f+this->RangoEnCasillas*512.f,0) ); //Cada casilla son 512.f. 256.f para offsettear la casilla sobre la que está
+
+    // Realiza el line trace y devuelve si hay hit.
+    FHitResult HitResult;
+    DrawDebugLine(GetWorld(), Start, End, FColor::Green, true);
+
+
+
+    return GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_GameTraceChannel5); // 5 vision torre, 6 vision robot
+
+
+
 }
-void ATorre_Disparador::InicializacionAtaque() {
+
+
+void ATorre_Disparador::InicializacionAtaque(float FrameRate) {
+    
     Timer = 0.f;
-    this->TirosRestantes = this->CadenciaDeDisparo;
-    // Finalizar idle
-
-}
-
-
-void ATorre_Disparador::Atacar(float FrameRate) {
-
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::AtacarFrame, 1.f/FrameRate);
+    this->TirosRestantes = this->CadenciaDeDisparo; 
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, 1.f/FrameRate);
     GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, 1.f/FrameRate, true);
 
 }
 
 
 
-void ATorre_Disparador::AtacarFrame(float DeltaTime) {
+void ATorre_Disparador::Atacar(float DeltaTime) {
 
     if (Timer == 0) {
         this->SigTiroEn = this->CooldownInicial;
@@ -76,7 +84,6 @@ void ATorre_Disparador::AtacarFrame(float DeltaTime) {
 
     if (Timer > Ciclo) {Timer = 0;}
     else {Timer = Timer + DeltaTime;}
-    UE_LOG(LogTemp, Display, TEXT("%f"), Timer);
 
 }
 
@@ -84,7 +91,6 @@ void ATorre_Disparador::Disparar() {
 
     // Hacer aparecer el proyectil en el spawnpoint de proyectiles. El proyectil en sí se mueve con su lógica en su código
 
-    UE_LOG(LogTemp, Warning, TEXT("PEW PEW!"));
     AActor::GetWorld()->SpawnActor<AProyectil>(this->ClaseBlueprintProyectil, this->SpawnProyectiles->GetComponentLocation(), SpawnProyectiles->GetComponentRotation());
     this->TirosRestantes--;
 }

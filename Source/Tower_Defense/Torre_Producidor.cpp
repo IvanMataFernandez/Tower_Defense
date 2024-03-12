@@ -12,20 +12,25 @@ ATorre_Producidor::ATorre_Producidor() {
 
 void ATorre_Producidor::BeginPlay() {
     Super::BeginPlay();
-    Timer = 0;
 }
 
+void ATorre_Producidor::PrepararTorre(float FrameRate) {
 
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Producidor::Idle, 1.f/FrameRate);
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, 1.f/FrameRate, true);
+    Timer = 0;
+
+}
 void ATorre_Producidor::Idle(float DeltaTime) {
+
+    Timer = Timer + DeltaTime;
 
     if (Timer > this->TiempoParaAnimacion) {/* Animar aquí*/}
     
-    if (Timer > Ciclo) {
+    if (Timer >= Ciclo) {
         this->Producir();
         Timer = 0;
-    } else {
-        Timer = Timer + DeltaTime;
-    }
+    } 
 }
 
 void ATorre_Producidor::Producir() {
