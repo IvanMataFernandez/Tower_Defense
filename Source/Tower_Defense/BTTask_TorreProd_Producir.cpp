@@ -14,8 +14,7 @@ UBTTask_TorreProd_Producir::UBTTask_TorreProd_Producir() {
  EBTNodeResult::Type UBTTask_TorreProd_Producir::ExecuteTask(UBehaviorTreeComponent &BT, uint8 *NodeMemory) {
 
     Super::ExecuteTask(BT,NodeMemory);
-    Cast<ATorre_Producidor>(BT.GetAIOwner()->GetPawn())->PrepararTorre(this->FrameRate);
+    Cast<ATorre_Producidor>(BT.GetAIOwner()->GetPawn())->PrepararTorre();
     return EBTNodeResult::InProgress;
-// AÑADIR INCLUDES
 
  }

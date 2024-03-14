@@ -16,7 +16,7 @@ UBTTask_TorreDisp_Atacar::UBTTask_TorreDisp_Atacar() {
 
     Super::ExecuteTask(BT,NodeMemory);
     ATorre_Disparador* Torre = Cast<ATorre_Disparador>(BT.GetAIOwner()->GetPawn());
-    Torre->InicializacionAtaque(this->FrameRate);
+    Torre->InicializacionAtaque();
     return EBTNodeResult::InProgress;
 
 

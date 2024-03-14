@@ -42,9 +42,9 @@ private:
 
 private:
 	void Producir();
+	void Idle(float DeltaTime);
 
 public:
-	void Idle(float DeltaTime);
-	void PrepararTorre(float FrameRate);
+	void PrepararTorre();
 };
 

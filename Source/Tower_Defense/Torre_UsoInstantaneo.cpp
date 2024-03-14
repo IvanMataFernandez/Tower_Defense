@@ -16,20 +16,40 @@ ATorre_UsoInstantaneo::ATorre_UsoInstantaneo() {
 
 void ATorre_UsoInstantaneo::BeginPlay() {
     Super::BeginPlay();
+}
+
+void ATorre_UsoInstantaneo::InicializacionFuncion() {
+
+    float Espera = this->TiempoParaAnimacion;
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_UsoInstantaneo::HacerFuncion, Espera);
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate,Espera, false);
     Timer = 0;
 }
 
 void ATorre_UsoInstantaneo::HacerFuncion(float DeltaTime) {
+    
+    Timer = Timer + DeltaTime;
 
-    if (Timer > this->TiempoParaAnimacion) {/* Hacer animacion*/}
-    else if (Timer > Ciclo) {
+    if (Timer == this->TiempoParaAnimacion) {
+        /* Hacer animacion*/
+    
+        float Espera = Ciclo - Timer;
+        FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_UsoInstantaneo::HacerFuncion, Espera);
+        GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate,Espera, false);
+
+
+
+    } else if (Timer == Ciclo) {
         this->Activar();
     }
-    Timer = Timer + DeltaTime;
 }
 
 
 void ATorre_UsoInstantaneo::Activar() {
     // Em principio dañar aquí, pero si se quieren hacer otras funciones en un area, entonces hacer esto Virtual y heredar de esta clase
+
+    // Explode or do w/e
+
+    Super::Matar(); // La torre desaparece tras hacer su función
 
 }

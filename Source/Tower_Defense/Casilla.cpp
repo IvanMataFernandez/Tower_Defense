@@ -3,6 +3,11 @@
 
 #include "Casilla.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "Torre.h"
+
+
+
+#include "ConstructoraDeBlueprints.h"
 
 
 // Sets default values
@@ -35,28 +40,24 @@ void ACasilla::Tick(float DeltaTime)
 bool ACasilla::IntentarColocarTorre() {
 
 
-
-
     if (!this->Torre) {
 
 		// TODO: Llamar a Controller para obtener la clase c++ y blueprint de la torre a spawnear en la seleccion
 
         FVector Pos = AActor::GetActorLocation();
-        AActor* Hijo = AActor::GetWorld()->SpawnActor<AActor>(ACasilla::StaticClass(), FVector(Pos.X,Pos.Y,Pos.Z+100), FRotator(0,0,0)) ;
-        Hijo->SetOwner(this);
-        this->Torre = Hijo;
+        this->SpawnearTorre(11); // Por ahora spawnea bombas, settear la torre elegida en UI después
 
-
-
-
-        UE_LOG(LogTemp, Warning, TEXT("Spawned!"));
-
-
-
+        /*
+          Se spawnea la instancia blueprint en un metodo blueprint, ejecuta:
+          AActor* Hijo = GetWorld()->SpawnActor<AActor>(ClaseBlueprintCorrespondienteAID, FVectorDeCasilla+(Z+100), FRotator(0,0,0));
+       
+        */
+         this->Torre->SetOwner(this);
 
         return true;
     } else {
 
+      // Considerar un if block aquí de sí pala o equivalente seleccionado entonces => this->Torre->Matar()   [Matar tiene toda la logica necesaria para quitar la torre]
 
       //  this->Torre->SetOwner(nullptr);
       //  this->Torre->Destroy();
@@ -74,5 +75,17 @@ bool ACasilla::IntentarColocarTorre() {
 
 
 }
+
+
+void ACasilla::LiberarCasilla() {
+  // This->Torre Llama aquí para quitarse de la casilla
+
+  this->Torre->SetOwner(nullptr);
+  this->Torre = nullptr;
+
+
+
+}
+
 
 

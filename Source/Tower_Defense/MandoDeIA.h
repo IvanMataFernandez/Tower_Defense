@@ -22,7 +22,7 @@ class TOWER_DEFENSE_API AMandoDeIA : public AAIController
 
 // Métodos
 public:
-	void SettearIA(FString Clase);
+	void SettearIA(uint8 Clase);
 
 	virtual void BeginPlay() override;
 

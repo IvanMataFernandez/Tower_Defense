@@ -14,10 +14,13 @@ void ATorre_Producidor::BeginPlay() {
     Super::BeginPlay();
 }
 
-void ATorre_Producidor::PrepararTorre(float FrameRate) {
+void ATorre_Producidor::PrepararTorre() {
 
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Producidor::Idle, 1.f/FrameRate);
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, 1.f/FrameRate, true);
+    // Preparar la torre para que inicie el ciclo, se pasa al estado de empezar la animación de producir
+
+    float Espera = this->TiempoParaAnimacion;
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Producidor::Idle, Espera);
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate,Espera, false);
     Timer = 0;
 
 }
@@ -25,14 +28,26 @@ void ATorre_Producidor::Idle(float DeltaTime) {
 
     Timer = Timer + DeltaTime;
 
-    if (Timer > this->TiempoParaAnimacion) {/* Animar aquí*/}
+    if (Timer == this->TiempoParaAnimacion) {
+
+        // Se anima la producción aquí. De aqui, pasar al estado de dar el dinero en sí
+
+        /* Animar aquí*/
+        
+        float Espera = Ciclo - this->TiempoParaAnimacion;
+        FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Producidor::Idle, Espera);
+        GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, Espera, false);    
     
-    if (Timer >= Ciclo) {
+    } else if (Timer == Ciclo) {
+
+        // Se da el dinero aquí. De aqui volver a inicializar el ciclo de nuevo
+
         this->Producir();
-        Timer = 0;
+        this->PrepararTorre();
     } 
 }
 
 void ATorre_Producidor::Producir() {
-    // Dar más dinero a player here
+    // TODO: Dar más dinero a player here
+    UE_LOG(LogTemp, Warning, TEXT("MORE MONEY!"));
 }

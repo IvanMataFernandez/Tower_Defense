@@ -40,11 +40,11 @@ private:
 
 public:
 
-	void HacerFuncion(float DeltaTime);
-
+	void InicializacionFuncion();
 private:
 
 	void Activar();
+	void HacerFuncion(float DeltaTime);
 
 
 	

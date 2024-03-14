@@ -4,10 +4,14 @@
 #include "Torre.h"
 #include "Entidad.h"
 #include "GameFramework/Actor.h"
+#include "Casilla.h"
 
 void ATorre::Matar() {
+    
+    UE_LOG(LogTemp, Warning, TEXT("ELIMINAR DE CASILLA"));
+ 
+    Cast<ACasilla>(AActor::GetOwner())->LiberarCasilla(); // En el caso de las torres, deben dejar de ocupar la casilla
 
-    AActor::SetOwner(nullptr); // EN el caso de la torres, se deben desvincular de las casillas.
 
     AEntidad::Matar(); // Después, se puede destruir ya la torre del mundo
 

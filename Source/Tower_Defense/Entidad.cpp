@@ -43,7 +43,7 @@ void AEntidad::BeginPlay() {
 
 	AIControllerClass = AMandoDeIA::StaticClass();
 	AMandoDeIA* Mando = GetWorld()->SpawnActor<AMandoDeIA>();
-	Mando->SettearIA(this->GetClass()->GetName()); // Decirle que clase es para settear el Behavior Tree adecuado
+	Mando->SettearIA(this->ID); // Decirle que clase es para settear el Behavior Tree adecuado
     Mando->Possess(this);
 
 

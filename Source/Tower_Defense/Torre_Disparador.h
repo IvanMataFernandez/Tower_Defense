@@ -49,7 +49,7 @@ private:
 public:
 	void PrepararIdle();
 	bool EnRango();
-	void InicializacionAtaque(float FrameRate);
+	void InicializacionAtaque();
 
 
 private:

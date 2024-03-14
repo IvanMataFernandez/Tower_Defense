@@ -27,6 +27,9 @@ public:
 
 
 protected:
+	// Referir a ConstructoraDeBlueprints para info de IDs.
+	UPROPERTY(EditDefaultsOnly, Category = "ID")
+	uint8 ID;
 
 	float Timer;
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")

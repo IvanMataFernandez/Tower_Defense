@@ -36,13 +36,18 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* Mesh;
 
-	AActor* Torre; // TODO: Cambiar esto por la clase de la Torre cuando se cree
+	UPROPERTY(BlueprintReadWrite, meta= (AllowPrivateAccess = "true"))
+	AActor* Torre; 
+
 
 // Métodos:
 
 
 public:
+	UFUNCTION(BlueprintImplementableEvent)
+	void SpawnearTorre(uint8 ID);
 
 	bool IntentarColocarTorre(); 
+	void LiberarCasilla();
 
 };

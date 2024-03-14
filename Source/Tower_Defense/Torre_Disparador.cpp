@@ -35,7 +35,7 @@ void ATorre_Disparador::PrepararIdle() {
 
 bool ATorre_Disparador::EnRango() {
 
-    FVector Start = this->GetActorLocation();
+    FVector Start =  this->SpawnProyectiles->GetComponentLocation();
     FVector End = Start + (FVector(0,256.f+this->RangoEnCasillas*512.f,0) ); //Cada casilla son 512.f. 256.f para offsettear la casilla sobre la que está
 
     // Realiza el line trace y devuelve si hay hit.
@@ -51,39 +51,50 @@ bool ATorre_Disparador::EnRango() {
 }
 
 
-void ATorre_Disparador::InicializacionAtaque(float FrameRate) {
+void ATorre_Disparador::InicializacionAtaque() {
     
-    Timer = 0.f;
-    this->TirosRestantes = this->CadenciaDeDisparo; 
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, 1.f/FrameRate);
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, 1.f/FrameRate, true);
 
+    // Inicializar estado de ataque, settear timer para que tras cooldown inicial se empiece a disparar
+
+    float Espera = this->CooldownInicial;
+    this->TirosRestantes = this->CadenciaDeDisparo; 
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, Espera);
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, Espera, false);
+    Timer = 0.f;
 }
 
 
 
 void ATorre_Disparador::Atacar(float DeltaTime) {
 
-    if (Timer == 0) {
-        this->SigTiroEn = this->CooldownInicial;
-        this->TirosRestantes = this->CadenciaDeDisparo;
+    Timer = Timer + DeltaTime;
 
-    } else if (Timer > this->SigTiroEn) {
+    if (this->TirosRestantes != 0) {
+        // Si quedan tiros todavía, se debe disparar
+
+        float Espera;
+
         this->Disparar();
 
         if (this->TirosRestantes != 0) {
-            this->SigTiroEn = this->SigTiroEn + this->TiempoEntreTiros;
+            Espera = this->TiempoEntreTiros;
 
         
         } else {
-            this->SigTiroEn = Ciclo + 1.f; // Hacer que no llegue a poder hace otro tiro porque se han acabado
+            Espera = Ciclo - DeltaTime;
 
         }
 
-    } 
+        // Settear la llmamada al método de vuelta
+        FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, Espera);
+        GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, Espera, false);
 
-    if (Timer > Ciclo) {Timer = 0;}
-    else {Timer = Timer + DeltaTime;}
+    } else {
+        // Si no quedaban tiros, estabamos en el cooldown del final entre ciclos, volver a inicializar el ciclo de ataque
+        this->InicializacionAtaque();
+    }
+
+
 
 }
 

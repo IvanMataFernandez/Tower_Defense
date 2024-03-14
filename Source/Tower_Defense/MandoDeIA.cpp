@@ -3,37 +3,26 @@
 
 #include "MandoDeIA.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "ConstructoraDeBlueprints.h"
 
 
 
 
+void AMandoDeIA::SettearIA(uint8 Clase) {
 
-void AMandoDeIA::SettearIA(FString Clase) {
 
-    // TODO: If else if de las rutas de BT + hacer los BT y BTTask
 
-    FString RutaBT;
-    UE_LOG(LogTemp, Display, TEXT("%s"),*Clase);
-    if (Clase.Equals(TEXT("BP_Cañon_C")) || Clase.Equals(TEXT("BP_CañonDoble_C")) || Clase.Equals(TEXT("BP_PistolaLaser_C"))) {
-        RutaBT = TEXT("/Game/Blueprints/IA/Torres/TorreDisparador/BT_TorreDisparador"); // Las rutas absolutas funcionan tambien en el juego exportado final
 
-    } else if (Clase.Equals(TEXT("BP_PanelSolar_C")) || Clase.Equals(TEXT("BP_PanelSolarDoble_C"))) {
-        RutaBT = TEXT("/Game/Blueprints/IA/Torres/TorreProducidor/BT_TorreProducidor"); 
-
-    }
-    
-    /* else if (Bla bla) { [...] }
-
-     */
-    UBehaviorTree* BT = LoadObject<UBehaviorTree>(nullptr, *RutaBT);
-    UE_LOG(LogTemp, Display, TEXT("Cargando Behavior Tree para la clase: %s"), *Clase);
+    UBehaviorTree* BT =  ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetBT(Clase);
 
 
     if (BT) {
+        UE_LOG(LogTemp, Display, TEXT("Cargando Behavior Tree para ID: %d"), Clase);
+
         RunBehaviorTree(BT);
  
     } else {
-        UE_LOG(LogTemp, Warning, TEXT("No AI loaded"));
+        UE_LOG(LogTemp, Warning, TEXT("No AI loaded for ID: %d"), Clase );
     }
 
 
