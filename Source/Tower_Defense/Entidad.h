@@ -32,8 +32,7 @@ protected:
 	uint8 ID;
 
 	float Timer;
-	UPROPERTY(EditDefaultsOnly, Category = "Datos")
-	float Ciclo;
+
 	FTimerHandle TimerFrame;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -51,8 +50,10 @@ protected:
 
 public:
 	virtual void Matar();
-	void ClearTimer();
 
+protected:
+
+	void ClearTimer();
 
 
 };

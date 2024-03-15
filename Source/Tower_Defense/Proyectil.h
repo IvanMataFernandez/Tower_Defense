@@ -28,6 +28,14 @@ public:
 // Atributos
 
 private:
+	
+
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	bool ProyectilDeTorre;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float VelocidadDeCaida;
+
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
@@ -40,6 +48,11 @@ private:
 	int ObjetivosMaximos;
 
 	int ObjetivosRestantes;
+
+	float Sentido;
+
+public:
+	
 
 
 // Métodos

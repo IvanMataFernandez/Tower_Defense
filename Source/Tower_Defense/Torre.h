@@ -21,4 +21,12 @@ class TOWER_DEFENSE_API ATorre : public AEntidad
 public:
 
 	virtual void Matar() override;
+
+
+// Atributos
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float Ciclo;
 };

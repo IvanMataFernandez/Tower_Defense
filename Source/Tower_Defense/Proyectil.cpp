@@ -3,6 +3,7 @@
 
 #include "Proyectil.h"
 #include "Components/StaticMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AProyectil::AProyectil()
@@ -19,7 +20,18 @@ void AProyectil::BeginPlay()
 	Super::BeginPlay();
 	this->Mesh->OnComponentBeginOverlap.AddDynamic(this, &AProyectil::EnColision);
 
+	this->ObjetivosRestantes = this->ObjetivosMaximos;
+
+	if (this->ProyectilDeTorre) {
+		this->Sentido = 1.f;
+	} else {
+		this->Sentido = -1.f;
+
+	}
 	
+
+ 	AActor::SetActorRotation(FRotator(0,0,-45*(this->VelocidadDeCaida/this->Velocidad)));
+
 }
 
 // Called every frame
@@ -32,7 +44,8 @@ void AProyectil::Tick(float DeltaTime)
 	// Mover el proyectil en la dirección Y.
 
 	FVector Loc = AActor::GetActorLocation();
-	Loc.Y = Loc.Y + DeltaTime * this->Velocidad;
+	Loc.Y = Loc.Y + this->Sentido * DeltaTime * this->Velocidad;
+	Loc.Z = Loc.Z - this->VelocidadDeCaida * DeltaTime;
 	AActor::SetActorLocation(Loc);
 
 
@@ -41,7 +54,6 @@ void AProyectil::Tick(float DeltaTime)
 void AProyectil::EnColision(UPrimitiveComponent* ComponenteNuestro, AActor* OtroActor, UPrimitiveComponent* OtroComponente, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Resultado) {
 
 
-	// TODO: Crear 4 canales de colision. (Proyectil Torre, Proyectil Robot, Torre, Robot), settear cada uno al tipo de colision adecuado y handlear colisiones
 
 	// Handlear daño aquí
 
@@ -49,6 +61,9 @@ void AProyectil::EnColision(UPrimitiveComponent* ComponenteNuestro, AActor* Otro
 	// Handlear penetración aquí. Restar uno a penetración si enemy. Settear penetración a cero si hitbox de las esquinas del nivel
 
 
+	
+	UGameplayStatics::ApplyDamage(OtroActor, this->CapacidadDestruccion, nullptr, this, UDamageType::StaticClass());
+	this->ObjetivosRestantes--;
 
 	// Si ya ha gastado todos sus targets, eliminar
 

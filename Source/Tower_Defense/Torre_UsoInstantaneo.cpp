@@ -3,7 +3,7 @@
 
 #include "Torre_UsoInstantaneo.h"
 #include "Components/BoxComponent.h"
-
+#include "HealthComponent.h"
 
 
 ATorre_UsoInstantaneo::ATorre_UsoInstantaneo() {
@@ -16,9 +16,22 @@ ATorre_UsoInstantaneo::ATorre_UsoInstantaneo() {
 
 void ATorre_UsoInstantaneo::BeginPlay() {
     Super::BeginPlay();
+
+    // Las torres de uso instantaneo NO PUEDEN MORIR A ROBOTS. Estas se matan ellas mismas tras hacer su función
+
+    UHealthComponent* HealthComponent = FindComponentByClass<UHealthComponent>();
+
+    if (HealthComponent) {
+        
+        HealthComponent->Vulnerable = false;
+    } 
 }
 
 void ATorre_UsoInstantaneo::InicializacionFuncion() {
+
+
+
+
 
     float Espera = this->TiempoParaAnimacion;
     FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_UsoInstantaneo::HacerFuncion, Espera);

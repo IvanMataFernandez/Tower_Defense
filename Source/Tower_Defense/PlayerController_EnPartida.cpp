@@ -15,8 +15,8 @@ void APlayerController_EnPartida::BeginPlay() {
 
 void APlayerController_EnPartida::Pinchar() {
 	FHitResult Resultado;
-    APlayerController::GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false , Resultado);
-    AActor* Target = Resultado.GetActor();
+    APlayerController::GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false , Resultado); // TODO: Considerar crear un Trace Channel exclusivo para las casillas. 
+    AActor* Target = Resultado.GetActor();                                                              // De forma que se pueda pinchar en ellas mas facil para colocar torres
    
     ACasilla* Casilla = Cast<ACasilla>(Target);
 

@@ -28,9 +28,13 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float VidaMaxima;
 	float Vida;
-// Métodos
 
 public:
+
+	bool Vulnerable;
+
+// Métodos
+
 
 	UFUNCTION()
 	void AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador);

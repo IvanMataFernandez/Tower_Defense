@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
 #include "MandoDeIA.h"
+#include "Torre.h"
 
 // Sets default values
 AEntidad::AEntidad()
@@ -38,12 +39,13 @@ void AEntidad::Matar() {
 void AEntidad::BeginPlay() {
 	Super::BeginPlay();
 
-	int A = 8;
 	// Dar controller de IA
 
 	AIControllerClass = AMandoDeIA::StaticClass();
 	AMandoDeIA* Mando = GetWorld()->SpawnActor<AMandoDeIA>();
-	Mando->SettearIA(this->ID); // Decirle que clase es para settear el Behavior Tree adecuado
+
+
+	Mando->SettearIA(this->ID, Cast<ATorre>(this) != nullptr); // Decirle que clase es para settear el Behavior Tree adecuado
     Mando->Possess(this);
 
 

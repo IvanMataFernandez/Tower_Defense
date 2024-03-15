@@ -1,0 +1,247 @@
+[
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTService_RobotBas_BuscarTorre.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTService_RobotBas_BuscarTorre.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTService_TorreDisp_BuscarRobot.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTService_TorreDisp_BuscarRobot.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTTask_Robot_Mover.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTTask_Robot_Mover.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTTask_RobotBas_Atacar.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTTask_RobotBas_Atacar.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTTask_TorreDisp_Atacar.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTTask_TorreDisp_Atacar.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTTask_TorreDisp_Idle.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTTask_TorreDisp_Idle.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTTask_TorreProd_Producir.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTTask_TorreProd_Producir.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTTask_TorreUsoInst_Ejecutar.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\BTTask_TorreUsoInst_Ejecutar.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Casilla.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Casilla.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\ConstructoraDeBlueprints.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\ConstructoraDeBlueprints.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Entidad.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Entidad.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\GameMode_EnPartida.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\GameMode_EnPartida.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\HealthComponent.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\HealthComponent.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\MandoDeIA.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\MandoDeIA.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\PlayerController_EnPartida.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\PlayerController_EnPartida.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\PlayerPawn_EnPartida.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\PlayerPawn_EnPartida.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Proyectil.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Proyectil.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Robot.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Robot.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Robot_Basico.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Robot_Basico.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Torre.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Torre.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Torre_Disparador.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Torre_Disparador.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Torre_Producidor.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Torre_Producidor.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Torre_UsoInstantaneo.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Torre_UsoInstantaneo.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Tower_Defense.Build.cs",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Tower_Defense.cpp",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\Source\\Tower_Defense\\Tower_Defense.h",
+		"command": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe\" @\"C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense\\Tower_Defense.211.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Source"
+	}
+]

@@ -8,16 +8,16 @@
 
 
 
-void AMandoDeIA::SettearIA(uint8 Clase) {
+void AMandoDeIA::SettearIA(uint8 Clase, bool Torre) {
 
 
 
 
-    UBehaviorTree* BT =  ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetBT(Clase);
+    UBehaviorTree* BT =  ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetBT(Clase, Torre);
 
 
     if (BT) {
-        UE_LOG(LogTemp, Display, TEXT("Cargando Behavior Tree para ID: %d"), Clase);
+        UE_LOG(LogTemp, Warning, TEXT("Cargando Behavior Tree para ID: %d"), Clase);
 
         RunBehaviorTree(BT);
  

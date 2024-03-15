@@ -10,6 +10,7 @@ UHealthComponent::UHealthComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true; // TODO: Probar con esto a False
+	this->Vulnerable = true;
 
 	// ...
 }
@@ -23,17 +24,20 @@ void UHealthComponent::BeginPlay()
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::AplicarDano); //Bindear evento de daño al método de abajo
 
 
-
 }
 
 
 void UHealthComponent::AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador) {
 
 	this->Vida -= DanoBase;
+	UE_LOG(LogTemp, Warning, TEXT("HIT!, Vida restante: %f"), this->Vida);
 
-	if (this->Vida <= 0.f) {
+	if (this->Vida <= 0.f && this->Vulnerable) {
 		Cast<AEntidad>(GetOwner())->Matar();
+		this->Vulnerable = false;
+
 	}
+	
 
 
 }

@@ -24,30 +24,54 @@ ConstructoraDeBlueprints* ConstructoraDeBlueprints::GetConstructoraDeBlueprints(
 }
 
 
-UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase) {
+UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase, bool Torre) {
    
     // Dada la Ruta (clase) que se quiere usar, obtener su BT en blueprint correspondiente
 
     FString RutaBT;
 
-    switch (Clase) {
-        case Rutas::Canon:
-        case Rutas::CanonDoble:
-        case Rutas::PistolaLaser:
-            RutaBT = TEXT("/Game/Blueprints/IA/Torres/TorreDisparador/BT_TorreDisparador");
 
-            break;
+    if (Torre) {
 
-        case Rutas::PanelSolar:
-        case Rutas::PanelSolarDoble:
-            RutaBT = TEXT("/Game/Blueprints/IA/Torres/TorreProducidor/BT_TorreProducidor");
+        // Torres
 
-            break;
-        
-        case Rutas::Bomba:
-            RutaBT = TEXT("/Game/Blueprints/IA/Torres/TorreUsoInstantaneo/BT_TorreUsoInstantaneo"); 
+        switch (Clase) {
+            case Torres::Canon:
+            case Torres::CanonDoble:
+            case Torres::PistolaLaser:
+                RutaBT = TEXT("/Game/Blueprints/IA/Torres/TorreDisparador/BT_TorreDisparador");
+
+                break;
+
+            case Torres::PanelSolar:
+            case Torres::PanelSolarDoble:
+                RutaBT = TEXT("/Game/Blueprints/IA/Torres/TorreProducidor/BT_TorreProducidor");
+
+                break;
+            
+            case Torres::Bomba:
+                RutaBT = TEXT("/Game/Blueprints/IA/Torres/TorreUsoInstantaneo/BT_TorreUsoInstantaneo"); 
+
+        }
+    } else {
+
+          switch (Clase) {
+            case Robots::Basico:
+            case Robots::Bomba:
+                RutaBT = TEXT("/Game/Blueprints/IA/Robots/RobotBasico/BT_RobotBasico"); 
+
+                break;
+            
+            case Robots::BombaRadar:
+                RutaBT = TEXT("");  // TEXT("/Game/Blueprints/IA/Robots/RobotBasico/BT_RobotBasico"); 
+
+        }      
+        // Robots
+
 
     }
+
+
 
     return LoadObject<UBehaviorTree>(nullptr, *RutaBT);
 

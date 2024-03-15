@@ -28,6 +28,7 @@ ATorre_Disparador::ATorre_Disparador() {
 }
 
 void ATorre_Disparador::PrepararIdle() {
+  
     Super::ClearTimer();
 
     // TODO: Empezar Idle
@@ -102,6 +103,6 @@ void ATorre_Disparador::Disparar() {
 
     // Hacer aparecer el proyectil en el spawnpoint de proyectiles. El proyectil en sí se mueve con su lógica en su código
 
-    AActor::GetWorld()->SpawnActor<AProyectil>(this->ClaseBlueprintProyectil, this->SpawnProyectiles->GetComponentLocation(), SpawnProyectiles->GetComponentRotation());
+    AProyectil* Proyectil = AActor::GetWorld()->SpawnActor<AProyectil>(this->ClaseBlueprintProyectil, this->SpawnProyectiles->GetComponentLocation(), SpawnProyectiles->GetComponentRotation());
     this->TirosRestantes--;
 }

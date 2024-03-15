@@ -22,7 +22,7 @@ class TOWER_DEFENSE_API AMandoDeIA : public AAIController
 
 // Métodos
 public:
-	void SettearIA(uint8 Clase);
+	void SettearIA(uint8 Clase, bool Torre);
 
 	virtual void BeginPlay() override;
 

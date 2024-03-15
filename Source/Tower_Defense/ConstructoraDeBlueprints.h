@@ -10,7 +10,7 @@ class ATorre;
  */
 
 UENUM(BlueprintType)
-enum class Rutas :uint8 {
+enum class Torres :uint8 {
 
 	// 0x00 - 0xFF -> Torres
 
@@ -29,6 +29,20 @@ enum class Rutas :uint8 {
 
 };
 
+UENUM(BlueprintType)
+enum class Robots :uint8 {
+
+	// 0x00 - 0x07 -> Básicos
+	Basico = 0x00,
+
+	// 0x08 - 0x10 -> Bombas
+
+	Bomba = 0x08,
+	BombaRadar = 0x09
+
+};
+
+
 
 class TOWER_DEFENSE_API ConstructoraDeBlueprints
 {
@@ -46,6 +60,6 @@ private:
 
 public:
 	static ConstructoraDeBlueprints* GetConstructoraDeBlueprints();
-	UBehaviorTree* GetBT(uint8 Clase);
+	UBehaviorTree* GetBT(uint8 Clase, bool Torre);
 
 };
