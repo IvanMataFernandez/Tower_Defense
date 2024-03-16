@@ -6,7 +6,6 @@
 #include "Kismet/GameplayStatics.h"
 
 
-// TODO: Crear robot bomba radar heredando de esta clase. Solo requiere la funcionalidad adicional de scannear si hay X torres en su rango. Esta clase ya sabe detonar y matar torres
 
 
 ARobot_Bomba::ARobot_Bomba() {
@@ -49,7 +48,6 @@ void ARobot_Bomba::Detonar() {
 	    UGameplayStatics::ApplyDamage(Actor, this->DanoDeExplosion, nullptr, this, UDamageType::StaticClass());
 
 
-        UE_LOG(LogTemp, Warning, TEXT("%s empezó a solapar con %s en el canal de colisión específico."), *GetName(), *Actor->GetName());
 
 
     }

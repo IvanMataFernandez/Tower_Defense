@@ -32,7 +32,7 @@ void ATorre_Producidor::Idle(float DeltaTime) {
 
         // Se anima la producción aquí. De aqui, pasar al estado de dar el dinero en sí
 
-        /* Animar aquí*/
+        RealizarAnimacion(1);
         
         float Espera = Ciclo - this->TiempoParaAnimacion;
         FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Producidor::Idle, Espera);

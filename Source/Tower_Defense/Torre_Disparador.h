@@ -37,11 +37,15 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	int CadenciaDeDisparo;
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
-	float CooldownInicial;
+	float CooldownFinal;
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float TiempoEntreTiros;
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float TiempoParaAnimacionEnTiro;
 	int TirosRestantes;
 	float SigTiroEn;
+
+	bool TocaAnimar;
 
 
 // Métodos
@@ -55,5 +59,7 @@ public:
 private:
 	void Disparar();
 	void Atacar(float DeltaTime);
+
+
 
 };

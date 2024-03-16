@@ -32,10 +32,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* ZonaDeAfecto;
+
+	UPROPERTY(EditDefaultsOnly)
+	float DanoDeExplosion;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
-	float TiempoParaAnimacion;
-
-
+	float Ciclo;
 // Métodos
 
 public:
@@ -44,7 +46,7 @@ public:
 private:
 
 	void Activar();
-	void HacerFuncion(float DeltaTime);
+	void HacerFuncion();
 
 
 	

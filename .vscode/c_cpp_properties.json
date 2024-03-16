@@ -3,12 +3,16 @@
         {
             "name": "Tower_DefenseEditor Editor Win64 Development (Tower_Defense)",
             "intelliSenseMode": "msvc-x64",
-            "compileCommands": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense.json"
+            "compileCommands": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Tower_Defense.json",
+            "cStandard": "c17",
+            "cppStandard": "c++17"
         },
         {
             "name": "Win32",
             "intelliSenseMode": "msvc-x64",
-            "compileCommands": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Default.json"
+            "compileCommands": "C:\\Users\\ivanm\\Documents\\Unreal Projects\\Tower_Defense\\.vscode\\compileCommands_Default.json",
+            "cStandard": "c17",
+            "cppStandard": "c++17"
         }
     ],
     "version": 4

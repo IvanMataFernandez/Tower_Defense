@@ -28,7 +28,7 @@ bool ARobot_Basico::TorreEnRango() {
 
     // Realiza el line trace y devuelve si hay hit.
     FHitResult HitResult;
-    DrawDebugLine(GetWorld(), Start, End, FColor::Green, true);
+  //  DrawDebugLine(GetWorld(), Start, End, FColor::Green, true);
 
 
 

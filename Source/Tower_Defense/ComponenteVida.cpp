@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "HealthComponent.h"
+#include "ComponenteVida.h"
 #include "Entidad.h"
 
 // Sets default values for this component's properties
-UHealthComponent::UHealthComponent()
+UComponenteVida::UComponenteVida()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -17,17 +17,17 @@ UHealthComponent::UHealthComponent()
 
 
 // Called when the game starts
-void UHealthComponent::BeginPlay()
+void UComponenteVida::BeginPlay()
 {
 	Super::BeginPlay();
 	this->Vida = this->VidaMaxima;
-	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::AplicarDano); //Bindear evento de daño al método de abajo
+	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UComponenteVida::AplicarDano); //Bindear evento de daño al método de abajo
 
 
 }
 
 
-void UHealthComponent::AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador) {
+void UComponenteVida::AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador) {
 
 	this->Vida -= DanoBase;
 	UE_LOG(LogTemp, Warning, TEXT("HIT!, Vida restante: %f"), this->Vida);

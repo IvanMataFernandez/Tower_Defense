@@ -28,6 +28,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float DanoDeExplosion;
 
+protected:
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* AreaDeExplosion;
 

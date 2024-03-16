@@ -39,7 +39,7 @@ protected:
 	USceneComponent* PosicionBase;
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* Hitbox;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UStaticMeshComponent* CuerpoBase;
 
 
@@ -52,8 +52,10 @@ public:
 	virtual void Matar();
 
 protected:
-
 	void ClearTimer();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void RealizarAnimacion(int Animacion);
 
 
 };

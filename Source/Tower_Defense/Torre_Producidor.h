@@ -29,7 +29,7 @@ protected:
 private:
 
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* Placas;
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float TiempoParaAnimacion;
@@ -37,6 +37,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float CantidadProducida;
 
+
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float Ciclo;
 
 // Métodos
 
@@ -46,5 +49,7 @@ private:
 
 public:
 	void PrepararTorre();
+
+
 };
 

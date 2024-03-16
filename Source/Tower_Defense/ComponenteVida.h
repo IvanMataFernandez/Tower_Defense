@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "HealthComponent.generated.h"
+#include "ComponenteVida.generated.h"
 class GameMode_EnPartida;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class TOWER_DEFENSE_API UHealthComponent : public UActorComponent
+class TOWER_DEFENSE_API UComponenteVida : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UHealthComponent();
+	UComponenteVida();
 
 protected:
 	// Called when the game starts

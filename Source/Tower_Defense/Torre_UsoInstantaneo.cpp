@@ -3,7 +3,8 @@
 
 #include "Torre_UsoInstantaneo.h"
 #include "Components/BoxComponent.h"
-#include "HealthComponent.h"
+#include "ComponenteVida.h"
+#include "Kismet/GameplayStatics.h"
 
 
 ATorre_UsoInstantaneo::ATorre_UsoInstantaneo() {
@@ -19,11 +20,11 @@ void ATorre_UsoInstantaneo::BeginPlay() {
 
     // Las torres de uso instantaneo NO PUEDEN MORIR A ROBOTS. Estas se matan ellas mismas tras hacer su función
 
-    UHealthComponent* HealthComponent = FindComponentByClass<UHealthComponent>();
+    UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>();
 
-    if (HealthComponent) {
+    if (ComponenteVida) {
         
-        HealthComponent->Vulnerable = false;
+        ComponenteVida->Vulnerable = false;
     } 
 }
 
@@ -33,35 +34,46 @@ void ATorre_UsoInstantaneo::InicializacionFuncion() {
 
 
 
-    float Espera = this->TiempoParaAnimacion;
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_UsoInstantaneo::HacerFuncion, Espera);
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate,Espera, false);
-    Timer = 0;
+    float Espera = this->Ciclo;
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_UsoInstantaneo::HacerFuncion,Espera, false);
+    RealizarAnimacion(1);
+
 }
 
-void ATorre_UsoInstantaneo::HacerFuncion(float DeltaTime) {
-    
-    Timer = Timer + DeltaTime;
+void ATorre_UsoInstantaneo::HacerFuncion() {
+    this->Activar();
 
-    if (Timer == this->TiempoParaAnimacion) {
-        /* Hacer animacion*/
-    
-        float Espera = Ciclo - Timer;
-        FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_UsoInstantaneo::HacerFuncion, Espera);
-        GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate,Espera, false);
-
-
-
-    } else if (Timer == Ciclo) {
-        this->Activar();
-    }
 }
 
 
 void ATorre_UsoInstantaneo::Activar() {
     // Em principio dañar aquí, pero si se quieren hacer otras funciones en un area, entonces hacer esto Virtual y heredar de esta clase
 
-    // Explode or do w/e
+    // Por defecto hace BOOM! Pero se puede heredar de esta clase e implementar este metodo despues si se necesitan usos instantaneos que no hagan daño.
+    // Si hacen daño con un efecto añadido, se puede considerar heredar de aqui. Para ello dividir buscar targets y dañar en dos metodos aparte
+
+
+    // Encontrar targets y dañarlos
+
+    TArray<FOverlapResult> Resultado;
+    FComponentQueryParams QueryParams;
+
+    // Para que encuentre target debe primero encontrar el trace (usando el canal 5) y luego el campo y el target deben ser al menos overlappeables respecto a colision fisica
+    this->ZonaDeAfecto->ComponentOverlapMulti(Resultado, GetWorld(), AActor::GetActorLocation(), AActor::GetActorRotation(), ECollisionChannel::ECC_GameTraceChannel5, QueryParams);
+
+
+
+    for (FOverlapResult Objeto : Resultado) {
+        AActor* Actor = Objeto.GetActor();
+	    UGameplayStatics::ApplyDamage(Actor, this->DanoDeExplosion, nullptr, this, UDamageType::StaticClass());
+
+
+
+
+    }
+
+
+
 
     Super::Matar(); // La torre desaparece tras hacer su función
 
