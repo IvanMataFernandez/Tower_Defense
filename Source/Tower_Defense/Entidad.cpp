@@ -29,6 +29,7 @@ AEntidad::AEntidad()
 
 void AEntidad::Matar() {
 	// Se llama a este método cuando vida = 0
+
 	this->ClearTimer(); // Apagar el timer de la clase
 	AActor::Destroy(); // Eliminar la entidad (Robot o Torre, debe eliminarse igual)
 

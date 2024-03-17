@@ -28,6 +28,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float DanoDeExplosion;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float TiempoParaExplosion;
+
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* AreaDeExplosion;
@@ -41,6 +44,7 @@ public:
 
 
 private:
+	void EmpezarDetonar();
 
 	void Detonar();
 

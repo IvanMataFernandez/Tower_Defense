@@ -8,6 +8,17 @@
 
 #include "DrawDebugHelpers.h"
 
+/*
+
+    IDs de animaciones:
+    0: Desapuntar
+    1: Apuntar
+    2: Disparar tiro 1
+    n: Disparar tiro (n-1)
+
+*/
+
+
 
 void ATorre_Disparador::BeginPlay() {
     Super::BeginPlay();
@@ -30,9 +41,16 @@ ATorre_Disparador::ATorre_Disparador() {
 void ATorre_Disparador::PrepararIdle() {
   
     Super::ClearTimer();
+    float Espera = 1.5f; // Esperar 1,5 segundos tras no ver enemigo para apagar torre.
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_Disparador::Idle, Espera, false);               
 
-    // TODO: Empezar Idle
 }
+
+void ATorre_Disparador::Idle() {
+    RealizarAnimacion(0); // Desapuntar
+
+}
+
 
 bool ATorre_Disparador::EnRango() {
 
@@ -57,6 +75,14 @@ void ATorre_Disparador::InicializacionAtaque() {
 
     // Inicializar estado de ataque, settear timer para que tras cooldown inicial se empiece a disparar
 
+    RealizarAnimacion(1); // Apuntar
+    this->RepetirCicloAtaque();
+}
+
+
+void ATorre_Disparador::RepetirCicloAtaque() {
+
+    Super::ClearTimer();
     float Espera = this->TiempoParaAnimacionEnTiro;
     this->TirosRestantes = this->CadenciaDeDisparo; 
     this->TocaAnimar = true;
@@ -73,10 +99,10 @@ void ATorre_Disparador::Atacar(float DeltaTime) {
 
 
     if (this->TocaAnimar) {
-        // Empezar a animar el disparo
 
-        RealizarAnimacion((this->CadenciaDeDisparo-this->TirosRestantes)+1);
+        RealizarAnimacion((this->CadenciaDeDisparo-this->TirosRestantes)+2); // Animar el disparo
         this->TocaAnimar = false;
+        
         // Settear la llmamada para disparar
 
         float Espera = this->TiempoEntreTiros - this->TiempoParaAnimacionEnTiro;
@@ -106,7 +132,7 @@ void ATorre_Disparador::Atacar(float DeltaTime) {
 
             Espera = this->CooldownFinal;
 
-            GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_Disparador::InicializacionAtaque,Espera, false);               
+            GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_Disparador::RepetirCicloAtaque,Espera, false);               
         }
 
 

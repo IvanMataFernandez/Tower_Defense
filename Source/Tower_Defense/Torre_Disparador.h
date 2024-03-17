@@ -59,7 +59,8 @@ public:
 private:
 	void Disparar();
 	void Atacar(float DeltaTime);
-
+	void RepetirCicloAtaque();
+	void Idle();
 
 
 };

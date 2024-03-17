@@ -15,7 +15,9 @@ class TOWER_DEFENSE_API ARobot_BombaRadar : public ARobot_Bomba
 	GENERATED_BODY()
 	
 
+public:
 
+	virtual void BeginPlay() override;
 
 
 // Atributos:

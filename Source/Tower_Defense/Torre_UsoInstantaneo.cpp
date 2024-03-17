@@ -7,6 +7,16 @@
 #include "Kismet/GameplayStatics.h"
 
 
+
+/*
+
+    IDs de animaciones:
+    1: Activar Detonación
+
+
+*/
+
+
 ATorre_UsoInstantaneo::ATorre_UsoInstantaneo() {
 
     // super() se hace solo
@@ -36,7 +46,7 @@ void ATorre_UsoInstantaneo::InicializacionFuncion() {
 
     float Espera = this->Ciclo;
     GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_UsoInstantaneo::HacerFuncion,Espera, false);
-    RealizarAnimacion(1);
+    RealizarAnimacion(1); // Animar detonación
 
 }
 

@@ -5,6 +5,14 @@
 #include "Components/StaticMeshComponent.h"
 
 
+/*
+
+    IDs de animaciones:
+    1: Producir
+
+
+*/
+
 ATorre_Producidor::ATorre_Producidor() {
     this->Placas = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Placas"));
     this->Placas->SetupAttachment(PosicionBase);
@@ -32,7 +40,7 @@ void ATorre_Producidor::Idle(float DeltaTime) {
 
         // Se anima la producción aquí. De aqui, pasar al estado de dar el dinero en sí
 
-        RealizarAnimacion(1);
+        RealizarAnimacion(1); // Animar el empiece de produccion
         
         float Espera = Ciclo - this->TiempoParaAnimacion;
         FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Producidor::Idle, Espera);

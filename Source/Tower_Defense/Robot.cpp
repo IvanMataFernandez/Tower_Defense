@@ -5,6 +5,8 @@
 #include "Math/UnrealMathUtility.h"
 #include "Proyectil.h"
 
+
+
 ARobot::ARobot() {
 
     this->MeshDesplazador = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshDesplazador"));
@@ -18,7 +20,6 @@ ARobot::ARobot() {
 void ARobot::BeginPlay() {
     Super::BeginPlay();
     this->Velocidad = this->VelocidadBase + (FMath::FRand() - 0.5) * 2 * this->DesviacionMaxVelocidad;
-    UE_LOG(LogTemp, Warning, TEXT("  %f"), VelocidadBase);
 
 }
 
@@ -29,12 +30,11 @@ void ARobot::InicializarMover(float FrameRate) {
 
     Super::ClearTimer();
 
-    // TODO: Settear Animacion de ruedas aquí
+    RealizarAnimacion(0); // Animar el robot para que se mueva (loop)
 
     float Espera = FrameRate;
     FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot::Mover, 1/Espera);
     GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, 1/Espera, true);    
-    UE_LOG(LogTemp, Warning, TEXT("Empezar Mover"));
 }
 
 void ARobot::Mover(float DeltaTime) {
@@ -43,6 +43,10 @@ void ARobot::Mover(float DeltaTime) {
     Pos.Y = Pos.Y - this->Velocidad * DeltaTime; */
     FVector Pos = FVector(0, - this->Velocidad * DeltaTime,0);
     this->AddActorWorldOffset(Pos);
-    UE_LOG(LogTemp, Warning, TEXT(" Pos %f"), Velocidad);
 
+}
+
+void ARobot::Matar() {
+
+    Super::Matar();
 }

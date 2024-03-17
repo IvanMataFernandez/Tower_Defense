@@ -26,12 +26,12 @@ public:
 // Atributos
 
 protected:
-
+	UPROPERTY()
 	float Velocidad;
 
 private:
 
-	UPROPERTY(EditAnywhere, Category = "Datos")
+	UPROPERTY(EditAnywhere, Category = "Datos", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float VelocidadBase;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
@@ -41,7 +41,7 @@ private:
 
 
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* MeshDesplazador;
 
 
@@ -53,6 +53,6 @@ public:
 	void InicializarMover(float FrameRate);
 	void Mover(float DeltaTime);
 
-
+	virtual void Matar() override;
 
 };

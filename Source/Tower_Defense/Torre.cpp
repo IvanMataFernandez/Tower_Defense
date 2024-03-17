@@ -8,7 +8,6 @@
 
 void ATorre::Matar() {
     
-    UE_LOG(LogTemp, Warning, TEXT("ELIMINAR DE CASILLA"));
  
 
     // TODO: Cambiar esto en producto final. Esto es un workaround para que no crashee el programa con torres colocadas encima de casillas en el motor de juego sin pinchar en ellas

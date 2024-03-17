@@ -5,6 +5,16 @@
 #include "Math/UnrealMathUtility.h"
 #include "Proyectil.h"
 
+
+/*
+
+    IDs de animaciones:
+   -1: Mover ruedas (quitar loop)
+    0: Mover ruedas (activar loop)
+    1: Disparar laser
+
+*/
+
 ARobot_Basico::ARobot_Basico() {
 
     this->MeshDisparador = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshDisparador"));
@@ -42,8 +52,7 @@ bool ARobot_Basico::TorreEnRango() {
 
 void ARobot_Basico::InicializarAtaque() {
 
-    // TODO: Eliminar animacion ruedas aqui
-   
+    RealizarAnimacion(-1); // Quitar el loop de animacion de movimiento de ruedas
     Super::ClearTimer();
     this->RepetirAtaque();
 
@@ -66,8 +75,7 @@ void ARobot_Basico::Atacar(float DeltaTime) {
 
     if (Timer == this->TiempoParaAnimacionDisparo) {
 
-        // TODO: Animar aquí el robot para el disparo
-        
+        RealizarAnimacion(1); // Animar el robot para que realize el disparo
         float Espera = this->TiempoPorDisparo - Timer;
 
         FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Basico::Atacar, Espera);

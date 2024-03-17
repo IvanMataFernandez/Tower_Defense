@@ -4,8 +4,18 @@
 #include "Robot_Bomba.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "ComponenteVida.h"
 
 
+/*
+
+    IDs de animaciones:
+   -1: Mover ruedas (quitar loop)
+    0: Mover ruedas (activar loop)
+    1: Disparar laser
+    2: Detonar
+
+*/
 
 
 ARobot_Bomba::ARobot_Bomba() {
@@ -15,23 +25,31 @@ ARobot_Bomba::ARobot_Bomba() {
 
 void ARobot_Bomba::Matar() {
 
-    this->Detonar();
+    this->EmpezarDetonar();
 
-    Super::Matar();
+
+}
+void ARobot_Bomba::EmpezarDetonar() { 
+
+    // Desactivar el robot para que no haga nada mientras detona
+
+    Super::ClearTimer(); // Quitar la subrutina de disparo
+    UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>(); // Hacer al robot invulnerable durante la explosión para que no pueda detonar dos veces seguidas
+    ComponenteVida->Vulnerable = false;
+
+    Velocidad = 0;
+    float Espera = this->TiempoParaExplosion;
+    
+    RealizarAnimacion(-1); // Quitar el loop de animacion de movimiento de ruedas
+    RealizarAnimacion(2);
+    // Animar el robot para que detone
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ARobot_Bomba::Detonar,Espera, false);
+
 
 }
 
 void ARobot_Bomba::Detonar() {
     
-    // Desactivar el robot para que no haga nada mientras detona
-
-    Super::ClearTimer(); // Quitar la subrutina de disparo
-    Velocidad = 0;
-
-    // TODO: Animar aquí la explosión
-
-    // Considerar hacer un WAIT Aqui mediante Timer y llamar a la funcion despues. O hacer que el componente de animacion vuelva aquí tras animar.
-
 
     // Encontrar targets y dañarlos
 
@@ -46,10 +64,9 @@ void ARobot_Bomba::Detonar() {
     for (FOverlapResult Objeto : Resultado) {
         AActor* Actor = Objeto.GetActor();
 	    UGameplayStatics::ApplyDamage(Actor, this->DanoDeExplosion, nullptr, this, UDamageType::StaticClass());
-
-
-
-
     }
+
+    Super::Matar();
+
 
 }

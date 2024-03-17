@@ -41,7 +41,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	USceneComponent* SpawnProyectiles;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* MeshDisparador;
 
 
