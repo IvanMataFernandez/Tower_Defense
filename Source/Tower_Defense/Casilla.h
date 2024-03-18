@@ -46,8 +46,12 @@ private:
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void SpawnearTorre(uint8 ID);
-
-	bool IntentarColocarTorre(); 
 	void LiberarCasilla();
+	bool CasillaVacia();
+
+
+	bool ColocarTorre(int IDTorre); 
+
+
 
 };

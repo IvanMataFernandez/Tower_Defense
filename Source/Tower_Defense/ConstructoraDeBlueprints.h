@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 class UBehaviorTree;
 class ATorre;
+class UUserWidget;
 /**
  * 
  */
@@ -61,5 +62,6 @@ private:
 public:
 	static ConstructoraDeBlueprints* GetConstructoraDeBlueprints();
 	UBehaviorTree* GetBT(uint8 Clase, bool Torre);
+
 
 };

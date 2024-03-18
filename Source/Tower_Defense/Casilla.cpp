@@ -37,40 +37,30 @@ void ACasilla::Tick(float DeltaTime)
 
 }
 
-bool ACasilla::IntentarColocarTorre() {
+bool ACasilla::CasillaVacia() {
+  return !this->Torre;
+
+}
 
 
-    if (!this->Torre) {
+bool ACasilla::ColocarTorre(int IDTorre) {
 
-		// TODO: Llamar a Controller para obtener la clase c++ y blueprint de la torre a spawnear en la seleccion
 
-        FVector Pos = AActor::GetActorLocation();
-        this->SpawnearTorre(11); // Por ahora spawnea bombas, settear la torre elegida en UI después
+
+
+        this->SpawnearTorre(IDTorre); // Por ahora spawnea bombas, settear la torre elegida en UI después
 
         /*
           Se spawnea la instancia blueprint en un metodo blueprint, ejecuta:
+          
           AActor* Hijo = GetWorld()->SpawnActor<AActor>(ClaseBlueprintCorrespondienteAID, FVectorDeCasilla+(Z+100), FRotator(0,0,0));
+          this->Torre = Hijo;
        
         */
          this->Torre->SetOwner(this);
 
         return true;
-    } else {
-
-      // Considerar un if block aquí de sí pala o equivalente seleccionado entonces => this->Torre->Matar()   [Matar tiene toda la logica necesaria para quitar la torre]
-
-      //  this->Torre->SetOwner(nullptr);
-      //  this->Torre->Destroy();
-      //  this->Torre = nullptr;
-
-
-
-
-        UE_LOG(LogTemp, Warning, TEXT("YA HAY ALGO!"));
-
-
-        return false;
-    }
+    
 
 
 

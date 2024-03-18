@@ -3,7 +3,7 @@
 
 #include "PlayerPawn_EnPartida.h"
 #include "Casilla.h"
-#include "PlayerController_EnPartida.h"
+#include "MandoDeJugador_EnPartida.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -38,7 +38,7 @@ void APlayerPawn_EnPartida::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 
 void APlayerPawn_EnPartida::Pinchar() {
-	Cast<APlayerController_EnPartida>(UGameplayStatics::GetPlayerController(this, 0))->Pinchar();
+	Cast<AMandoDeJugador_EnPartida>(UGameplayStatics::GetPlayerController(this, 0))->Pinchar();
 
 }
 
