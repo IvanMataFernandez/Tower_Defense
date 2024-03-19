@@ -12,7 +12,7 @@
 AEntidad::AEntidad()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false; // Acciones controladas por BT, no requiere tick ninguna entidad
 	this->PosicionBase = CreateDefaultSubobject<USceneComponent>(TEXT("PosiciónBase"));
 	this->Hitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Hitbox"));
 	this->CuerpoBase = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CuerpoBase"));

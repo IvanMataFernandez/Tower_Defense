@@ -51,14 +51,16 @@ private:
 
 	float Sentido;
 
-public:
-	
+	FTimerHandle TimerParaAutodestruir;
 
+	
 
 // Métodos
 
 private:
 	UFUNCTION()
 	void EnColision(UPrimitiveComponent* ComponenteNuestro, AActor* OtroActro, UPrimitiveComponent* OtroComponente, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Resultado);
+
+	void Caducar();
 
 };

@@ -50,7 +50,6 @@ public:
 	bool CasillaVacia();
 
 
-	bool ColocarTorre(int IDTorre); 
 
 
 

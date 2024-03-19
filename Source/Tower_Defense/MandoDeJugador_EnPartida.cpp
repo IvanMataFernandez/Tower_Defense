@@ -24,21 +24,18 @@ void AMandoDeJugador_EnPartida::BeginPlay() {
 
 void AMandoDeJugador_EnPartida::Pinchar() {
 	FHitResult Resultado;
-    APlayerController::GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false , Resultado); // TODO: Considerar crear un Trace Channel exclusivo para las casillas. 
-    AActor* Target = Resultado.GetActor();                                                              // De forma que se pueda pinchar en ellas mas facil para colocar torres
+    APlayerController::GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel8, false , Resultado); 
+    AActor* Target = Resultado.GetActor();   
    
     ACasilla* Casilla = Cast<ACasilla>(Target);
 
 
-    if (Casilla && Casilla->CasillaVacia()) {
-        this->SettearSeleccionDeTorre();
-        if (SeleccionDeTorre != -1) {
-        Casilla->ColocarTorre(this->SeleccionDeTorre); 
-
+    if (Casilla && Casilla->CasillaVacia()) { // Comprobar si la casilla pinchada está vacía
+        this->SettearSeleccionDeTorre(); // Recoger el ID desde la UI
+        if (SeleccionDeTorre != -1) { // Si había selección en UI
+            Casilla->SpawnearTorre(this->SeleccionDeTorre); // Entonces poner la torre elegida en la casilla
         }
-    } else {
-        UE_LOG(LogTemp, Display, TEXT("Pincha en una casilla bumfuzzle"));
-    }
+    } 
 
 
     

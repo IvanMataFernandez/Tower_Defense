@@ -43,28 +43,6 @@ bool ACasilla::CasillaVacia() {
 }
 
 
-bool ACasilla::ColocarTorre(int IDTorre) {
-
-
-
-
-        this->SpawnearTorre(IDTorre); // Por ahora spawnea bombas, settear la torre elegida en UI después
-
-        /*
-          Se spawnea la instancia blueprint en un metodo blueprint, ejecuta:
-          
-          AActor* Hijo = GetWorld()->SpawnActor<AActor>(ClaseBlueprintCorrespondienteAID, FVectorDeCasilla+(Z+100), FRotator(0,0,0));
-          this->Torre = Hijo;
-       
-        */
-         this->Torre->SetOwner(this);
-
-        return true;
-    
-
-
-
-}
 
 
 void ACasilla::LiberarCasilla() {

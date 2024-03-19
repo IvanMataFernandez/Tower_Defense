@@ -4,6 +4,7 @@
 #include "Proyectil.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Entidad.h"
 
 // Sets default values
 AProyectil::AProyectil()
@@ -29,10 +30,15 @@ void AProyectil::BeginPlay()
 
 	}
 	
-
+	// Fallsave, si de alguna forma el proyectil no colisiona, se autodestruye a los 25s
+    GetWorld()->GetTimerManager().SetTimer(this->TimerParaAutodestruir, this, &AProyectil::Caducar, 25.f, false);               
  	AActor::SetActorRotation(FRotator(0,0,-45*(this->VelocidadDeCaida/this->Velocidad)));
 
 }
+void AProyectil::Caducar() {
+	Destroy();
+}
+
 
 // Called every frame
 void AProyectil::Tick(float DeltaTime)
@@ -55,19 +61,24 @@ void AProyectil::EnColision(UPrimitiveComponent* ComponenteNuestro, AActor* Otro
 
 
 
-	// Handlear daño aquí
 
+	if (Cast<AEntidad>(OtroActor)) {
+		UGameplayStatics::ApplyDamage(OtroActor, this->CapacidadDestruccion, nullptr, this, UDamageType::StaticClass());
+		this->ObjetivosRestantes--;
+	} else {
+		// Si se colisionó con algo que no es una entidad, eliminar inmediatamente el proyectil
+		this->ObjetivosRestantes = 0;
 
-	// Handlear penetración aquí. Restar uno a penetración si enemy. Settear penetración a cero si hitbox de las esquinas del nivel
-
-
+	}
 	
-	UGameplayStatics::ApplyDamage(OtroActor, this->CapacidadDestruccion, nullptr, this, UDamageType::StaticClass());
-	this->ObjetivosRestantes--;
+
 
 	// Si ya ha gastado todos sus targets, eliminar
 
 	if (this->ObjetivosRestantes == 0) {
+		GetWorld()->GetTimerManager().ClearTimer(this->TimerParaAutodestruir);
+
 		Destroy();
 	}
 }
+

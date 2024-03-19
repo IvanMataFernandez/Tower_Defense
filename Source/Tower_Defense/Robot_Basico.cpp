@@ -4,6 +4,7 @@
 #include "Robot_Basico.h"
 #include "Math/UnrealMathUtility.h"
 #include "Proyectil.h"
+//#include "DrawDebugHelpers.h"
 
 
 /*
@@ -91,6 +92,8 @@ void ARobot_Basico::Atacar(float DeltaTime) {
 }
 
 void ARobot_Basico::Disparar() {
+        FActorSpawnParameters SpawnParams;
+        SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn; // Forzar al proyectil a que aparezca (por si justo se le pone una torre encima)
 
-        AProyectil* Proyectil = AActor::GetWorld()->SpawnActor<AProyectil>(this->ClaseBlueprintProyectil, this->SpawnProyectiles->GetComponentLocation(), SpawnProyectiles->GetComponentRotation());
+        AProyectil* Proyectil = AActor::GetWorld()->SpawnActor<AProyectil>(this->ClaseBlueprintProyectil, this->SpawnProyectiles->GetComponentLocation(), SpawnProyectiles->GetComponentRotation(),SpawnParams);
 }
