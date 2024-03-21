@@ -1,0 +1,57 @@
+{
+    "header": {
+        "oleadas": 3,
+        "grandesOleadas": 1,
+        "robotsPermitidos": [0],
+        "tiempoSinEnemigos": 5
+    },
+
+    "oleadas": [
+
+        {
+            "id": 0,
+            "oleadaGrande": false,
+            "peso": 1,
+            "probabilidades": [1.0],
+            "tiempoEntreSpawn": 0.2,
+            "tiempoSiguienteOleada": 5
+
+
+            
+        },
+
+
+        {
+            "id": 1,
+            "oleadaGrande": false,
+            "peso": 2,
+            "probabilidades": [1.0],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 5
+
+
+        },
+
+
+
+        {
+            "id": 2,
+            "oleadaGrande": true,
+            "peso": 6,
+            "probabilidades": [1.0],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 999999
+
+
+        }
+
+
+
+
+
+    ]
+
+
+}
+
+

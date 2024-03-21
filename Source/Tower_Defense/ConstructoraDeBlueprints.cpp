@@ -80,4 +80,64 @@ UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase, bool Torre) {
 
 
 
+float ConstructoraDeBlueprints::GetTiempoDeRecargaDeTorre(uint8 Clase) {
+        switch (Clase) {
+            case Torres::Canon:
+            case Torres::CanonDoble:
+            case Torres::PistolaLaser:
+                return 5.f;
+                
 
+
+            case Torres::PanelSolar:
+            case Torres::PanelSolarDoble:
+                return 3.f;
+            
+            case Torres::Bomba:
+                return 25.f;
+
+        }
+    
+     return 999.f;
+
+}
+int ConstructoraDeBlueprints::GetCosteDeTorre(uint8 Clase) {
+        switch (Clase) {
+            case Torres::Canon:
+                return 20;
+            case Torres::CanonDoble:
+                return 45;
+            case Torres::PistolaLaser:
+                return 55;
+                
+
+
+            case Torres::PanelSolar:
+                return 10;
+            case Torres::PanelSolarDoble:
+                return 25;
+            
+            case Torres::Bomba:
+                return 35;
+
+        }
+
+        return 999;
+}
+
+int ConstructoraDeBlueprints::GetPesoDeRobot(uint8 Clase) {
+
+          switch (Clase) {
+            case Robots::Basico:
+                return 1;
+            case Robots::Bomba:
+                return 3;
+            
+            case Robots::BombaRadar:
+                return 4;
+
+        }  
+
+        return 99;
+
+}

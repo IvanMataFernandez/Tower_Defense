@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameMode_EnPartida.generated.h"
+class AZonaSpawnRobot;
 
 /**
  * 
@@ -21,10 +22,47 @@ protected:
 
 
 
+
+// Atributos
+
+
+private:
+
+	AZonaSpawnRobot* ZonaSpawn;
+
+	TArray<TSharedPtr<FJsonValue>> OleadasJson;
+	FTimerHandle TimerParaSpawnRobot;
+	FTimerHandle TimerParaOleadas;
+
+	int OleadaActual;
+	int OleadasTotales;
+	float HastaSiguienteOleada;
+
+	TArray<int> IDsRobot;
+	TArray<int> PesosRobot;
+	TArray<float> ProbabilidadesRobotAcumuladas;
+
+	int PesoRestante;
+	float TiempoEntreSpawn;
+
+
+	TArray<int> PesosRobotActual;
+	TArray<int> IDsRobotActual;
+
+	
+
 // Métodos
 
 private:
 
-	void CargarNivel();
+	void CargarNivel(int Nivel);
+	void EmpezarCargaDeSiguienteOleada();
+	void CargarDatosOleada();
+	void SpawnearRobot();
+
+
+
+
+
 	
 };

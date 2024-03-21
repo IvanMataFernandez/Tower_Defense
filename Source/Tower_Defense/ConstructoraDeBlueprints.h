@@ -64,4 +64,9 @@ public:
 	UBehaviorTree* GetBT(uint8 Clase, bool Torre);
 
 
+	float GetTiempoDeRecargaDeTorre(uint8 Clase);
+	int GetCosteDeTorre(uint8 Clase);
+
+	int GetPesoDeRobot(uint8 Clase);
+
 };
