@@ -17,7 +17,7 @@ void AMandoDeIA::SettearIA(uint8 Clase, bool Torre) {
 
 
     if (BT) {
-        UE_LOG(LogTemp, Warning, TEXT("Cargando Behavior Tree para ID: %d"), Clase);
+     //   UE_LOG(LogTemp, Warning, TEXT("Cargando Behavior Tree para ID: %d"), Clase);
 
         RunBehaviorTree(BT);
  

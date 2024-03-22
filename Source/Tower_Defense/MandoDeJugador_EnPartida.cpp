@@ -6,6 +6,7 @@
 #include "Torre_Disparador.h"
 #include "ConstructoraDeBlueprints.h"
 #include "Blueprint/UserWidget.h"
+#include "Torre_Producidor.h"
 
 
 
@@ -18,6 +19,38 @@ void AMandoDeJugador_EnPartida::BeginPlay() {
 
 }
 
+
+TArray<int> AMandoDeJugador_EnPartida::ObtenerCostesDeTorres(TArray<int> IDs) {
+
+    TArray<int> ListaCostes;
+
+    for (int ID : IDs) {
+        ListaCostes.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetCosteDeTorre(ID));
+    }
+    return ListaCostes;
+    
+}
+TArray<float> AMandoDeJugador_EnPartida::ObtenerRecargasDeTorres(TArray<int> IDs) {
+
+    TArray<float> ListaRecargas;
+
+    for (int ID : IDs) {
+        ListaRecargas.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetTiempoDeRecargaDeTorre(ID));
+    }
+    return ListaRecargas;
+
+
+}
+
+TArray<bool> AMandoDeJugador_EnPartida::ObtenerEmpiezaRecargadosTorres(TArray<int> IDs) {
+        
+    TArray<bool> ListaRecargaEmpezada;
+
+    for (int ID : IDs) {
+        ListaRecargaEmpezada.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetEmpiezaRecargadaTorre(ID));
+    }
+    return ListaRecargaEmpezada;
+}	
 
 
 
@@ -35,7 +68,18 @@ void AMandoDeJugador_EnPartida::Pinchar() {
         if (SeleccionDeTorre != -1) { // Si había selección en UI
             Casilla->SpawnearTorre(this->SeleccionDeTorre); // Entonces poner la torre elegida en la casilla
         }
-    } 
+    
+    } else {
+
+        // Si se pincha en una torre producidora, tratar de colectar su energia
+
+        ATorre_Producidor* Torre = Cast<ATorre_Producidor>(Target);
+
+        if (Torre) {
+            Torre->Click();
+        }
+
+    }
 
 
     

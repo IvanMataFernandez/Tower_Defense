@@ -30,7 +30,6 @@ void UComponenteVida::BeginPlay()
 void UComponenteVida::AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador) {
 
 	this->Vida -= DanoBase;
-	UE_LOG(LogTemp, Warning, TEXT("HIT!, Vida restante: %f"), this->Vida);
 
 	if (this->Vida <= 0.f && this->Vulnerable) {
 		Cast<AEntidad>(GetOwner())->Matar();

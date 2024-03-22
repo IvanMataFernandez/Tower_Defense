@@ -55,4 +55,17 @@ public:
 	void SettearSeleccionDeTorre();
 
 
+
+	UFUNCTION(BlueprintCallable)
+	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs);
+	UFUNCTION(BlueprintCallable)
+	TArray<float> ObtenerRecargasDeTorres(TArray<int> IDs);
+	UFUNCTION(BlueprintCallable)
+	TArray<bool> ObtenerEmpiezaRecargadosTorres(TArray<int> IDs);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void IncrementarEnergia(int Cantidad);
+
+
+
 };

@@ -6,7 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "GameMode_EnPartida.generated.h"
 class AZonaSpawnRobot;
-
+class AMusica_EnPartida;
 /**
  * 
  */
@@ -28,7 +28,14 @@ protected:
 
 private:
 
+	int PesoRobotsVivo;
+	int PesoTargetParaSiguienteOleada;
+
+	bool SeAproximaOrdaGrande;
+	bool SeQuiereSpawnearLaSiguienteOleada;
+
 	AZonaSpawnRobot* ZonaSpawn;
+	AMusica_EnPartida* ReproductorEnPartida;
 
 	TArray<TSharedPtr<FJsonValue>> OleadasJson;
 	FTimerHandle TimerParaSpawnRobot;
@@ -52,6 +59,11 @@ private:
 	
 
 // Métodos
+
+public:
+
+	void ProcesarMuerteDeRobot(int PesoDeRobot);
+
 
 private:
 

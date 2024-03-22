@@ -65,6 +65,8 @@ public:
 
 
 	float GetTiempoDeRecargaDeTorre(uint8 Clase);
+	bool GetEmpiezaRecargadaTorre(uint8 Clase);
+
 	int GetCosteDeTorre(uint8 Clase);
 
 	int GetPesoDeRobot(uint8 Clase);

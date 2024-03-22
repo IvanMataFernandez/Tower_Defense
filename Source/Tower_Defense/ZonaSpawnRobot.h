@@ -41,6 +41,6 @@ protected:
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)
-	void SpawnearRobot(int ID, int Fila); // TODO: Añadir Wave number aquí despues
+	void SpawnearRobot(int ID ,int Fila); 
 
 };

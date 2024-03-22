@@ -6,6 +6,7 @@
 #include "Torre.h"
 #include "Torre_Producidor.generated.h"
 class UStaticMeshComponent;
+class AMandoDeJugador_EnPartida;
 
 /**
  * 
@@ -31,24 +32,33 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* Placas;
-	UPROPERTY(EditDefaultsOnly, Category = "Datos")
-	float TiempoParaAnimacion;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Datos")
-	float CantidadProducida;
 
 
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
-	float Ciclo;
+	int CantidadProducida;
+
+
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float TiempoProduccionBase;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float DesviacionTiempoProduccionMax;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float TiempoHastaQueCaducaEnergia;
+
+	bool EnergiaDisponible;
+
+	AMandoDeJugador_EnPartida* MandoDeJugador;
 
 // Métodos
 
 private:
 	void Producir();
-	void Idle(float DeltaTime);
 
 public:
 	void PrepararTorre();
+	void Click();
 
 
 };

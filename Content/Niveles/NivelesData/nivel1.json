@@ -1,9 +1,9 @@
 {
     "header": {
-        "oleadas": 3,
+        "oleadas": 9,
         "grandesOleadas": 1,
         "robotsPermitidos": [0],
-        "tiempoSinEnemigos": 5
+        "tiempoSinEnemigos": 65
     },
 
     "oleadas": [
@@ -14,7 +14,7 @@
             "peso": 1,
             "probabilidades": [1.0],
             "tiempoEntreSpawn": 0.2,
-            "tiempoSiguienteOleada": 5
+            "tiempoSiguienteOleada": 20
 
 
             
@@ -24,20 +24,89 @@
         {
             "id": 1,
             "oleadaGrande": false,
+            "peso": 1,
+            "probabilidades": [1.0],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+        {
+            "id": 2,
+            "oleadaGrande": false,
             "peso": 2,
             "probabilidades": [1.0],
             "tiempoEntreSpawn": 0.5,
-            "tiempoSiguienteOleada": 5
+            "tiempoSiguienteOleada": 20
 
 
         },
 
 
+        {
+            "id": 3,
+            "oleadaGrande": false,
+            "peso": 3,
+            "probabilidades": [1.0],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
 
         {
-            "id": 2,
+            "id": 4,
+            "oleadaGrande": false,
+            "peso": 3,
+            "probabilidades": [1.0],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+
+        {
+            "id": 5,
+            "oleadaGrande": false,
+            "peso": 3,
+            "probabilidades": [1.0],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+
+        {
+            "id": 6,
+            "oleadaGrande": false,
+            "peso": 4,
+            "probabilidades": [1.0],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+
+        {
+            "id": 7,
+            "oleadaGrande": false,
+            "peso": 5,
+            "probabilidades": [1.0],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+        {
+            "id": 8,
             "oleadaGrande": true,
-            "peso": 6,
+            "peso": 10,
             "probabilidades": [1.0],
             "tiempoEntreSpawn": 0.5,
             "tiempoSiguienteOleada": 999999

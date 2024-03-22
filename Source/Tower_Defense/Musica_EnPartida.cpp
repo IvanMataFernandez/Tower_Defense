@@ -1,0 +1,40 @@
+
+
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "Musica_EnPartida.h"
+#include "Sound/SoundBase.h"
+#include "Components/AudioComponent.h"
+
+
+
+void AMusica_EnPartida::BeginPlay() {
+    Super::BeginPlay();
+    this->Parar();
+}
+
+void AMusica_EnPartida::Tocar(int ID) {
+    this->Parar();
+    USoundBase* MusicaATocar = nullptr;
+
+    switch (ID) {
+        case 0:
+            MusicaATocar = this->MusicaInicio;
+            break;
+        case 1:
+           MusicaATocar = this->MusicaMedio;
+            break;
+        case 2:
+            MusicaATocar = this->MusicaFin;
+
+    } 
+    this->GetAudioComponent()->SetSound(MusicaATocar);
+    this->GetAudioComponent()->Play(0.f);
+
+    
+}
+void AMusica_EnPartida::Parar() {
+    this->GetAudioComponent()->Stop();
+    this->Stop();
+}

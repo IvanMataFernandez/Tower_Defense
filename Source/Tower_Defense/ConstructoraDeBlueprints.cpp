@@ -101,6 +101,12 @@ float ConstructoraDeBlueprints::GetTiempoDeRecargaDeTorre(uint8 Clase) {
      return 999.f;
 
 }
+
+
+bool ConstructoraDeBlueprints::GetEmpiezaRecargadaTorre(uint8 Clase) {
+    return Clase > 7 && Clase < 11;
+}
+
 int ConstructoraDeBlueprints::GetCosteDeTorre(uint8 Clase) {
         switch (Clase) {
             case Torres::Canon:

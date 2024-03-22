@@ -4,6 +4,8 @@
 #include "Robot.h"
 #include "Math/UnrealMathUtility.h"
 #include "Proyectil.h"
+#include "GameMode_EnPartida.h"
+#include "ConstructoraDeBlueprints.h"
 
 
 
@@ -22,6 +24,7 @@ void ARobot::BeginPlay() {
     this->Velocidad = this->VelocidadBase + (FMath::FRand() - 0.5) * 2 * this->DesviacionMaxVelocidad;
 
 }
+
 
 
 
@@ -47,6 +50,10 @@ void ARobot::Mover(float DeltaTime) {
 }
 
 void ARobot::Matar() {
+
+    // En el caso de los robots, se debe procesar el hecho de que se ha muerto para contabilizar cuando spawnear siguiente oleada y procesar win con logic.
+    int Peso = ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetPesoDeRobot(ID);
+    Cast<AGameMode_EnPartida>(GetWorld()->GetAuthGameMode())->ProcesarMuerteDeRobot(Peso);
 
     Super::Matar();
 }
