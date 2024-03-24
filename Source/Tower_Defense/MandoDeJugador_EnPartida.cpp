@@ -7,6 +7,7 @@
 #include "ConstructoraDeBlueprints.h"
 #include "Blueprint/UserWidget.h"
 #include "Torre_Producidor.h"
+#include "Engine/Texture2D.h"
 
 
 
@@ -51,6 +52,20 @@ TArray<bool> AMandoDeJugador_EnPartida::ObtenerEmpiezaRecargadosTorres(TArray<in
     }
     return ListaRecargaEmpezada;
 }	
+
+
+TArray<UTexture2D*> AMandoDeJugador_EnPartida::ObtenerImagenesDeTorres(TArray<int> IDs) {
+    
+    TArray<UTexture2D*> ListaTexturas;
+
+    for (int ID : IDs) { 
+        FString Ruta = TEXT("/Game/Assets/Texturas/Torre") + FString::Printf(TEXT("%d"), ID);
+        UTexture2D* Textura = LoadObject<UTexture2D>(nullptr, *Ruta);
+
+        ListaTexturas.Add(Textura);
+    }
+    return ListaTexturas;
+}
 
 
 

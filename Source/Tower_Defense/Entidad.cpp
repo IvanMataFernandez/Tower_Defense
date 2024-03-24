@@ -29,13 +29,28 @@ AEntidad::AEntidad()
 
 void AEntidad::Matar() {
 	// Se llama a este método cuando vida = 0
+	// Quitar BT de la clase porque se va a morir
 
+
+
+	// RealizarAnimacion(int Animacion)
+
+	AMandoDeIA* IA = Cast<AMandoDeIA>(this->GetController());
+
+	if (IA) {
+		this->DetachFromControllerPendingDestroy();
+		IA->Destroy();
+	}
 	this->ClearTimer(); // Apagar el timer de la clase
-	AActor::Destroy(); // Eliminar la entidad (Robot o Torre, debe eliminarse igual)
+	this->RealizarAnimacion(0);
+	GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &AEntidad::Destruir,this->TiempoDeAnimacionDeMuerte, false);    
 
 }
 
 
+void AEntidad::Destruir() {
+	AActor::Destroy(); // Eliminar la entidad (Robot o Torre, debe eliminarse igual)
+}
 
 void AEntidad::BeginPlay() {
 	Super::BeginPlay();
@@ -53,7 +68,14 @@ void AEntidad::BeginPlay() {
 }
 
 void AEntidad::ClearTimer() {
+
+
+
+           
+
     GetWorld()->GetTimerManager().ClearTimer(this->TimerFrame);
+            
+
 }
 
 

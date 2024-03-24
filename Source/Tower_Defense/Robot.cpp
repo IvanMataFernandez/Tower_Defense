@@ -8,7 +8,15 @@
 #include "ConstructoraDeBlueprints.h"
 
 
+/*
 
+    IDs de animaciones:
+   -1: Mover ruedas (quitar loop) y mover helice (quitar loop)
+    0: Morir
+    1: Mover ruedas (activar loop) 
+
+
+*/
 ARobot::ARobot() {
 
     this->MeshDesplazador = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshDesplazador"));
@@ -33,7 +41,7 @@ void ARobot::InicializarMover(float FrameRate) {
 
     Super::ClearTimer();
 
-    RealizarAnimacion(0); // Animar el robot para que se mueva (loop)
+    RealizarAnimacion(1); // Animar el robot para que se mueva (loop)
 
     float Espera = FrameRate;
     FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot::Mover, 1/Espera);
@@ -54,6 +62,6 @@ void ARobot::Matar() {
     // En el caso de los robots, se debe procesar el hecho de que se ha muerto para contabilizar cuando spawnear siguiente oleada y procesar win con logic.
     int Peso = ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetPesoDeRobot(ID);
     Cast<AGameMode_EnPartida>(GetWorld()->GetAuthGameMode())->ProcesarMuerteDeRobot(Peso);
-
+    this->RealizarAnimacion(-1);
     Super::Matar();
 }

@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "MandoDeJugador_EnPartida.generated.h"
 class UUserWidget;
+class UTexture2D;
 
 /**
  * 
@@ -62,6 +63,9 @@ public:
 	TArray<float> ObtenerRecargasDeTorres(TArray<int> IDs);
 	UFUNCTION(BlueprintCallable)
 	TArray<bool> ObtenerEmpiezaRecargadosTorres(TArray<int> IDs);
+
+	UFUNCTION(BlueprintCallable)
+	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void IncrementarEnergia(int Cantidad);

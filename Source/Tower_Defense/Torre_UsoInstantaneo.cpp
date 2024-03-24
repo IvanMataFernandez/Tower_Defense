@@ -11,6 +11,8 @@
 /*
 
     IDs de animaciones:
+
+    0: Morir (unused)
     1: Activar Detonación
 
 

@@ -9,17 +9,18 @@
 
     IDs de animaciones:
    -1: Mover ruedas (quitar loop) y mover helice (quitar loop)
-    0: Mover ruedas (activar loop) y 
-    1: Disparar laser
-    2: Detonar
-    3: Mover helice (activar loop)
+    0: Morir
+    1: Mover ruedas (activar loop) 
+    2: Disparar laser
+    3: Detonar
+    4: Mover helice (activar loop)
 
 */
 
 
 void ARobot_BombaRadar::BeginPlay() {
     Super::BeginPlay();
-    RealizarAnimacion(3);
+    RealizarAnimacion(4);
 
 }
 

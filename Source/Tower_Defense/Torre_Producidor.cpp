@@ -11,8 +11,10 @@
 /*
 
     IDs de animaciones:
-    0: Apagar paneles
-    1: Encender paneles
+    
+    0: Morir
+    1: Apagar paneles
+    2: Encender paneles
 
 
 */
@@ -34,7 +36,7 @@ void ATorre_Producidor::BeginPlay() {
 void ATorre_Producidor::PrepararTorre() {
 
     // Preparar la torre para que inicie el ciclo, se pasa al estado de empezar la animación de producir
-     RealizarAnimacion(0); // Animar el apague de produccion
+     RealizarAnimacion(1); // Animar el apague de produccion
 
     this->EnergiaDisponible = false;
     float TiempoParaProduccion = this->TiempoProduccionBase + (FMath::FRand() - 0.5) * 2 * this->DesviacionTiempoProduccionMax;
@@ -44,7 +46,7 @@ void ATorre_Producidor::PrepararTorre() {
 
 
 void ATorre_Producidor::Producir() {
-    RealizarAnimacion(1); // Animar el empiece de produccion
+    RealizarAnimacion(2); // Animar el empiece de produccion
 
     this->EnergiaDisponible = true;
     GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_Producidor::PrepararTorre,this->TiempoHastaQueCaducaEnergia, false);               

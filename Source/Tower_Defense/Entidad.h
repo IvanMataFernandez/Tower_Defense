@@ -31,11 +31,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "ID")
 	uint8 ID;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float TiempoDeAnimacionDeMuerte = 1.f;
+
 	float Timer;
 
 	FTimerHandle TimerFrame;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	USceneComponent* PosicionBase;
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* Hitbox;
@@ -57,5 +60,9 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void RealizarAnimacion(int Animacion);
 
+
+private:
+
+	void Destruir();
 
 };

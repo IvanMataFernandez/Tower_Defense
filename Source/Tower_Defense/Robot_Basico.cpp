@@ -4,15 +4,15 @@
 #include "Robot_Basico.h"
 #include "Math/UnrealMathUtility.h"
 #include "Proyectil.h"
-//#include "DrawDebugHelpers.h"
 
 
 /*
 
     IDs de animaciones:
    -1: Mover ruedas (quitar loop)
-    0: Mover ruedas (activar loop)
-    1: Disparar laser
+    0: Morir
+    1: Mover ruedas (activar loop)
+    2: Disparar laser
 
 */
 
@@ -76,7 +76,7 @@ void ARobot_Basico::Atacar(float DeltaTime) {
 
     if (Timer == this->TiempoParaAnimacionDisparo) {
 
-        RealizarAnimacion(1); // Animar el robot para que realize el disparo
+        RealizarAnimacion(2); // Animar el robot para que realize el disparo
         float Espera = this->TiempoPorDisparo - Timer;
 
         FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Basico::Atacar, Espera);

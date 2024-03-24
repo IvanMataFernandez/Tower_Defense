@@ -11,10 +11,11 @@
 /*
 
     IDs de animaciones:
-    0: Desapuntar
-    1: Apuntar
-    2: Disparar tiro 1
-    n: Disparar tiro (n-1)
+    0: Morir
+    1: Desapuntar
+    2: Apuntar
+    3: Disparar tiro 1
+    n: Disparar tiro (n-2)
 
 */
 
@@ -47,7 +48,7 @@ void ATorre_Disparador::PrepararIdle() {
 }
 
 void ATorre_Disparador::Idle() {
-    RealizarAnimacion(0); // Desapuntar
+    RealizarAnimacion(1); // Desapuntar
 
 }
 
@@ -75,7 +76,7 @@ void ATorre_Disparador::InicializacionAtaque() {
 
     // Inicializar estado de ataque, settear timer para que tras cooldown inicial se empiece a disparar
 
-    RealizarAnimacion(1); // Apuntar
+    RealizarAnimacion(2); // Apuntar
     this->RepetirCicloAtaque();
 }
 
@@ -100,7 +101,7 @@ void ATorre_Disparador::Atacar(float DeltaTime) {
 
     if (this->TocaAnimar) {
 
-        RealizarAnimacion((this->CadenciaDeDisparo-this->TirosRestantes)+2); // Animar el disparo
+        RealizarAnimacion((this->CadenciaDeDisparo-this->TirosRestantes)+3); // Animar el disparo
         this->TocaAnimar = false;
         
         // Settear la llmamada para disparar
