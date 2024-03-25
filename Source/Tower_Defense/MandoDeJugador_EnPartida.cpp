@@ -21,6 +21,13 @@ void AMandoDeJugador_EnPartida::BeginPlay() {
 }
 
 
+
+UUserWidget* AMandoDeJugador_EnPartida::ObtenerHUD() const {
+    return this->HUD;
+}
+
+
+
 TArray<int> AMandoDeJugador_EnPartida::ObtenerCostesDeTorres(TArray<int> IDs) {
 
     TArray<int> ListaCostes;
@@ -75,27 +82,75 @@ void AMandoDeJugador_EnPartida::Pinchar() {
     APlayerController::GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel8, false , Resultado); 
     AActor* Target = Resultado.GetActor();   
    
+
+
+    // Comprobar si se quiere usar la pala
+
     ACasilla* Casilla = Cast<ACasilla>(Target);
 
+    if (Casilla) {
 
-    if (Casilla && Casilla->CasillaVacia()) { // Comprobar si la casilla pinchada está vacía
-        this->SettearSeleccionDeTorre(); // Recoger el ID desde la UI
-        if (SeleccionDeTorre != -1) { // Si había selección en UI
-            Casilla->SpawnearTorre(this->SeleccionDeTorre); // Entonces poner la torre elegida en la casilla
+
+        if (Casilla->CasillaVacia()) {
+
+            // La casilla esta vacia, asumimos que el player quiere poner una torre aqui
+
+            this->SettearSeleccionDeTorre(); // Recoger el ID desde la UI
+            
+            if (this->SeleccionDeTorre != -1) { // Si había selección en UI de Torre Correcta.
+                Casilla->SpawnearTorre(this->SeleccionDeTorre); // Entonces poner la torre elegida en la casilla
+            }
+
+        } else {
+
+            // Comprobar si el quitador (equivalente Pala en PvZ) está seleccionado
+            this->SettearBorradorDeTorre();
+
+            if (this->SeleccionDeTorre == 1) { 
+
+                Casilla->QuitarTorre(); // Si lo está, quitamos la torre del nivel
+
+            } 
         }
-    
+
     } else {
 
-        // Si se pincha en una torre producidora, tratar de colectar su energia
+        // Si no es una casilla, comprobar si es un producidor de energia (requieren ser pinchados para recolectar energia)
 
         ATorre_Producidor* Torre = Cast<ATorre_Producidor>(Target);
 
         if (Torre) {
-            Torre->Click();
+
+            // Si lo es, ver si tenemos la "pala" seleccionada
+            this->SettearBorradorDeTorre();
+            
+            if (this->SeleccionDeTorre == 1) {
+
+                // Pala seleccionada, vamos a su casilla para borrar la Torre (si no tiene casilla relacionada como el panel por defecto, entonces no hace nada)
+
+                ACasilla* CasillaDeTorre = Cast<ACasilla>(Torre->GetOwner());
+
+                if (CasillaDeTorre) {
+                    CasillaDeTorre->QuitarTorre();
+                }
+
+
+            } else {
+
+                // Pala no seleccionada, recolectar energia en su lugar
+
+                Torre->Click();
+            }
         }
+
+
+
+
 
     }
 
+  
+    
 
     
 

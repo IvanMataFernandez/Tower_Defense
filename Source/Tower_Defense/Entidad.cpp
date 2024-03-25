@@ -42,6 +42,7 @@ void AEntidad::Matar() {
 		IA->Destroy();
 	}
 	this->ClearTimer(); // Apagar el timer de la clase
+	this->Hitbox->SetCollisionEnabled(ECollisionEnabled::NoCollision); // Quitar hitbox para que los enemigos ignoren a esta entidad
 	this->RealizarAnimacion(0);
 	GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &AEntidad::Destruir,this->TiempoDeAnimacionDeMuerte, false);    
 

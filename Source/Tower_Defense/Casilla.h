@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Casilla.generated.h"
 
+class ATorre;
+
 UCLASS()
 class TOWER_DEFENSE_API ACasilla : public AActor
 {
@@ -17,16 +19,6 @@ public:
 
 
 
-// Métodos
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 
 
 // Atributos
@@ -37,7 +29,7 @@ private:
 	UStaticMeshComponent* Mesh;
 
 	UPROPERTY(BlueprintReadWrite, meta= (AllowPrivateAccess = "true"))
-	AActor* Torre; 
+	ATorre* Torre; 
 
 
 // Métodos:
@@ -46,6 +38,7 @@ private:
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void SpawnearTorre(uint8 ID);
+	void QuitarTorre();
 	void LiberarCasilla();
 	bool CasillaVacia();
 

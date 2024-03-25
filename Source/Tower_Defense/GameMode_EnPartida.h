@@ -41,6 +41,9 @@ private:
 	FTimerHandle TimerParaSpawnRobot;
 	FTimerHandle TimerParaOleadas;
 
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	TArray<int> GrandesOleadas;
+
 	int OleadaActual;
 	int OleadasTotales;
 	float HastaSiguienteOleada;
@@ -64,13 +67,25 @@ public:
 
 	void ProcesarMuerteDeRobot(int PesoDeRobot);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void ComunicarOleadasUI();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void ComunicarAvanceOleadaUI();	
+
 
 private:
 
 	void CargarNivel(int Nivel);
+	void EmpezarJuego();
+	TArray<int> EncontrarGrandesOleadas();
 	void EmpezarCargaDeSiguienteOleada();
 	void CargarDatosOleada();
-	void SpawnearRobot();
+	void GenerarOleada();
+	void GenerarOleadaGrande();
+
+	void GenerarRobot();
+	void SpawnearRobot(int ID);
 
 
 

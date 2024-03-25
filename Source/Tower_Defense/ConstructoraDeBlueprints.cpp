@@ -57,6 +57,7 @@ UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase, bool Torre) {
 
           switch (Clase) {
             case Robots::Basico:
+            case Robots::LiderOleada:
             case Robots::Bomba:
                 RutaBT = TEXT("/Game/Blueprints/IA/Robots/RobotBasico/BT_RobotBasico"); 
 
@@ -134,6 +135,9 @@ int ConstructoraDeBlueprints::GetCosteDeTorre(uint8 Clase) {
 int ConstructoraDeBlueprints::GetPesoDeRobot(uint8 Clase) {
 
           switch (Clase) {
+            case Robots::LiderOleada:
+                return 0; // Unused, se recoge directamente desde el gamemode pero lo pongo aqui
+
             case Robots::Basico:
                 return 1;
             case Robots::Bomba:

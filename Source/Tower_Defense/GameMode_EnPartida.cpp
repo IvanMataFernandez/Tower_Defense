@@ -41,10 +41,10 @@ void AGameMode_EnPartida::BeginPlay()
         this->PesoRobotsVivo = 0;
 
 
-        this->ReproductorEnPartida->Tocar(0);
 
-        this->CargarNivel(1);
-        this->EmpezarCargaDeSiguienteOleada();
+        // Provisional, empezar el nivel a los X segundos
+
+        GetWorld()->GetTimerManager().SetTimer(this->TimerParaOleadas, this, &AGameMode_EnPartida::EmpezarJuego, 1.f, false);               
 
     } else {
         UE_LOG(LogTemp, Error, TEXT("No hay zona de spawn / reproductor"));
@@ -55,6 +55,16 @@ void AGameMode_EnPartida::BeginPlay()
            
 
 }
+
+void AGameMode_EnPartida::EmpezarJuego() {
+
+    this->ReproductorEnPartida->Tocar(0);
+    this->CargarNivel(1);
+    this->ComunicarOleadasUI();
+    this->EmpezarCargaDeSiguienteOleada();
+
+}
+
 
 void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot) {
 
@@ -85,10 +95,10 @@ void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot) {
             }
 
         // Aunque no se puedan adelantar oleadas gordas, no tiene sentido quedarse esperando si no hay bots vivos (y no hay spawneando nuevos).
-        // en ese caso programos para que el aviso de oleada salte en 3 segundos
+        // en ese caso programos para que el aviso de oleada salte en 1 segundo
 
         } else if (this->PesoRobotsVivo == 0 && !GetWorld()->GetTimerManager().IsTimerActive(this->TimerParaSpawnRobot)) {
-            GetWorld()->GetTimerManager().SetTimer(this->TimerParaOleadas, this, &AGameMode_EnPartida::CargarDatosOleada, 3.f, false);               
+            GetWorld()->GetTimerManager().SetTimer(this->TimerParaOleadas, this, &AGameMode_EnPartida::CargarDatosOleada, 1.f, false);               
 
         }
 
@@ -117,7 +127,6 @@ void AGameMode_EnPartida::CargarDatosOleada() {
 
 
     this->OleadaActual++; // Nueva oleada
-
     // Recopilar datos de oleada actual
 
     TSharedPtr<FJsonObject> DatosOleadaActual = this->OleadasJson[this->OleadaActual]->AsObject();
@@ -144,8 +153,7 @@ void AGameMode_EnPartida::CargarDatosOleada() {
     // Recopilar datos de siguiente oleada
 
     if (this->OleadaActual != this->OleadasTotales-1) {
-        TSharedPtr<FJsonObject> DatosOleadaSiguiente = this->OleadasJson[this->OleadaActual+1]->AsObject();
-        this->SeAproximaOrdaGrande = DatosOleadaSiguiente->GetBoolField(TEXT("oleadaGrande")); 
+        this->SeAproximaOrdaGrande = this->GrandesOleadas.Contains(this->OleadaActual+1);
     }
 
 
@@ -159,13 +167,14 @@ void AGameMode_EnPartida::CargarDatosOleada() {
     // Ya tenemos los datos de la oleada, empezar a handlear logica de spawnear enemigos
 
 
-    if (DatosOleadaActual->GetBoolField(TEXT("oleadaGrande"))) {
+    if (this->GrandesOleadas.Contains(this->OleadaActual)) {
  
 
-        this->SeAproximaOrdaGrande = false; // No hay dos ordas grandes seguidas
 
-        // Se aproxima FLAG de robots (oleada grande), esperar unos 5 segundos para TODO:  mostrar cosas por UI
-        GetWorld()->GetTimerManager().SetTimer(this->TimerParaSpawnRobot, this, &AGameMode_EnPartida::SpawnearRobot, 5.f, false);   
+        // Se aproxima FLAG de robots (oleada grande), esperar unos 7 segundos para TODO:  mostrar cosas por UI
+
+ 
+        GetWorld()->GetTimerManager().SetTimer(this->TimerParaSpawnRobot, this, &AGameMode_EnPartida::GenerarOleadaGrande, 6.f, false);   
 
 
         if (this->OleadaActual != this->OleadasTotales-1) {
@@ -180,17 +189,35 @@ void AGameMode_EnPartida::CargarDatosOleada() {
 
     } else {
 
-        // Spawnear YA
-        this->SpawnearRobot();
+        // Spawnear la oleada normal ya
+
+        this->GenerarOleada();
 
     }
 
 
 }
 
-void AGameMode_EnPartida::SpawnearRobot() {
+void AGameMode_EnPartida::GenerarOleada() {
+        this->ComunicarAvanceOleadaUI(); // Triggear avance en progress bar
+        this->GenerarRobot(); // Empezar los spawns de robots
+}
 
-    // Toca spawnear un enemigo
+
+
+void AGameMode_EnPartida::GenerarOleadaGrande() {
+    this->ComunicarAvanceOleadaUI(); // Triggear avance en progress bar
+    this->SpawnearRobot(1); // Spawnear lider
+     // Programar el spawn del resto de la oleada
+    GetWorld()->GetTimerManager().SetTimer(this->TimerParaSpawnRobot, this, &AGameMode_EnPartida::GenerarRobot, this->TiempoEntreSpawn, false); 
+
+
+}
+
+
+void AGameMode_EnPartida::GenerarRobot() {
+
+    // Toca spawnear un enemigo, elige QUE bot spawnear
 
     float Random = FMath::FRand();
     int Pos = 0;
@@ -251,11 +278,8 @@ void AGameMode_EnPartida::SpawnearRobot() {
     if (Val) { 
         // SPAWN si se puedo elegir bot
 
-        // TODO: Considerar aumentar odds para filas que no spawnearon hace tiempo y disminuir para las que acaban de spawnear
 
-        this->ZonaSpawn->SpawnearRobot(this->IDsRobotActual[Pos] ,FMath::RandRange(0,4)); // Spawnear el robot en una fila al azar
-            UE_LOG(LogTemp, Warning, TEXT("%d"), this->PesosRobotActual[Pos]);
-
+        this->SpawnearRobot(this->IDsRobotActual[Pos]);
         this->PesoRestante = this->PesoRestante - this->PesosRobotActual[Pos]; // Restar al budget de oleada
 
         this->PesoRobotsVivo = this->PesoRobotsVivo + this->PesosRobotActual[Pos]; // Contabilizar el peso de robot en el counter
@@ -263,7 +287,7 @@ void AGameMode_EnPartida::SpawnearRobot() {
 
         if (this->PesoRestante != 0) {
             // Si queda budget, llamar a esta funcion de nuevo tras el cooldown de spawnear un robot
-            GetWorld()->GetTimerManager().SetTimer(this->TimerParaSpawnRobot, this, &AGameMode_EnPartida::SpawnearRobot, this->TiempoEntreSpawn , false);
+            GetWorld()->GetTimerManager().SetTimer(this->TimerParaSpawnRobot, this, &AGameMode_EnPartida::GenerarRobot, this->TiempoEntreSpawn , false);
 
         } else if (this->SeQuiereSpawnearLaSiguienteOleada) {
             // Si no queda budget pero se habia triggeado el flag de querer spawnear la siguiente oleada YA, como justo hemos acabdo de spawnear esta, crear la siguiente.
@@ -276,10 +300,38 @@ void AGameMode_EnPartida::SpawnearRobot() {
  
 
 
-//  LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
 
 
 
+}
+
+void AGameMode_EnPartida::SpawnearRobot(int ID) {
+    
+    // TODO: Considerar aumentar odds para filas que no spawnearon hace tiempo y disminuir para las que acaban de spawnear
+
+    // Elige DONDE spawnear el bot con ese ID
+    this->ZonaSpawn->SpawnearRobot(ID ,FMath::RandRange(0,4)); // Spawnear el robot en una fila al azar
+
+}
+
+TArray<int> AGameMode_EnPartida::EncontrarGrandesOleadas() {
+
+    TArray<int> GransOleadas;
+    int Num = 0;
+
+    for (TSharedPtr<FJsonValue> Oleada : this->OleadasJson) {
+
+        if (Oleada->AsObject()->GetBoolField(TEXT("oleadaGrande"))) {
+            GransOleadas.Add(Num);
+        }
+        
+
+        Num++;
+    }
+
+    return GransOleadas;
+
+  //  this->OleadasJson->AsObject();
 }
 
 
@@ -299,7 +351,6 @@ void AGameMode_EnPartida::CargarNivel(int Nivel) {
 
 
         if (FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Contenido), JsonNivel)) {
-            UE_LOG(LogTemp, Warning, TEXT("Success!"));
             
 
             // Obtener los campos de los datos de la oleada
@@ -312,7 +363,7 @@ void AGameMode_EnPartida::CargarNivel(int Nivel) {
             
             this->HastaSiguienteOleada = JsonNivel->GetNumberField(TEXT("tiempoSinEnemigos"));
 
-            this->OleadasTotales = JsonNivel->GetIntegerField(TEXT("oleadas"));
+            this->OleadasTotales = this->OleadasJson.Num();
 
            
             TArray<TSharedPtr<FJsonValue>> ListaIDsRobots =  JsonNivel->GetArrayField(TEXT("robotsPermitidos"));
@@ -328,6 +379,10 @@ void AGameMode_EnPartida::CargarNivel(int Nivel) {
                 PesosRobot.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetPesoDeRobot(Id));  
             }
 
+
+            this->GrandesOleadas = this->EncontrarGrandesOleadas();
+
+ 
 
         } else {
             UE_LOG(LogTemp, Warning, TEXT("ERROR"));

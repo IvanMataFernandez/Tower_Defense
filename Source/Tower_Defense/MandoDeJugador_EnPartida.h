@@ -37,25 +37,31 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> ClaseHUD;
 	
-	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true") )
 	UUserWidget* HUD;
 
 
 
 
-// Métodos
 
 public:
+
 
 	UPROPERTY(BlueprintReadWrite)
 	int SeleccionDeTorre;
 
+// Métodos
+
+
 	void Pinchar();
+
+	UFUNCTION(BlueprintCallable)
+	UUserWidget* ObtenerHUD() const;
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void SettearSeleccionDeTorre();
 
-
+	UFUNCTION(BlueprintImplementableEvent)
+	void SettearBorradorDeTorre();
 
 	UFUNCTION(BlueprintCallable)
 	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs);

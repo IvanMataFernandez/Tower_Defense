@@ -14,7 +14,7 @@
 ACasilla::ACasilla()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 
 	// Settear el mesh
@@ -23,25 +23,21 @@ ACasilla::ACasilla()
 
 }
 
-// Called when the game starts or when spawned
-void ACasilla::BeginPlay()
-{
-	Super::BeginPlay();
 
-}
 
-// Called every frame
-void ACasilla::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
 
 bool ACasilla::CasillaVacia() {
   return !this->Torre;
 
 }
 
+void ACasilla::QuitarTorre() {
+
+	// Pre: Casilla con Torre
+
+	this->Torre->QuitarTorre();
+	
+}
 
 
 
@@ -50,8 +46,6 @@ void ACasilla::LiberarCasilla() {
 
   this->Torre->SetOwner(nullptr);
   this->Torre = nullptr;
-
-
 
 }
 
