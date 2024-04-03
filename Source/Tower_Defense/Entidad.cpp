@@ -7,6 +7,7 @@
 #include "Components/SceneComponent.h"
 #include "MandoDeIA.h"
 #include "Torre.h"
+#include "ComponenteVida.h"
 
 // Sets default values
 AEntidad::AEntidad()
@@ -59,11 +60,27 @@ void AEntidad::BeginPlay() {
 	// Dar controller de IA
 
 	AIControllerClass = AMandoDeIA::StaticClass();
-	AMandoDeIA* Mando = GetWorld()->SpawnActor<AMandoDeIA>();
+
+	if (!this->Tags.Contains("NoIA")) {
+
+		// Asignar IA ya que no contiene NoIA
+
+		AMandoDeIA* Mando = GetWorld()->SpawnActor<AMandoDeIA>();
+		Mando->SettearIA(this->ID, Cast<ATorre>(this) != nullptr); // Decirle que clase es para settear el Behavior Tree adecuado
+		Mando->Possess(this);
+
+	} else {
+
+		// Si no tienen IA, no deberían contabilizar vida. Entidades sin IA se usan como decoración o mostrar info.
+
+		UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>();
+
+		if (ComponenteVida) {
+			ComponenteVida->Vulnerable = false;
+		} 
+	}
 
 
-	Mando->SettearIA(this->ID, Cast<ATorre>(this) != nullptr); // Decirle que clase es para settear el Behavior Tree adecuado
-    Mando->Possess(this);
 
 
 }

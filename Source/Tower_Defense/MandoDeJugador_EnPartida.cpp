@@ -12,6 +12,7 @@
 
 
 void AMandoDeJugador_EnPartida::BeginPlay() {
+
     Super::BeginPlay();
     bShowMouseCursor = true;
 

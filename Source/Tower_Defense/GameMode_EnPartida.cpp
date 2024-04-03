@@ -246,6 +246,10 @@ void AGameMode_EnPartida::GenerarRobot() {
 
             // No cabe, se elimina el bot de la lista de spawneables porque no lo vamos a poder permitir de nuevo para el resto de la oleada actual
 
+         
+         
+            // TODO: Repartir la probabilidad por proporcion de probabilidades base en vez de flat increase a todas las restantes
+
             float ProbabilidadAEliminar;
 
             if (Pos == 0) {

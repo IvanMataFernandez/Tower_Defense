@@ -6,6 +6,10 @@
 #include "MandoDeJugador_EnPartida.h"
 #include "Kismet/GameplayStatics.h"
 
+
+
+// TODO: Borrar esta clase, no hace flata
+
 // Sets default values
 APlayerPawn_EnPartida::APlayerPawn_EnPartida()
 {
