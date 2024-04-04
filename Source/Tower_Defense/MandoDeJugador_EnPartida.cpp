@@ -4,7 +4,6 @@
 #include "MandoDeJugador_EnPartida.h"
 #include "Casilla.h"
 #include "Torre_Disparador.h"
-#include "ConstructoraDeBlueprints.h"
 #include "Blueprint/UserWidget.h"
 #include "Torre_Producidor.h"
 #include "Engine/Texture2D.h"
@@ -16,8 +15,21 @@ void AMandoDeJugador_EnPartida::BeginPlay() {
     Super::BeginPlay();
     bShowMouseCursor = true;
 
-    this->HUD = CreateWidget(this, this->ClaseHUD);
+
+
+}
+
+UUserWidget* AMandoDeJugador_EnPartida::CrearHUD(int Seleccion) {
+
+
+    if (Seleccion == 0) {
+        this->HUD = CreateWidget(this, this->ClaseHUDElegirTorre);
+    } else {
+        this->HUD = CreateWidget(this, this->ClaseHUDEnPartida);
+
+    }
     this->HUD->AddToViewport();
+    return this->HUD;
 
 }
 
@@ -29,52 +41,13 @@ UUserWidget* AMandoDeJugador_EnPartida::ObtenerHUD() const {
 
 
 
-TArray<int> AMandoDeJugador_EnPartida::ObtenerCostesDeTorres(TArray<int> IDs) {
-
-    TArray<int> ListaCostes;
-
-    for (int ID : IDs) {
-        ListaCostes.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetCosteDeTorre(ID));
-    }
-    return ListaCostes;
-    
-}
-TArray<float> AMandoDeJugador_EnPartida::ObtenerRecargasDeTorres(TArray<int> IDs) {
-
-    TArray<float> ListaRecargas;
-
-    for (int ID : IDs) {
-        ListaRecargas.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetTiempoDeRecargaDeTorre(ID));
-    }
-    return ListaRecargas;
-
-
+void AMandoDeJugador_EnPartida::SetTorresElegidas(TArray<int> IDs) {
+    this->IDTorresElegidas = IDs;
 }
 
-TArray<bool> AMandoDeJugador_EnPartida::ObtenerEmpiezaRecargadosTorres(TArray<int> IDs) {
-        
-    TArray<bool> ListaRecargaEmpezada;
-
-    for (int ID : IDs) {
-        ListaRecargaEmpezada.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetEmpiezaRecargadaTorre(ID));
-    }
-    return ListaRecargaEmpezada;
-}	
-
-
-TArray<UTexture2D*> AMandoDeJugador_EnPartida::ObtenerImagenesDeTorres(TArray<int> IDs) {
-    
-    TArray<UTexture2D*> ListaTexturas;
-
-    for (int ID : IDs) { 
-        FString Ruta = TEXT("/Game/Assets/Texturas/Torre") + FString::Printf(TEXT("%d"), ID);
-        UTexture2D* Textura = LoadObject<UTexture2D>(nullptr, *Ruta);
-
-        ListaTexturas.Add(Textura);
-    }
-    return ListaTexturas;
+TArray<int> AMandoDeJugador_EnPartida::GetTorresElegidas() const {
+    return this->IDTorresElegidas;
 }
-
 
 
 
@@ -156,3 +129,4 @@ void AMandoDeJugador_EnPartida::Pinchar() {
     
 
 }
+

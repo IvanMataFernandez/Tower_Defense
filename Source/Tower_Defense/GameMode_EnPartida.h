@@ -59,6 +59,7 @@ private:
 	TArray<int> PesosRobotActual;
 	TArray<int> IDsRobotActual;
 
+
 	
 
 // Métodos
@@ -67,16 +68,40 @@ public:
 
 	void ProcesarMuerteDeRobot(int PesoDeRobot);
 
+
+
+
+	UFUNCTION(BlueprintCallable)
+	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs);
+	UFUNCTION(BlueprintCallable)
+	TArray<float> ObtenerRecargasDeTorres(TArray<int> IDs);
+	UFUNCTION(BlueprintCallable)
+	TArray<bool> ObtenerEmpiezaRecargadosTorres(TArray<int> IDs);
+
+	UFUNCTION(BlueprintCallable)
+	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs);
+
+
+
+protected:
+
+	UFUNCTION(BlueprintCallable)
+	void FinSeleccionTorres(TArray<int> IDsTorresElegidas);
+
 	UFUNCTION(BlueprintImplementableEvent)
-	void ComunicarOleadasUI();
+	void CrearInterfazSeleccionDeTorres();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void CrearInterfazDePartida();
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void ComunicarAvanceOleadaUI();	
 
-
 private:
 
 	void CargarNivel(int Nivel);
+
+	void EmpezarSeleccionDeTorres();
 	void EmpezarJuego();
 	TArray<int> EncontrarGrandesOleadas();
 	void EmpezarCargaDeSiguienteOleada();

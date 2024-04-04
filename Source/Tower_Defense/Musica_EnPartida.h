@@ -24,6 +24,8 @@ public:
 // Atributos
 private:
 
+
+
 	UPROPERTY(EditDefaultsOnly)
 	USoundBase* MusicaInicio;
 		
@@ -32,7 +34,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	USoundBase* MusicaFin;
-
+	
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* MusicaSeleccionDeTorres;
 
 // Métodos
 

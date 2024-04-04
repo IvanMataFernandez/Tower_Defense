@@ -27,6 +27,9 @@ void AMusica_EnPartida::Tocar(int ID) {
             break;
         case 2:
             MusicaATocar = this->MusicaFin;
+            break;
+        case 3:
+            MusicaATocar = this->MusicaSeleccionDeTorres;
 
     } 
     this->GetAudioComponent()->SetSound(MusicaATocar);

@@ -9,6 +9,7 @@
 #include "ConstructoraDeBlueprints.h"
 #include "Math/UnrealMathUtility.h"
 #include "Kismet/GameplayStatics.h"
+#include "MandoDeJugador_EnPartida.h"
 
 
 
@@ -40,11 +41,13 @@ void AGameMode_EnPartida::BeginPlay()
 
         this->PesoRobotsVivo = 0;
 
+        this->CargarNivel(1);
 
 
-        // Provisional, empezar el nivel a los X segundos
+        // TODO: Hacer primero que la cam mueva, para ello delayear la generacion de este HUD
+        this->EmpezarSeleccionDeTorres();
 
-        GetWorld()->GetTimerManager().SetTimer(this->TimerParaOleadas, this, &AGameMode_EnPartida::EmpezarJuego, 1.f, false);               
+
 
     } else {
         UE_LOG(LogTemp, Error, TEXT("No hay zona de spawn / reproductor"));
@@ -56,14 +59,33 @@ void AGameMode_EnPartida::BeginPlay()
 
 }
 
+
+void AGameMode_EnPartida::FinSeleccionTorres(TArray<int> IDsTorresElegidas) {
+
+    // TODO: Mover camara aqui, etc.
+
+    Cast<AMandoDeJugador_EnPartida>(GetWorld()->GetFirstPlayerController())->SetTorresElegidas(IDsTorresElegidas);
+    this->EmpezarJuego();
+
+}
+
+void AGameMode_EnPartida::EmpezarSeleccionDeTorres() {
+
+    this->ReproductorEnPartida->Tocar(3);
+    this->CrearInterfazSeleccionDeTorres();
+
+}
+
 void AGameMode_EnPartida::EmpezarJuego() {
 
     this->ReproductorEnPartida->Tocar(0);
-    this->CargarNivel(1);
-    this->ComunicarOleadasUI();
+    this->CrearInterfazDePartida();
     this->EmpezarCargaDeSiguienteOleada();
 
 }
+
+
+
 
 
 void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot) {
@@ -403,3 +425,48 @@ void AGameMode_EnPartida::CargarNivel(int Nivel) {
 
 }
 
+TArray<int> AGameMode_EnPartida::ObtenerCostesDeTorres(TArray<int> IDs) {
+
+    TArray<int> ListaCostes;
+
+    for (int ID : IDs) {
+        ListaCostes.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetCosteDeTorre(ID));
+    }
+    return ListaCostes;
+    
+}
+TArray<float> AGameMode_EnPartida::ObtenerRecargasDeTorres(TArray<int> IDs) {
+
+    TArray<float> ListaRecargas;
+
+    for (int ID : IDs) {
+        ListaRecargas.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetTiempoDeRecargaDeTorre(ID));
+    }
+    return ListaRecargas;
+
+
+}
+
+TArray<bool> AGameMode_EnPartida::ObtenerEmpiezaRecargadosTorres(TArray<int> IDs) {
+        
+    TArray<bool> ListaRecargaEmpezada;
+
+    for (int ID : IDs) {
+        ListaRecargaEmpezada.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetEmpiezaRecargadaTorre(ID));
+    }
+    return ListaRecargaEmpezada;
+}	
+
+
+TArray<UTexture2D*> AGameMode_EnPartida::ObtenerImagenesDeTorres(TArray<int> IDs) {
+    
+    TArray<UTexture2D*> ListaTexturas;
+
+    for (int ID : IDs) { 
+        FString Ruta = TEXT("/Game/Assets/Texturas/Torre") + FString::Printf(TEXT("%d"), ID);
+        UTexture2D* Textura = LoadObject<UTexture2D>(nullptr, *Ruta);
+
+        ListaTexturas.Add(Textura);
+    }
+    return ListaTexturas;
+}

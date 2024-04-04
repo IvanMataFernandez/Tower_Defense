@@ -35,12 +35,14 @@ protected:
 private:
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UUserWidget> ClaseHUD;
+	TSubclassOf<class UUserWidget> ClaseHUDElegirTorre;
 	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> ClaseHUDEnPartida;
 	UUserWidget* HUD;
 
 
-
+	TArray<int> IDTorresElegidas;
 
 
 public:
@@ -51,8 +53,17 @@ public:
 
 // Métodos
 
+	void SetTorresElegidas(TArray<int> IDs);
+
+
+	UFUNCTION(BlueprintCallable)
+	TArray<int> GetTorresElegidas() const;
 
 	void Pinchar();
+
+	UFUNCTION(BlueprintCallable)
+	UUserWidget* CrearHUD(int Seleccion);
+
 
 	UFUNCTION(BlueprintCallable)
 	UUserWidget* ObtenerHUD() const;
@@ -62,16 +73,6 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void SettearBorradorDeTorre();
-
-	UFUNCTION(BlueprintCallable)
-	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs);
-	UFUNCTION(BlueprintCallable)
-	TArray<float> ObtenerRecargasDeTorres(TArray<int> IDs);
-	UFUNCTION(BlueprintCallable)
-	TArray<bool> ObtenerEmpiezaRecargadosTorres(TArray<int> IDs);
-
-	UFUNCTION(BlueprintCallable)
-	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void IncrementarEnergia(int Cantidad);
