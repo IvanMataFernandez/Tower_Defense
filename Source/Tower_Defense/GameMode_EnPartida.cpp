@@ -10,7 +10,9 @@
 #include "Math/UnrealMathUtility.h"
 #include "Kismet/GameplayStatics.h"
 #include "MandoDeJugador_EnPartida.h"
-
+#include "ZonaSpawnRobotPreview.h"
+#include "Robot.h"
+#include "PlayerPawn_EnPartida.h"
 
 
 
@@ -32,14 +34,16 @@
 void AGameMode_EnPartida::BeginPlay()
 {
 	Super::BeginPlay();
-    this->OleadaActual = -1; // Las oleadas van como un iterador, 0 based indexing. -1 quiere decir que no está apuntando a ninguna oleada
-    this->SeQuiereSpawnearLaSiguienteOleada = false;
+
+   
     this->ZonaSpawn = Cast<AZonaSpawnRobot>(UGameplayStatics::GetActorOfClass(GetWorld(), AZonaSpawnRobot::StaticClass()));
     this->ReproductorEnPartida = Cast<AMusica_EnPartida>(UGameplayStatics::GetActorOfClass(GetWorld(), AMusica_EnPartida::StaticClass()));
+    this->ZonaSpawnPreview = Cast<AZonaSpawnRobotPreview>(UGameplayStatics::GetActorOfClass(GetWorld(), AZonaSpawnRobotPreview::StaticClass()));
 
-    if (this->ZonaSpawn && ReproductorEnPartida) {
+    this->Camara = Cast<APlayerPawn_EnPartida>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
 
-        this->PesoRobotsVivo = 0;
+    if (this->ZonaSpawn && ReproductorEnPartida && ZonaSpawnPreview ) {
+
 
         this->CargarNivel(1);
 
@@ -50,7 +54,7 @@ void AGameMode_EnPartida::BeginPlay()
 
 
     } else {
-        UE_LOG(LogTemp, Error, TEXT("No hay zona de spawn / reproductor"));
+        UE_LOG(LogTemp, Error, TEXT("No hay zonas de spawn / reproductor"));
     }
 
 
@@ -59,11 +63,69 @@ void AGameMode_EnPartida::BeginPlay()
 
 }
 
+void AGameMode_EnPartida::SpawnearRobotsPreview() {
+
+    int PesoMax = 0;
+    float RobotsTotalesPorTipoF = (FMath::RandRange(8,12) + 4 * (this->IDsRobot.Num()-1)) / this->IDsRobot.Num() ; // Spawnear en preview. Contra más tipos de bots, dar mas peso porque se pierde en redondeos
+    int RobotsTotalesPorTipo = FMath::RoundToInt(RobotsTotalesPorTipoF);
+    TArray<int> RobotsASpawnear;
+
+
+    // Por cada tipo de robot, ver cuantos caben en la preview segun el peso maximo seleccionado
+
+    for (int i = 0; i != IDsRobot.Num(); i++) {
+        int ID = this->IDsRobot[i];
+        int Peso = this->PesosRobot[i];
+        int CantidadRobotASpawnear = FMath::RoundToInt(RobotsTotalesPorTipo * 1.f/Peso); 
+
+        for (int j = 0; j != CantidadRobotASpawnear; j++) {
+            RobotsASpawnear.Add(ID);
+
+        }
+
+    }
+
+    // Reordenar el array al azar para dar mas naturalidad a los spawns
+    TArray<int> RobotsASpawnearShuffled;
+
+    while (!RobotsASpawnear.IsEmpty()) {
+
+        // Buscar el index a insertar despues
+        int Seleccion =  FMath::RandRange(0,RobotsASpawnear.Num()-1);
+
+        // Encontrar el ID
+        int IDElegido = RobotsASpawnear[Seleccion];
+
+        // Mover el ultimo elemento de la lista a la posicion de la que se ha cogido el ID y quitar el ultimo elemento de la lista (ahorra tiempo computacional)
+        RobotsASpawnear[Seleccion] = RobotsASpawnear[RobotsASpawnear.Num()-1];
+        RobotsASpawnear.Pop();
+
+        // Añadirlo a la lista shuffled
+
+
+        RobotsASpawnearShuffled.Add(IDElegido);
+
+
+    }
+
+    // Finalmente, spawnear dichos robots
+
+    for (int ID: RobotsASpawnearShuffled) {
+        this->ZonaSpawnPreview->SpawnearRobot(ID);
+    }
+
+
+
+}
 
 void AGameMode_EnPartida::FinSeleccionTorres(TArray<int> IDsTorresElegidas) {
 
-    // TODO: Mover camara aqui, etc.
+    // TODO: Mover camara aqui de manera gradual, por ahora movimiento instantaneo
 
+    // 
+
+    this->Camara->SetActorLocation(FVector(-546.010256, -376.218195,2719.0));
+    this->Camara->SetActorRotation(FRotator(290,0,0));
     Cast<AMandoDeJugador_EnPartida>(GetWorld()->GetFirstPlayerController())->SetTorresElegidas(IDsTorresElegidas);
     this->EmpezarJuego();
 
@@ -72,12 +134,31 @@ void AGameMode_EnPartida::FinSeleccionTorres(TArray<int> IDsTorresElegidas) {
 void AGameMode_EnPartida::EmpezarSeleccionDeTorres() {
 
     this->ReproductorEnPartida->Tocar(3);
+    this->SpawnearRobotsPreview();
     this->CrearInterfazSeleccionDeTorres();
 
 }
 
+void AGameMode_EnPartida::EliminarRobotsPreview() {
+
+    TArray<AActor*> RobotsPreview;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARobot::StaticClass(), RobotsPreview);
+
+    for (AActor* Robot: RobotsPreview) {
+        Robot->Destroy();
+    }
+   
+}
+
+
 void AGameMode_EnPartida::EmpezarJuego() {
 
+    this->PesoRobotsVivo = 0;
+    this->OleadaActual = -1; // Las oleadas van como un iterador, 0 based indexing. -1 quiere decir que no está apuntando a ninguna oleada
+    this->SeQuiereSpawnearLaSiguienteOleada = false;
+
+
+    this->EliminarRobotsPreview();
     this->ReproductorEnPartida->Tocar(0);
     this->CrearInterfazDePartida();
     this->EmpezarCargaDeSiguienteOleada();

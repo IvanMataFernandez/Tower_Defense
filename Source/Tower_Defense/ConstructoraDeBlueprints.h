@@ -40,7 +40,12 @@ enum class Robots :uint8 {
 	// 0x08 - 0x10 -> Bombas
 
 	Bomba = 0x08,
-	BombaRadar = 0x09
+	BombaRadar = 0x09,
+
+	// 0xFF -> IA reservada para preview, usable por todo bot
+	Preview = 0xFF
+
+
 
 };
 

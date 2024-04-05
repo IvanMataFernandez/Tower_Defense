@@ -7,9 +7,10 @@
 #include "GameMode_EnPartida.generated.h"
 class AZonaSpawnRobot;
 class AMusica_EnPartida;
-/**
- * 
- */
+class AZonaSpawnRobotPreview;
+class APlayerPawn_EnPartida;
+
+
 UCLASS()
 class TOWER_DEFENSE_API AGameMode_EnPartida : public AGameModeBase
 {
@@ -34,7 +35,10 @@ private:
 	bool SeAproximaOrdaGrande;
 	bool SeQuiereSpawnearLaSiguienteOleada;
 
+	APlayerPawn_EnPartida* Camara;
+
 	AZonaSpawnRobot* ZonaSpawn;
+	AZonaSpawnRobotPreview* ZonaSpawnPreview;
 	AMusica_EnPartida* ReproductorEnPartida;
 
 	TArray<TSharedPtr<FJsonValue>> OleadasJson;
@@ -66,10 +70,9 @@ private:
 
 public:
 
+	void SpawnearRobotsPreview();
+
 	void ProcesarMuerteDeRobot(int PesoDeRobot);
-
-
-
 
 	UFUNCTION(BlueprintCallable)
 	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs);
@@ -99,10 +102,14 @@ protected:
 
 private:
 
+
 	void CargarNivel(int Nivel);
 
 	void EmpezarSeleccionDeTorres();
+	void EliminarRobotsPreview();
 	void EmpezarJuego();
+
+
 	TArray<int> EncontrarGrandesOleadas();
 	void EmpezarCargaDeSiguienteOleada();
 	void CargarDatosOleada();

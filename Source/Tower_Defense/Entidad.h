@@ -53,6 +53,7 @@ protected:
 
 public:
 	virtual void Matar();
+	virtual void QuitarIA();
 
 protected:
 	void ClearTimer();

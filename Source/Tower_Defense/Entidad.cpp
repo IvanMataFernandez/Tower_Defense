@@ -36,19 +36,24 @@ void AEntidad::Matar() {
 
 	// RealizarAnimacion(int Animacion)
 
-	AMandoDeIA* IA = Cast<AMandoDeIA>(this->GetController());
-
-	if (IA) {
-		this->DetachFromControllerPendingDestroy();
-		IA->Destroy();
-	}
-	this->ClearTimer(); // Apagar el timer de la clase
+	this->QuitarIA();
 	this->Hitbox->SetCollisionEnabled(ECollisionEnabled::NoCollision); // Quitar hitbox para que los enemigos ignoren a esta entidad
 	this->RealizarAnimacion(0);
 	GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &AEntidad::Destruir,this->TiempoDeAnimacionDeMuerte, false);    
 
 }
 
+void AEntidad::QuitarIA() {
+	AMandoDeIA* IA = Cast<AMandoDeIA>(this->GetController());
+
+	if (IA) {
+		this->DetachFromControllerPendingDestroy();
+		IA->Destroy();
+	}
+	
+	this->ClearTimer(); // Apagar el timer de la clase
+
+}
 
 void AEntidad::Destruir() {
 	AActor::Destroy(); // Eliminar la entidad (Robot o Torre, debe eliminarse igual)
@@ -66,7 +71,18 @@ void AEntidad::BeginPlay() {
 		// Asignar IA ya que no contiene NoIA
 
 		AMandoDeIA* Mando = GetWorld()->SpawnActor<AMandoDeIA>();
-		Mando->SettearIA(this->ID, Cast<ATorre>(this) != nullptr); // Decirle que clase es para settear el Behavior Tree adecuado
+
+		if (this->GetActorRotation().Yaw >= -85.f) {
+			// Si está faceando al lado correcto al spawnear, darle la IA que le corresponde
+			Mando->SettearIA(this->ID, Cast<ATorre>(this) != nullptr); // Decirle que clase es para settear el Behavior Tree adecuado
+
+		} else {
+
+			// Si esta rotado 270 grados de lo normal, es un robot en la pantalla de preview y requiere cargar una IA distinta
+			Mando->SettearIA(255, Cast<ATorre>(this) != nullptr); // Decirle que clase es para settear el Behavior Tree adecuado
+
+		}
+
 		Mando->Possess(this);
 
 	} else {
@@ -84,6 +100,8 @@ void AEntidad::BeginPlay() {
 
 
 }
+
+
 
 void AEntidad::ClearTimer() {
 

@@ -65,6 +65,11 @@ UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase, bool Torre) {
             
             case Robots::BombaRadar:
                 RutaBT = TEXT("/Game/Blueprints/IA/Robots/RobotBombaRadar/BT_RobotBombaRadar");  // TEXT("/Game/Blueprints/IA/Robots/RobotBasico/BT_RobotBasico"); 
+                break;
+
+            case Robots::Preview:    
+                RutaBT = TEXT("/Game/Blueprints/IA/Robots/Preview/BT_Preview");  // TEXT("/Game/Blueprints/IA/Robots/RobotBasico/BT_RobotBasico"); 
+                
 
         }      
         // Robots

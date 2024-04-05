@@ -8,7 +8,23 @@
 
 
 
-// TODO: Borrar esta clase, no hace flata
+/*
+
+		En preview:
+
+		Position: -1311.746828, 2177.097946, 1899.845983
+		Rotation: 0, -57.600855 °, 0
+
+
+		En partida:
+		
+	    Position: -546.010253 -376.218195 2719.0
+	    Rotation:        0, -71.523093 °  ,0
+
+
+*/
+
+
 
 // Sets default values
 APlayerPawn_EnPartida::APlayerPawn_EnPartida()

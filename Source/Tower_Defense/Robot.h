@@ -35,6 +35,7 @@ protected:
 
 private:
 
+	float DistanciaRecorridaVertical;
 
 	UPROPERTY(EditAnywhere, Category = "Datos", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float VelocidadBase;
@@ -52,11 +53,16 @@ private:
 
 
 public:
+	void InicializarMoverVertical(float FrameRate);
+	void MoverVertical(float DeltaTime);
+	bool HaMovidoEnVerticalDistanciaX(float Distancia);
+
 	void InicializarMover(float FrameRate);
 	void Mover(float DeltaTime);
 
 
 
 	virtual void Matar() override;
+	virtual void QuitarIA() override;
 
 };
