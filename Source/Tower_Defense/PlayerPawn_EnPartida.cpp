@@ -117,7 +117,7 @@ void APlayerPawn_EnPartida::MoverCamAJugar() {
 
 	// Luego moverse de lado
 
-    FTimerDelegate Delegate3 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -546.f, -376.f, 2719.0f, 3.f);
+    FTimerDelegate Delegate3 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -546.f, -376.f, 2719.0f, 1.5f);
     GetWorld()->GetTimerManager().SetTimer(Timer1, Delegate3, 1.f, false);   
 
 
@@ -125,7 +125,7 @@ void APlayerPawn_EnPartida::MoverCamAJugar() {
 	// Finalmente llamar al gamemode para empezar con el juego
 
 
-    GetWorld()->GetTimerManager().SetTimer(LlamadaAGameMode, Cast<AGameMode_EnPartida>(GetWorld()->GetAuthGameMode()), &AGameMode_EnPartida::CargarCuentaAtrasParaEmpezarJuego, 4.f, false);
+    GetWorld()->GetTimerManager().SetTimer(LlamadaAGameMode, Cast<AGameMode_EnPartida>(GetWorld()->GetAuthGameMode()), &AGameMode_EnPartida::CargarCuentaAtrasParaEmpezarJuego, 2.5f, false);
 
 
 }

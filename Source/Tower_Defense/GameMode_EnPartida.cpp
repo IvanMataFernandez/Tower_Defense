@@ -149,7 +149,7 @@ void AGameMode_EnPartida::EmpezarSeleccionDeTorres() {
     // Esperar un par de segundos para que los bots se acerquen antes de dar la opcion al usuario de que elija sus torres
     
     FTimerHandle Espera;
-    GetWorld()->GetTimerManager().SetTimer(Espera, this, &AGameMode_EnPartida::CrearInterfazSeleccionDeTorres, 2.f, false);               
+    GetWorld()->GetTimerManager().SetTimer(Espera, this, &AGameMode_EnPartida::CrearInterfazSeleccionDeTorres, 4.5f, false);               
 
 
 }
@@ -171,14 +171,16 @@ void AGameMode_EnPartida::EliminarRobotsPreview() {
 void AGameMode_EnPartida::CargarCuentaAtrasParaEmpezarJuego() {
 
     this->EliminarRobotsPreview();
+
     this->CrearInterfazDePartida();
+    this->ReproductorEnPartida->Tocar(4); // Hacer sonar cuenta atrás
 
 
 
 
 
     FTimerHandle EsperarACountDown;
-    GetWorld()->GetTimerManager().SetTimer(EsperarACountDown, this, &AGameMode_EnPartida::EmpezarJuego, 2.f, false);               
+    GetWorld()->GetTimerManager().SetTimer(EsperarACountDown, this, &AGameMode_EnPartida::EmpezarJuego, 3.f, false);               
 
 }
 

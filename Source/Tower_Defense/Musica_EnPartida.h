@@ -38,6 +38,8 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	USoundBase* MusicaSeleccionDeTorres;
 
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* MusicaCuentaAtras;
 // Métodos
 
 public:
