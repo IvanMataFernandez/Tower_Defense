@@ -42,14 +42,19 @@ void AGameMode_EnPartida::BeginPlay()
 
     this->Camara = Cast<APlayerPawn_EnPartida>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
 
-    if (this->ZonaSpawn && ReproductorEnPartida && ZonaSpawnPreview ) {
+    if (this->ZonaSpawn && this->ReproductorEnPartida && this->ZonaSpawnPreview ) {
 
+        this->ReproductorEnPartida->Tocar(3);
 
         this->CargarNivel(1);
 
 
         // TODO: Hacer primero que la cam mueva, para ello delayear la generacion de este HUD
-        this->EmpezarSeleccionDeTorres();
+
+        this->Camara->MoverCamASeleccion(); 
+        
+        // Cuando la camara acabe de moverse, se ejecuta:  this->EmpezarSeleccionDeTorres();
+
 
 
 
@@ -120,26 +125,38 @@ void AGameMode_EnPartida::SpawnearRobotsPreview() {
 
 void AGameMode_EnPartida::FinSeleccionTorres(TArray<int> IDsTorresElegidas) {
 
-    // TODO: Mover camara aqui de manera gradual, por ahora movimiento instantaneo
+
+    // Dar al mando del jugador las torres elegidas por la interfaz
+
+    Cast<AMandoDeJugador_EnPartida>(GetWorld()->GetFirstPlayerController())->SetTorresElegidas(IDsTorresElegidas);
+
+
+    this->Camara->MoverCamAJugar();
+
+    // Tras acabar de mover la cam, se llama a EmpezarJuego()
 
     // 
-
-    this->Camara->SetActorLocation(FVector(-546.010256, -376.218195,2719.0));
-    this->Camara->SetActorRotation(FRotator(290,0,0));
-    Cast<AMandoDeJugador_EnPartida>(GetWorld()->GetFirstPlayerController())->SetTorresElegidas(IDsTorresElegidas);
-    this->EmpezarJuego();
+  //  this->Camara->SetActorLocation(FVector(-546.010256, -376.218195,2719.0));
+  //  this->Camara->SetActorRotation(FRotator(290,0,0));
 
 }
 
 void AGameMode_EnPartida::EmpezarSeleccionDeTorres() {
 
-    this->ReproductorEnPartida->Tocar(3);
+    // Spawnear los bots de preview
     this->SpawnearRobotsPreview();
-    this->CrearInterfazSeleccionDeTorres();
+
+    // Esperar un par de segundos para que los bots se acerquen antes de dar la opcion al usuario de que elija sus torres
+    
+    FTimerHandle Espera;
+    GetWorld()->GetTimerManager().SetTimer(Espera, this, &AGameMode_EnPartida::CrearInterfazSeleccionDeTorres, 2.f, false);               
+
 
 }
 
 void AGameMode_EnPartida::EliminarRobotsPreview() {
+
+    // Quitar los bots de la preview cuando se empieza a jugar porque ya no se ven de todas formas y consumen recursos
 
     TArray<AActor*> RobotsPreview;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARobot::StaticClass(), RobotsPreview);
@@ -151,16 +168,33 @@ void AGameMode_EnPartida::EliminarRobotsPreview() {
 }
 
 
+void AGameMode_EnPartida::CargarCuentaAtrasParaEmpezarJuego() {
+
+    this->EliminarRobotsPreview();
+    this->CrearInterfazDePartida();
+
+
+
+
+
+    FTimerHandle EsperarACountDown;
+    GetWorld()->GetTimerManager().SetTimer(EsperarACountDown, this, &AGameMode_EnPartida::EmpezarJuego, 2.f, false);               
+
+}
+
+
 void AGameMode_EnPartida::EmpezarJuego() {
+
+
+
 
     this->PesoRobotsVivo = 0;
     this->OleadaActual = -1; // Las oleadas van como un iterador, 0 based indexing. -1 quiere decir que no está apuntando a ninguna oleada
     this->SeQuiereSpawnearLaSiguienteOleada = false;
 
 
-    this->EliminarRobotsPreview();
+
     this->ReproductorEnPartida->Tocar(0);
-    this->CrearInterfazDePartida();
     this->EmpezarCargaDeSiguienteOleada();
 
 }

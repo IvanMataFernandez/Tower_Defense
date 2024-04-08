@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "PlayerPawn_EnPartida.generated.h"
 
+class UCameraComponent;
+
 UCLASS()
 class TOWER_DEFENSE_API APlayerPawn_EnPartida : public APawn
 {
@@ -27,13 +29,43 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 
+// Atributos
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UCameraComponent* Camara;
+
+private:
+
+	FTimerHandle Timer;
+	float VelX;
+	float VelY;
+	float VelZ;
+	float TiempoAct;
+	float TiempoTotal;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float DeltaTiempo = 0.016f;
+
 // Métodos
+
+
+public:
+	void MoverCamASeleccion();
+	void MoverCamAJugar();
 
 private:
 
 	void Pinchar();
+	void MoverCamA(float X, float Y, float Z, float Duracion);
 
+	void MoverCam();
 
+protected:
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void RotarCamEnPitchA(float Pitch, float Duracion);
 
 
 };

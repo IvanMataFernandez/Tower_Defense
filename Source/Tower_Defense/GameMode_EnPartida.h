@@ -63,7 +63,6 @@ private:
 	TArray<int> PesosRobotActual;
 	TArray<int> IDsRobotActual;
 
-
 	
 
 // Métodos
@@ -105,10 +104,9 @@ private:
 
 	void CargarNivel(int Nivel);
 
-	void EmpezarSeleccionDeTorres();
 	void EliminarRobotsPreview();
-	void EmpezarJuego();
 
+	void EmpezarJuego();
 
 	TArray<int> EncontrarGrandesOleadas();
 	void EmpezarCargaDeSiguienteOleada();
@@ -119,6 +117,10 @@ private:
 	void GenerarRobot();
 	void SpawnearRobot(int ID);
 
+public:
+
+	void EmpezarSeleccionDeTorres();
+	void CargarCuentaAtrasParaEmpezarJuego();
 
 
 

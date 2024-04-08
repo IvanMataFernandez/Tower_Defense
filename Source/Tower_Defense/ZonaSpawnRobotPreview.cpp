@@ -13,7 +13,7 @@ AZonaSpawnRobotPreview::AZonaSpawnRobotPreview()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	this->ZonaDeSpawn = CreateDefaultSubobject<UBoxComponent>(TEXT("Zona de Spawn"));
+	this->ZonaDeSpawn = CreateDefaultSubobject<UBoxComponent>(TEXT("Zona de Spawn de Robots"));
 	RootComponent = this->ZonaDeSpawn;
 
 }
@@ -32,4 +32,5 @@ void AZonaSpawnRobotPreview::SpawnearRobot(int ID) {
 	this->EventoSpawnearRobot(ID, this->ContadorSpawns);
 	this->ContadorSpawns++;
 }
+
 
