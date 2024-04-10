@@ -130,6 +130,26 @@ void APlayerPawn_EnPartida::MoverCamAJugar() {
 
 }
 
+void APlayerPawn_EnPartida::MoverCamAIzquierda() {
+	FVector Loc = this->GetActorLocation();
+
+	FTimerHandle Timer1;
+
+	FTimerHandle LlamadaAGameMode;
+
+
+	// Mover de lado
+
+	FTimerDelegate Delegate3 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -546.f, -1317.f, 2719.0f, 3.f);
+    GetWorld()->GetTimerManager().SetTimer(Timer1, Delegate3, 1.f, false);   
+
+
+	// Finalmente llamar al gamemode para mostrar la UI de derrota
+
+    GetWorld()->GetTimerManager().SetTimer(LlamadaAGameMode, Cast<AGameMode_EnPartida>(GetWorld()->GetAuthGameMode()), &AGameMode_EnPartida::FocusearCausanteDerrota, 5.f, false);
+
+}
+
 
 void APlayerPawn_EnPartida::MoverCamA(float X, float Y, float Z, float Duracion) {
 	

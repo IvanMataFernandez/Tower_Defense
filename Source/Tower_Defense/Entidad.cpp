@@ -8,6 +8,7 @@
 #include "MandoDeIA.h"
 #include "Torre.h"
 #include "ComponenteVida.h"
+#include "BehaviorTree/BehaviorTree.h"
 
 // Sets default values
 AEntidad::AEntidad()
@@ -50,8 +51,41 @@ void AEntidad::QuitarIA() {
 		this->DetachFromControllerPendingDestroy();
 		IA->Destroy();
 	}
-	
+
+
 	this->ClearTimer(); // Apagar el timer de la clase
+
+}
+
+void AEntidad::PausarEntidad() {
+
+
+	// Pausar IA
+
+	AMandoDeIA* IA = Cast<AMandoDeIA>(this->GetController());
+
+	if (IA) {
+		IA->ActivarIA(false);
+		GetWorld()->GetTimerManager().ClearTimer(TimerFrame);
+		UE_LOG(LogTemp, Display, TEXT("DESACTIVA"));
+	}
+
+	// Detener animaciones
+
+	this->DestruirAnimaciones();
+
+}
+
+
+void AEntidad::DespausarEntidad() {
+
+	AMandoDeIA* IA = Cast<AMandoDeIA>(this->GetController());
+
+	if (IA) {
+		IA->ActivarIA(true);
+	}
+
+	// La IA activa las animaciones de nuevo
 
 }
 

@@ -63,4 +63,9 @@ private:
 
 	void Caducar();
 
+public:
+
+	void Pausar();
+
+
 };

@@ -54,6 +54,7 @@ private:
 public:
 	void MoverCamASeleccion();
 	void MoverCamAJugar();
+	void MoverCamAIzquierda();
 
 private:
 

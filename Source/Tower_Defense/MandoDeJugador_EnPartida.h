@@ -39,6 +39,10 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> ClaseHUDEnPartida;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> ClaseHUDDerrota;
+	
 	UUserWidget* HUD;
 
 

@@ -54,13 +54,20 @@ protected:
 public:
 	virtual void Matar();
 	virtual void QuitarIA();
+	void PausarEntidad();
+    void DespausarEntidad();
 
 protected:
 	void ClearTimer();
 
+
+
 	UFUNCTION(BlueprintImplementableEvent)
 	void RealizarAnimacion(int Animacion);
 
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void DestruirAnimaciones();
 
 private:
 

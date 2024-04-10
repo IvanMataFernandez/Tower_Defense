@@ -24,9 +24,11 @@ UUserWidget* AMandoDeJugador_EnPartida::CrearHUD(int Seleccion) {
 
     if (Seleccion == 0) {
         this->HUD = CreateWidget(this, this->ClaseHUDElegirTorre);
-    } else {
+    } else if (Seleccion == 1) {
         this->HUD = CreateWidget(this, this->ClaseHUDEnPartida);
 
+    } else {
+        this->HUD = CreateWidget(this, this->ClaseHUDDerrota);
     }
     this->HUD->AddToViewport();
     return this->HUD;

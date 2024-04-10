@@ -9,7 +9,7 @@ class AZonaSpawnRobot;
 class AMusica_EnPartida;
 class AZonaSpawnRobotPreview;
 class APlayerPawn_EnPartida;
-
+class ARobot;
 
 UCLASS()
 class TOWER_DEFENSE_API AGameMode_EnPartida : public AGameModeBase
@@ -28,6 +28,8 @@ protected:
 
 
 private:
+
+	int NivelActual;
 
 	int PesoRobotsVivo;
 	int PesoTargetParaSiguienteOleada;
@@ -63,6 +65,9 @@ private:
 	TArray<int> PesosRobotActual;
 	TArray<int> IDsRobotActual;
 
+
+	ARobot* CausanteDerrota;
+
 	
 
 // Métodos
@@ -71,7 +76,11 @@ public:
 
 	void SpawnearRobotsPreview();
 
-	void ProcesarMuerteDeRobot(int PesoDeRobot);
+	void ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMatado);
+
+	void CongelarMundoPorDerrota(ARobot* Causante);
+	void FocusearCausanteDerrota();
+	void FinalizarAnimacionDerrota();
 
 	UFUNCTION(BlueprintCallable)
 	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs);
@@ -82,6 +91,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs);
+
+
+	void EmpezarSeleccionDeTorres();
+	void CargarCuentaAtrasParaEmpezarJuego();
+
+
 
 
 
@@ -95,9 +110,18 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void CrearInterfazDePartida();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void CrearInterfazDeDerrota();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void QuitarInterfaz();
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void ComunicarAvanceOleadaUI();	
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ComunicarVictoria(int Nivel, float PosXDrop, float PosYDrop);	
 
 private:
 
@@ -115,12 +139,9 @@ private:
 	void GenerarOleadaGrande();
 
 	void GenerarRobot();
-	void SpawnearRobot(int ID);
+	void SpawnearRobot(int PosRobotEntreDisponibles);
 
-public:
 
-	void EmpezarSeleccionDeTorres();
-	void CargarCuentaAtrasParaEmpezarJuego();
 
 
 

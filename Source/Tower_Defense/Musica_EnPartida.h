@@ -40,6 +40,13 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	USoundBase* MusicaCuentaAtras;
+
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* MusicaRobotLlegaATarget;
+
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* MusicaDerrota;
+
 // Métodos
 
 public:

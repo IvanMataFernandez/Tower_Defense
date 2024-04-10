@@ -13,6 +13,8 @@
 #include "ZonaSpawnRobotPreview.h"
 #include "Robot.h"
 #include "PlayerPawn_EnPartida.h"
+#include "Proyectil.h"
+#include "Guardador.h"
 
 
 
@@ -46,10 +48,24 @@ void AGameMode_EnPartida::BeginPlay()
 
         this->ReproductorEnPartida->Tocar(3);
 
-        this->CargarNivel(1);
 
 
-        // TODO: Hacer primero que la cam mueva, para ello delayear la generacion de este HUD
+        UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
+
+        
+        
+        // TODO: Quitar esto en version final, por ahora fallsafe a lv 1 si no hay save file (aunque deberia haberla pq main menu la crea)
+
+        if (Guardado) {
+            this->NivelActual = Guardado->Nivel;
+
+        } else {
+            this->NivelActual = 1;
+        }
+
+        this->CargarNivel(this->NivelActual);
+
+
 
         this->Camara->MoverCamASeleccion(); 
         
@@ -205,7 +221,7 @@ void AGameMode_EnPartida::EmpezarJuego() {
 
 
 
-void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot) {
+void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMatado) {
 
 
     // Restar el peso del robot de los robots vivos restantes
@@ -243,8 +259,30 @@ void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot) {
 
     } else if (this->PesoRobotsVivo == 0) { // Si es la última oleada, comprobar si hay robots vivos para dar la victoria al jugador o no
 
-         // TODO: Crear logica winscreen etc
-        UE_LOG(LogTemp, Warning, TEXT("YOU WIN!"));
+
+
+        // Apuntar la save al siguiente nivel (handlear probablemente caso de si se supero el ultimo nivel)
+
+        UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
+        Guardado->Nivel = this->NivelActual + 1;
+        UGameplayStatics::SaveGameToSlot(Guardado, TEXT("save"), 0);
+
+        // Localizar donde murio el ultimo robot para poner el dropable ahí en UI
+
+        APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0); 
+        FVector2D PosicionEnPantalla;
+        PlayerController->ProjectWorldLocationToScreen(RobotMatado->GetActorLocation(), PosicionEnPantalla);
+
+        // Comunicar a la UI de lo ocurrido
+
+        this->ComunicarVictoria((this->NivelActual-1), PosicionEnPantalla.X, PosicionEnPantalla.Y);
+
+        
+         // TODO: En la UI, animar el pick up de la recompensa, handlear unlocks y enseñar info de torre. Por ahora skippea al siguiente nivel
+
+
+
+
         
     }
 
@@ -346,7 +384,11 @@ void AGameMode_EnPartida::GenerarOleada() {
 
 void AGameMode_EnPartida::GenerarOleadaGrande() {
     this->ComunicarAvanceOleadaUI(); // Triggear avance en progress bar
-    this->SpawnearRobot(1); // Spawnear lider
+
+
+    // Spawnear lider
+    this->SpawnearRobot(-1); 
+    
      // Programar el spawn del resto de la oleada
     GetWorld()->GetTimerManager().SetTimer(this->TimerParaSpawnRobot, this, &AGameMode_EnPartida::GenerarRobot, this->TiempoEntreSpawn, false); 
 
@@ -387,7 +429,8 @@ void AGameMode_EnPartida::GenerarRobot() {
 
          
          
-            // TODO: Repartir la probabilidad por proporcion de probabilidades base en vez de flat increase a todas las restantes
+            // TODO: Debug esto por si acaso, pero debería ir. Hace que cuando se quita una probabilidad, se añade a las demas en proporcion de la probabilidad
+            //       de cada uno
 
             float ProbabilidadAEliminar;
 
@@ -401,8 +444,34 @@ void AGameMode_EnPartida::GenerarRobot() {
             this->ProbabilidadesRobotAcumuladas.RemoveAt(Pos);
             this->IDsRobotActual.RemoveAt(Pos);
 
+
+            for (int i = Pos; i != ProbabilidadesRobotAcumuladas.Num(); i++ ) {
+                ProbabilidadesRobotAcumuladas[i] = ProbabilidadesRobotAcumuladas[i] - ProbabilidadAEliminar;
+            }
+
+            TArray<float> ReferenciasProbabilidadesAcumuladas; // TArray para poder sacar las probabilidades sin acumular, ya que el otro se va a ir actualizando
+                                                               // y se van a mezclar los datos
+
+
+            ReferenciasProbabilidadesAcumuladas = ProbabilidadesRobotAcumuladas;
+            float ProbabilidadBase;
+            float ProbabilidadBasePrevia = 0.f;
+
             for (int i = 0; i != ProbabilidadesRobotAcumuladas.Num(); i++) {
-                this->ProbabilidadesRobotAcumuladas[i] += ProbabilidadAEliminar/ProbabilidadesRobotAcumuladas.Num();
+
+                if (i == 0) {
+                    ProbabilidadBase = ReferenciasProbabilidadesAcumuladas[i];
+                } else {
+                    ProbabilidadBase = ReferenciasProbabilidadesAcumuladas[i] - ReferenciasProbabilidadesAcumuladas[i-1];
+
+                }
+
+                this->ProbabilidadesRobotAcumuladas[i] = ProbabilidadBasePrevia + ProbabilidadBase + (ProbabilidadBase/(1.f - ProbabilidadAEliminar)) * ProbabilidadAEliminar;
+            
+                ProbabilidadBasePrevia = ProbabilidadBase;
+                        
+                        
+
             }
 
 
@@ -422,10 +491,8 @@ void AGameMode_EnPartida::GenerarRobot() {
         // SPAWN si se puedo elegir bot
 
 
-        this->SpawnearRobot(this->IDsRobotActual[Pos]);
-        this->PesoRestante = this->PesoRestante - this->PesosRobotActual[Pos]; // Restar al budget de oleada
+        this->SpawnearRobot(Pos);
 
-        this->PesoRobotsVivo = this->PesoRobotsVivo + this->PesosRobotActual[Pos]; // Contabilizar el peso de robot en el counter
 
 
         if (this->PesoRestante != 0) {
@@ -448,11 +515,37 @@ void AGameMode_EnPartida::GenerarRobot() {
 
 }
 
-void AGameMode_EnPartida::SpawnearRobot(int ID) {
+void AGameMode_EnPartida::SpawnearRobot(int Pos) {
+    
+
+    // Pos indica la posicion del id de robot en el array de robots disponibles del nivel.
+    // Por ejemplo, si se permite basico (id = 0) y bomba (id = 8), el array de disponibilidad es [0,8]
+    // Si se desea spawnear basico, se usa pos 0, y para bomba pos 1, ya que esos indexan el array de disponibilidad
+
+    int ID;
+    int PesoRobot;
+    if (Pos >= 0) {
+
+        // Obtener del array de disponibilidad el identificador del bot a spawnear
+
+        ID = this->IDsRobotActual[Pos];
+        PesoRobot = this->PesosRobotActual[Pos];
+
+    } else {
+
+        // El bot lider de oleada no se pone en el array de disponibilidad, se da por sentado que siempre esta disponible pero solo uno por cada oleada grande
+        // Por ello, ocupa la pos "-1" del array de disponibilidad
+
+        ID = 1;
+        PesoRobot = ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetPesoDeRobot(ID);
+
+    }
+
+    this->PesoRestante = this->PesoRestante - PesoRobot; // Restar al budget de oleada
+    this->PesoRobotsVivo = this->PesoRobotsVivo + PesoRobot; // Contabilizar el peso de robot en el counter
     
     // TODO: Considerar aumentar odds para filas que no spawnearon hace tiempo y disminuir para las que acaban de spawnear
 
-    // Elige DONDE spawnear el bot con ese ID
     this->ZonaSpawn->SpawnearRobot(ID ,FMath::RandRange(0,4)); // Spawnear el robot en una fila al azar
 
 }
@@ -474,8 +567,88 @@ TArray<int> AGameMode_EnPartida::EncontrarGrandesOleadas() {
 
     return GransOleadas;
 
-  //  this->OleadasJson->AsObject();
 }
+
+
+void AGameMode_EnPartida::CongelarMundoPorDerrota(ARobot* Causante) {
+
+
+    this->CausanteDerrota = Causante;
+    this->ReproductorEnPartida->Tocar(5);
+   
+    // Parar spawns
+
+    GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
+    GetWorld()->GetTimerManager().ClearTimer(this->TimerParaSpawnRobot);
+
+
+    // Quitar interfaz de juego durante game over screen
+
+    this->QuitarInterfaz();
+
+
+
+    // Pausar todas las entidades
+
+    TArray<AActor*> Entidades;
+    
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEntidad::StaticClass(), Entidades);
+
+    for (AActor* Entidad : Entidades) {
+
+        Cast<AEntidad>(Entidad)->PausarEntidad();
+    }
+
+
+
+    // Pausar todos los proyectiles
+
+    TArray<AActor*> Proyectiles;
+
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), AProyectil::StaticClass(), Proyectiles);
+
+    for (AActor* Proyectil : Proyectiles) {
+
+        Cast<AProyectil>(Proyectil)->Pausar();
+    }
+
+
+    // Mover la cam a la izquierda para ver el robot que se ha colado
+
+    this->Camara->MoverCamAIzquierda();
+
+
+
+
+
+
+
+
+}
+void AGameMode_EnPartida::FocusearCausanteDerrota() {
+    
+
+    // Descongelar al robot causante de la derrota, manteniendo el resto del tablero congelado
+
+    this->CausanteDerrota->DespausarEntidad();
+
+    FTimerHandle TimerParaUI;
+
+    GetWorld()->GetTimerManager().SetTimer(TimerParaUI, this, &AGameMode_EnPartida::FinalizarAnimacionDerrota, 2.f, false); 
+
+
+}
+
+void AGameMode_EnPartida::FinalizarAnimacionDerrota() {
+    this->CausanteDerrota->Destroy();
+    
+    this->CrearInterfazDeDerrota(); // Llamado por blueprint
+    this->ReproductorEnPartida->Tocar(6);
+
+
+
+}
+
 
 
 void AGameMode_EnPartida::CargarNivel(int Nivel) {
@@ -535,7 +708,15 @@ void AGameMode_EnPartida::CargarNivel(int Nivel) {
 
 
     } else {
-        UE_LOG(LogTemp, Warning, TEXT("ERROR"));
+
+        // TODO: Tratar con niveles que no existen, en la build final probablemente no haga falta este check
+
+        UE_LOG(LogTemp, Warning, TEXT("EL NIVEL NO EXISTE"));
+
+        // Por ahora, redirigir al menú principal
+    UGameplayStatics::OpenLevel(GetWorld(), TEXT("NivelMenu"));
+
+
 
     }
 

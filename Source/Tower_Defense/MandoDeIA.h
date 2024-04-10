@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "MandoDeIA.generated.h"
-
+class UBehaviorTree;
 /**
  * 
  */
@@ -18,13 +18,16 @@ class TOWER_DEFENSE_API AMandoDeIA : public AAIController
 
 // Atributos:
 
+private:
 
+	UBehaviorTree* BT;
 
 // Métodos
 public:
 	void SettearIA(uint8 Clase, bool Torre);
 
-	virtual void BeginPlay() override;
+
+	void ActivarIA(bool Activar);
 
 	
 };

@@ -4,6 +4,8 @@
 #include "ZonaTargetRobot.h"
 #include "Components/BoxComponent.h"
 #include "Robot.h"
+#include "GameMode_EnPartida.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AZonaTargetRobot::AZonaTargetRobot()
@@ -30,10 +32,11 @@ void AZonaTargetRobot::EnOverlap(UPrimitiveComponent* OverlapComp, AActor* OtroA
 
 	// Puede ser posible que un proyectil triggeé este evento, para ello comprobar que en efecto un Robot ha entrado en la zona
 
-	if (Cast<ARobot>(OtroActor)) {
+	if (ARobot* Robot = Cast<ARobot>(OtroActor)) {
 
-		UE_LOG(LogTemp, Warning, TEXT("GAME OVER!")); // TODO: Implementar Game OVER
+		UE_LOG(LogTemp, Warning, TEXT("GAME OVER!")); 
 
+		Cast<AGameMode_EnPartida>(UGameplayStatics::GetGameMode(this))->CongelarMundoPorDerrota(Robot);
 
 	}
 

@@ -33,6 +33,12 @@ void AMusica_EnPartida::Tocar(int ID) {
             break;
         case 4:
             MusicaATocar = this->MusicaCuentaAtras;
+            break;
+        case 5:
+            MusicaATocar = this->MusicaRobotLlegaATarget;
+            break;
+        case 6:
+            MusicaATocar = this->MusicaDerrota;
 
 
     } 

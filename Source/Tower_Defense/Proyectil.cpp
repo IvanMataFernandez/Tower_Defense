@@ -6,6 +6,11 @@
 #include "Kismet/GameplayStatics.h"
 #include "Entidad.h"
 
+
+// ESTA CLASE DEBERIA SER ROOT DE TODO PROYECTIL. SI NO LO ES, CAMBIAR HERENCIA PARA QUE LO SEA (EDITANDO CODE DE ESTA CLASE SI HACE FALTA)
+// Y SI NO CAMBIARLO EN EL METODO DE LA DERROTA DEL PLAYER PARA PODER IDENTIFICAR TODOS LOS PROYECTILES Y PARARLOS
+
+
 // Sets default values
 AProyectil::AProyectil()
 {
@@ -35,6 +40,13 @@ void AProyectil::BeginPlay()
  	AActor::SetActorRotation(FRotator(0,0,-45*(this->VelocidadDeCaida/this->Velocidad)));
 
 }
+
+void AProyectil::Pausar() {
+	PrimaryActorTick.bCanEverTick = false;
+	GetWorld()->GetTimerManager().ClearTimer(this->TimerParaAutodestruir);
+}
+
+
 void AProyectil::Caducar() {
 	Destroy();
 }

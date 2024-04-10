@@ -141,7 +141,7 @@ int ConstructoraDeBlueprints::GetPesoDeRobot(uint8 Clase) {
 
           switch (Clase) {
             case Robots::LiderOleada:
-                return 0; // Unused, se recoge directamente desde el gamemode pero lo pongo aqui
+                return 1;
 
             case Robots::Basico:
                 return 1;

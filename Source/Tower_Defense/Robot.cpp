@@ -11,7 +11,7 @@
 /*
 
     IDs de animaciones:
-   -1: Mover ruedas (quitar loop) y mover helice (quitar loop)
+   -1: Mover ruedas (quitar loop) 
     0: Morir
     1: Mover ruedas (activar loop) 
 
@@ -94,7 +94,7 @@ void ARobot::Matar() {
 
     // En el caso de los robots, se debe procesar el hecho de que se ha muerto para contabilizar cuando spawnear siguiente oleada y procesar win con logic.
     int Peso = ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetPesoDeRobot(ID);
-    Cast<AGameMode_EnPartida>(GetWorld()->GetAuthGameMode())->ProcesarMuerteDeRobot(Peso);
+    Cast<AGameMode_EnPartida>(GetWorld()->GetAuthGameMode())->ProcesarMuerteDeRobot(Peso, this);
     this->RealizarAnimacion(-1);
     Super::Matar();
 }
