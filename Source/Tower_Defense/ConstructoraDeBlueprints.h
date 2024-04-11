@@ -13,19 +13,19 @@ class UUserWidget;
 UENUM(BlueprintType)
 enum class Torres :uint8 {
 
-	// 0x00 - 0xFF -> Torres
 
-		// 0x00 - 0x07 -> Disparadores
+	// 0x00 - 0x07 -> Disparadores
 	Canon = 0x00,
 	CanonDoble = 0x01,
 	PistolaLaser = 0x02,
 
-		// 0x08 - 0x0A -> Producidores
+	// 0x08 - 0x0A -> Producidores
 	PanelSolar = 0x08,
 	PanelSolarDoble = 0x09,
 
-		// 0x0B - W/E -> Usos instantaneos
-	Bomba = 0x0B
+	// 0x0B - W/E -> Usos Unicos
+	Mina = 0x0B,
+	Bomba = 0x0C
 
 
 };

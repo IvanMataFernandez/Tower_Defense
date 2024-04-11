@@ -4,7 +4,7 @@
 #include "MandoDeIA.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "ConstructoraDeBlueprints.h"
-
+#include "BehaviorTree/BTTaskNode.h"
 
 
 
@@ -46,5 +46,9 @@ void AMandoDeIA::ActivarIA(bool Activar) {
 
 }
 
+void AMandoDeIA::AcabarTareaActual() {
+    UBehaviorTreeComponent* BehaviorTreeComponent = this->FindComponentByClass<UBehaviorTreeComponent>();
+    Cast<UBTTaskNode>(BehaviorTreeComponent->GetActiveNode())->FinishLatentTask(*BehaviorTreeComponent, EBTNodeResult::Succeeded);
+}
 
 

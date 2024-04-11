@@ -48,12 +48,16 @@ UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase, bool Torre) {
                 RutaBT = TEXT("/Game/Blueprints/IA/Torres/TorreProducidor/BT_TorreProducidor");
 
                 break;
-            
+            case Torres::Mina:
+                RutaBT = TEXT("/Game/Blueprints/IA/Torres/Mina/BT_Mina");
+                break;
+
             case Torres::Bomba:
                 RutaBT = TEXT("/Game/Blueprints/IA/Torres/TorreUsoInstantaneo/BT_TorreUsoInstantaneo"); 
 
         }
     } else {
+        // Robots
 
           switch (Clase) {
             case Robots::Basico:
@@ -72,7 +76,6 @@ UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase, bool Torre) {
                 
 
         }      
-        // Robots
 
 
     }
@@ -99,6 +102,7 @@ float ConstructoraDeBlueprints::GetTiempoDeRecargaDeTorre(uint8 Clase) {
             case Torres::PanelSolarDoble:
                 return 3.f;
             
+            case Torres::Mina:
             case Torres::Bomba:
                 return 25.f;
 
@@ -129,6 +133,9 @@ int ConstructoraDeBlueprints::GetCosteDeTorre(uint8 Clase) {
             case Torres::PanelSolarDoble:
                 return 25;
             
+            case Torres::Mina:
+                return 15;
+
             case Torres::Bomba:
                 return 35;
 

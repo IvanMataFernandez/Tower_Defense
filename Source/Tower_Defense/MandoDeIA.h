@@ -29,5 +29,8 @@ public:
 
 	void ActivarIA(bool Activar);
 
-	
+public:
+
+	void AcabarTareaActual();
+
 };

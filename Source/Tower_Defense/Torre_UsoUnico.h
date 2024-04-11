@@ -4,20 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "Torre.h"
-#include "Torre_UsoInstantaneo.generated.h"
+#include "Torre_UsoUnico.generated.h"
 class UBoxComponent;
 
 /**
  * 
  */
 UCLASS()
-class TOWER_DEFENSE_API ATorre_UsoInstantaneo : public ATorre
+class TOWER_DEFENSE_API ATorre_UsoUnico : public ATorre
 {
 	GENERATED_BODY()
 
 
 public:
-	ATorre_UsoInstantaneo();
+	ATorre_UsoUnico();
 
 
 protected:
@@ -33,7 +33,7 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* ZonaDeAfecto;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float DanoDeExplosion;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")

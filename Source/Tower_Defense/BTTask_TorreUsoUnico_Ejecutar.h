@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_TorreUsoInst_Ejecutar.generated.h"
+#include "BTTask_TorreUsoUnico_Ejecutar.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TOWER_DEFENSE_API UBTTask_TorreUsoInst_Ejecutar : public UBTTaskNode
+class TOWER_DEFENSE_API UBTTask_TorreUsoUnico_Ejecutar : public UBTTaskNode
 {
 	GENERATED_BODY()
 
 public:	
-	UBTTask_TorreUsoInst_Ejecutar();
+	UBTTask_TorreUsoUnico_Ejecutar();
 
 protected:
 

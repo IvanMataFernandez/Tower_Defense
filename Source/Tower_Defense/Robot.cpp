@@ -94,7 +94,15 @@ void ARobot::Matar() {
 
     // En el caso de los robots, se debe procesar el hecho de que se ha muerto para contabilizar cuando spawnear siguiente oleada y procesar win con logic.
     int Peso = ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetPesoDeRobot(ID);
-    Cast<AGameMode_EnPartida>(GetWorld()->GetAuthGameMode())->ProcesarMuerteDeRobot(Peso, this);
+    
+
+    // TODO: En version final este cast siempre funciona, quitar este check. Por ahora se deja para poder testear bots en stages debug sin gamemode
+
+    if (AGameMode_EnPartida* GameMode = Cast<AGameMode_EnPartida>(GetWorld()->GetAuthGameMode())) {
+        GameMode->ProcesarMuerteDeRobot(Peso, this);
+    }
+
+
     this->RealizarAnimacion(-1);
     Super::Matar();
 }

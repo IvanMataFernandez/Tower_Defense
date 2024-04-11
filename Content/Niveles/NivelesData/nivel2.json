@@ -106,7 +106,7 @@
             "peso": 10,
             "probabilidades": [1.0],
             "tiempoEntreSpawn": 0.5,
-            "tiempoSiguienteOleada": 20
+            "tiempoSiguienteOleada": 35
 
 
         },

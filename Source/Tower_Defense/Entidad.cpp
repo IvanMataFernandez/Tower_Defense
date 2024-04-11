@@ -27,6 +27,14 @@ AEntidad::AEntidad()
 }
 
 
+void AEntidad::Invisibilizar() {
+
+	// Settear Trace Responses de Visto por Robot y Torre a ignore, para que las entidades no puedan targettearlo
+
+	this->Hitbox->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel5, ECollisionResponse::ECR_Ignore);
+	this->Hitbox->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel6, ECollisionResponse::ECR_Ignore);
+
+}
 
 
 void AEntidad::Matar() {
@@ -38,9 +46,23 @@ void AEntidad::Matar() {
 	// RealizarAnimacion(int Animacion)
 
 	this->QuitarIA();
-	this->Hitbox->SetCollisionEnabled(ECollisionEnabled::NoCollision); // Quitar hitbox para que los enemigos ignoren a esta entidad
-	this->RealizarAnimacion(0);
-	GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &AEntidad::Destruir,this->TiempoDeAnimacionDeMuerte, false);    
+	this->Hitbox->SetCollisionEnabled(ECollisionEnabled::NoCollision); // Quitar hitbox para que los enemigos ignoren a esta entidad y los proyectiles la sobrepasen
+
+	// Comprobar si la entidad tenia componente de vida y es vulnerable, si lo es, entonces animar su muerte
+	// Si no cumple la condicion, la unidad se habria automatado y no tiene sentido animar esa muerte (ej, matarse tras haber realizado una explosion)
+
+	UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>();
+
+	if (ComponenteVida && ComponenteVida->Vulnerable) {
+		this->RealizarAnimacion(0);
+		GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &AEntidad::Destruir,this->TiempoDeAnimacionDeMuerte, false);    
+
+	} else {
+		this->Destruir(); // Es esencialmente Destroy()
+	}
+
+
+
 
 }
 

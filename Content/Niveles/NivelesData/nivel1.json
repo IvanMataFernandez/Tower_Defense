@@ -9,7 +9,7 @@
         {
             "id": 0,
             "oleadaGrande": true,
-            "peso": 0,
+            "peso": 1,
             "probabilidades": [1.0],
             "tiempoEntreSpawn": 0.2,
             "tiempoSiguienteOleada": 99999

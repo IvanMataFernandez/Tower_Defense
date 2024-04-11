@@ -66,6 +66,8 @@ private:
 	TArray<int> IDsRobotActual;
 
 
+	bool VictoriaPosible;
+
 	ARobot* CausanteDerrota;
 
 	
