@@ -36,6 +36,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> ClaseHUDElegirTorre;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> ClaseHUDCuentaAtras;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> ClaseHUDEnPartida;
@@ -43,8 +46,12 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> ClaseHUDDerrota;
 	
-	UUserWidget* HUD;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> ClaseHUDVictoria;
 
+
+
+	TArray<UUserWidget*> HUDs;
 
 	TArray<int> IDTorresElegidas;
 
@@ -56,6 +63,10 @@ public:
 	int SeleccionDeTorre;
 
 // Métodos
+
+	void PausarEn(float Segundos);
+	void Pausar();
+	void Despausar();
 
 	void SetTorresElegidas(TArray<int> IDs);
 
@@ -70,7 +81,13 @@ public:
 
 
 	UFUNCTION(BlueprintCallable)
-	UUserWidget* ObtenerHUD() const;
+	UUserWidget* ObtenerHUD(int Pos) const;
+
+
+	UFUNCTION(BlueprintCallable)
+	void QuitarHUD(int Pos);
+
+
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void SettearSeleccionDeTorre();

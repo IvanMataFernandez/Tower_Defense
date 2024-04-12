@@ -15,7 +15,7 @@
 #include "PlayerPawn_EnPartida.h"
 #include "Proyectil.h"
 #include "Guardador.h"
-
+#include "Torre.h"
 
 
 /*
@@ -37,11 +37,14 @@ void AGameMode_EnPartida::BeginPlay()
 {
 	Super::BeginPlay();
 
+
+
+
+
    
     this->ZonaSpawn = Cast<AZonaSpawnRobot>(UGameplayStatics::GetActorOfClass(GetWorld(), AZonaSpawnRobot::StaticClass()));
     this->ReproductorEnPartida = Cast<AMusica_EnPartida>(UGameplayStatics::GetActorOfClass(GetWorld(), AMusica_EnPartida::StaticClass()));
     this->ZonaSpawnPreview = Cast<AZonaSpawnRobotPreview>(UGameplayStatics::GetActorOfClass(GetWorld(), AZonaSpawnRobotPreview::StaticClass()));
-
     this->Camara = Cast<APlayerPawn_EnPartida>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
 
     if (this->ZonaSpawn && this->ReproductorEnPartida && this->ZonaSpawnPreview ) {
@@ -62,6 +65,9 @@ void AGameMode_EnPartida::BeginPlay()
         } else {
             this->NivelActual = 1;
         }
+
+
+
 
         this->CargarNivel(this->NivelActual);
 
@@ -151,16 +157,18 @@ void AGameMode_EnPartida::FinSeleccionTorres(TArray<int> IDsTorresElegidas) {
 
     // Tras acabar de mover la cam, se llama a EmpezarJuego()
 
-    // 
-  //  this->Camara->SetActorLocation(FVector(-546.010256, -376.218195,2719.0));
-  //  this->Camara->SetActorRotation(FRotator(290,0,0));
+  
 
 }
 
 void AGameMode_EnPartida::EmpezarSeleccionDeTorres() {
 
+
+
     // Spawnear los bots de preview
     this->SpawnearRobotsPreview();
+
+
 
     // Esperar un par de segundos para que los bots se acerquen antes de dar la opcion al usuario de que elija sus torres
     
@@ -188,15 +196,15 @@ void AGameMode_EnPartida::CargarCuentaAtrasParaEmpezarJuego() {
 
     this->EliminarRobotsPreview();
 
-    this->CrearInterfazDePartida();
+    this->CrearInterfazDeCuentaAtras();
     this->ReproductorEnPartida->Tocar(4); // Hacer sonar cuenta atrás
 
 
 
+    // La interfaz de cuenta atrás se crea y cuando acabe su cue
 
-
-    FTimerHandle EsperarACountDown;
-    GetWorld()->GetTimerManager().SetTimer(EsperarACountDown, this, &AGameMode_EnPartida::EmpezarJuego, 3.f, false);               
+  //  FTimerHandle EsperarACountDown;
+  //  GetWorld()->GetTimerManager().SetTimer(EsperarACountDown, this, &AGameMode_EnPartida::EmpezarJuego, 3.f, false);               
 
 }
 
@@ -205,14 +213,22 @@ void AGameMode_EnPartida::EmpezarJuego() {
 
 
 
-
     this->PesoRobotsVivo = 0;
     this->OleadaActual = -1; // Las oleadas van como un iterador, 0 based indexing. -1 quiere decir que no está apuntando a ninguna oleada
     this->SeQuiereSpawnearLaSiguienteOleada = false;
     this->VictoriaPosible = false;
+    this->CantidadRobotsSpawneados = 0;
 
+    // 5 filas, 5 posiciones en el array de spawns por fila
+    this->CantidadRobotsSpawneadosPorLinea.Add(0);
+    this->CantidadRobotsSpawneadosPorLinea.Add(0);
+    this->CantidadRobotsSpawneadosPorLinea.Add(0);
+    this->CantidadRobotsSpawneadosPorLinea.Add(0);
+    this->CantidadRobotsSpawneadosPorLinea.Add(0);
 
     this->ReproductorEnPartida->Tocar(0);
+    this->CrearInterfazDePartida();
+
     this->EmpezarCargaDeSiguienteOleada();
 
 }
@@ -265,31 +281,9 @@ void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMa
     } else if (this->VictoriaPosible && this->PesoRobotsVivo == 0 && this->PesoRestante == 0) { 
 
 
-        // Si el ultimo bot acaba de morir...
+        // Si el ultimo bot acaba de morir, dar la victoria al jugador
 
-
-        // Apuntar la save al siguiente nivel (handlear probablemente caso de si se supero el ultimo nivel)
-
-        UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
-        Guardado->Nivel = this->NivelActual + 1;
-        UGameplayStatics::SaveGameToSlot(Guardado, TEXT("save"), 0);
-
-        // Localizar donde murio el ultimo robot para poner el dropable ahí en UI
-
-        APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0); 
-        FVector2D PosicionEnPantalla;
-        PlayerController->ProjectWorldLocationToScreen(RobotMatado->GetActorLocation(), PosicionEnPantalla);
-
-        // Comunicar a la UI de lo ocurrido
-
-        this->ComunicarVictoria((this->NivelActual-1), PosicionEnPantalla.X, PosicionEnPantalla.Y);
-
-        
-         // TODO: En la UI, animar el pick up de la recompensa, handlear unlocks y enseñar info de torre. Por ahora skippea al siguiente nivel
-
-
-
-
+        this->JugadorGana(RobotMatado);
         
     }
 
@@ -298,6 +292,65 @@ void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMa
 
 
 }
+
+void AGameMode_EnPartida::JugadorGana(ARobot* UltimoRobotMatado) {
+
+
+
+    // Localizar donde murio el ultimo robot para poner el dropable ahí en UI
+
+    APlayerController* MandoDeJugador = UGameplayStatics::GetPlayerController(GetWorld(), 0); 
+    FVector2D PosicionEnPantalla;
+    MandoDeJugador->ProjectWorldLocationToScreen(UltimoRobotMatado->GetActorLocation(), PosicionEnPantalla);
+
+    // Comunicar a la UI de lo ocurrido
+
+    this->ComunicarVictoria(this->NivelActual, PosicionEnPantalla.X, PosicionEnPantalla.Y);
+
+   
+    // Pausar todas las torres porque no se necesitan ya
+
+    TArray<AActor*> Torres;
+    
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATorre::StaticClass(), Torres);
+
+    for (AActor* Torre : Torres) {
+
+        Cast<AEntidad>(Torre)->PausarEntidad();
+    }
+
+
+
+}
+
+
+void AGameMode_EnPartida::ProcesarClickEnRecompensa() {
+
+    // Cuando se hace click en la recompensa, se cambia a musica de victoria y se quita la interfaz de EnPartida (esto ultimo en blueprint)
+
+    this->ReproductorEnPartida->Tocar(7);
+
+}
+
+
+void AGameMode_EnPartida::AvanzarNivel(int TorreDesbloqueo) {
+
+
+    // Obtener la save
+
+    UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
+
+    // Decirle a la save que hemos avanzado un nivel y desbloqueado una torre
+
+    Guardado->IDsTorresDesbloqueadas.Add(TorreDesbloqueo); // TODO: Handlear caso en el que no se desbloquea una torre
+    Guardado->Nivel = this->NivelActual + 1;
+    UGameplayStatics::SaveGameToSlot(Guardado, TEXT("save"), 0);
+
+    // Cargar este nivel de nuevo para que se carge la información del nuevo nivel al que apunta la save ahora
+     
+    UGameplayStatics::OpenLevel(GetWorld(), TEXT("NivelPrincipal"));
+}
+
 
 
 void AGameMode_EnPartida::EmpezarCargaDeSiguienteOleada() {
@@ -553,6 +606,8 @@ void AGameMode_EnPartida::SpawnearRobot(int Pos) {
 
     int ID;
     int PesoRobot;
+    
+    
     if (Pos >= 0) {
 
         // Obtener del array de disponibilidad el identificador del bot a spawnear
@@ -573,10 +628,56 @@ void AGameMode_EnPartida::SpawnearRobot(int Pos) {
     this->PesoRobotsVivo = this->PesoRobotsVivo + PesoRobot; // Contabilizar el peso de robot en el counter
     this->PesoRestante = this->PesoRestante - PesoRobot; // Restar al budget de oleada
 
-    // TODO: Considerar aumentar odds para filas que no spawnearon hace tiempo y disminuir para las que acaban de spawnear
 
-    this->ZonaSpawn->SpawnearRobot(ID ,FMath::RandRange(0,4)); // Spawnear el robot en una fila al azar
+    // Ya se ha computado el coste del robot, ahora elegir en que linea va a aparecer. Las lineas que han spawneado
+    // menos bots tienen mas probabilidad de ser elegidas.
 
+
+
+    // Paso 1, obtener la proporcion de spawns por cada fila pero en su inverso. Se da un spawn extra por fila para no tratar con diviones por 0.
+    //         se obtiene tambien el total de la suma de los inversos
+
+    TArray<float> ValoresPorFila;
+    float Total = 0.f; // Sumatorio de los inversos
+
+    for (int CantidadEnFila : this->CantidadRobotsSpawneadosPorLinea) {
+        float ProporcionInversa = (this->CantidadRobotsSpawneados+5)/(CantidadEnFila+1);
+        ValoresPorFila.Add(ProporcionInversa);
+        Total = Total + ProporcionInversa;
+    }
+
+    // Paso 2, computar las probabilidades acumuladas de spawnear en cada fila segun proporcion  inverso / inversoTotal  calculado en el paso 1
+
+    float Acumulado = 0.f; // Probabilidad acumulada hasta ahora
+
+    for (int Fila = 0; Fila != ValoresPorFila.Num(); Fila++) {
+
+        ValoresPorFila[Fila] = Acumulado + ValoresPorFila[Fila] / Total;
+        Acumulado = ValoresPorFila[Fila];
+    }
+
+
+    // Paso 3, rollear el random y ver donde cae para poner el robot ahí
+
+    float Random = FMath::FRand(); // Random float  [0, 1)
+
+
+    int FilaElegida = 0;
+    
+
+    while (Random >= ValoresPorFila[FilaElegida]) {
+        FilaElegida++;
+    }
+
+
+    // Spawnear el bot con id "ID" en la fila "FilaElegida"
+
+    this->ZonaSpawn->SpawnearRobot(ID ,FilaElegida); 
+
+    // Y actualizar a las variables que trackean los contadores de spawns de robots segun corresponda
+
+    this->CantidadRobotsSpawneados++;
+    this->CantidadRobotsSpawneadosPorLinea[FilaElegida] = this->CantidadRobotsSpawneadosPorLinea[FilaElegida] + 1;
 }
 
 TArray<int> AGameMode_EnPartida::EncontrarGrandesOleadas() {
@@ -688,7 +789,7 @@ void AGameMode_EnPartida::CargarNivel(int Nivel) {
     // Cargar JSON
 
     FString NivelString = FString::Printf(TEXT("%d"), Nivel);
-    FString FilePath = FPaths::ProjectContentDir() + FString(TEXT("/Niveles/NivelesData/nivel")) + NivelString + FString(TEXT(".json"));
+    FString FilePath = FPaths::ProjectContentDir() + FString(TEXT("/InfoDeJuego/Niveles/nivel")) + NivelString + FString(TEXT(".json"));
 
     FString Contenido;
     if (FFileHelper::LoadFileToString(Contenido, *FilePath)) {
@@ -751,6 +852,30 @@ void AGameMode_EnPartida::CargarNivel(int Nivel) {
 
 
 }
+
+
+void AGameMode_EnPartida::CargarInfoDesbloqueo(int NivelCompletado, int& OutIDDesbloqueo, FString& OutNombre, FString& OutDescripcion) {
+
+    FString FilePath = FPaths::ProjectContentDir() + FString(TEXT("/InfoDeJuego/desbloqueos.json"));
+
+    FString Contenido;
+    if (FFileHelper::LoadFileToString(Contenido, *FilePath)) {
+        TSharedPtr<FJsonObject> JsonDesbloqueados;
+
+
+        if (FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Contenido), JsonDesbloqueados)) {
+            TSharedPtr<FJsonObject> Desbloqueo = JsonDesbloqueados->GetArrayField(TEXT("desbloqueos"))[NivelCompletado-1]->AsObject();
+            OutIDDesbloqueo = Desbloqueo->GetIntegerField(TEXT("idTorreDesbloqueada"));
+            OutNombre = Desbloqueo->GetStringField(TEXT("nombre"));
+            OutDescripcion = Desbloqueo->GetStringField(TEXT("descripcion"));
+        }
+
+
+    }   
+
+
+}
+
 
 TArray<int> AGameMode_EnPartida::ObtenerCostesDeTorres(TArray<int> IDs) {
 

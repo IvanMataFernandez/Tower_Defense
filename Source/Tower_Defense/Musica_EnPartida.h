@@ -47,6 +47,9 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	USoundBase* MusicaDerrota;
 
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* MusicaVictoria;
+
 // Métodos
 
 public:

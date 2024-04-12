@@ -1,0 +1,54 @@
+{
+    "desbloqueos": [
+
+        {
+            "idTorreDesbloqueada" : 11,
+            "nombre": "Mina",
+            "descripcion": "Destruye instantáneamente \na todo robot que la pise\npero tarda en activarse."
+
+
+            
+        },
+
+        {
+            "idTorreDesbloqueada" : 1,
+            "nombre": "Cañón Doble",
+            "descripcion": "Una torre poderosa \ncon el doble de cadencia \nque un cañón corriente."
+
+
+            
+        },
+
+        {
+            "idTorreDesbloqueada" : 9,
+            "nombre": "Panel Doble",
+            "descripcion": "Dos paneles... \n ¡El doble de producción!"
+
+
+            
+        },
+
+        {
+            "idTorreDesbloqueada" : 12,
+            "nombre": "Bomba",
+            "descripcion": "Detona instantáneamente \na todo robot en un \nárea 3x3."
+
+
+            
+        },
+
+        {
+            "idTorreDesbloqueada" : 2,
+            "nombre": "Pistola Láser",
+            "descripcion": "Dispara proyectiles \nque penetran hasta \n3 objetivos."
+
+
+            
+        }
+
+
+    ]
+           
+}
+
+

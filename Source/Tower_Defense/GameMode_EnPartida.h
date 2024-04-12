@@ -65,6 +65,8 @@ private:
 	TArray<int> PesosRobotActual;
 	TArray<int> IDsRobotActual;
 
+	TArray<int> CantidadRobotsSpawneadosPorLinea;
+	int CantidadRobotsSpawneados;
 
 	bool VictoriaPosible;
 
@@ -95,10 +97,23 @@ public:
 	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs);
 
 
+	UFUNCTION(BlueprintCallable)
+	void CargarInfoDesbloqueo(int NivelCompletado, int& OutIDDesbloqueo, FString& OutNombre, FString& OutDescripcion);
+
+
 	void EmpezarSeleccionDeTorres();
 	void CargarCuentaAtrasParaEmpezarJuego();
 
 
+	UFUNCTION(BlueprintCallable)
+	void EmpezarJuego();
+
+
+	UFUNCTION(BlueprintCallable)
+	void ProcesarClickEnRecompensa();
+
+	UFUNCTION(BlueprintCallable)
+	void AvanzarNivel(int TorreDesbloqueo);
 
 
 
@@ -111,7 +126,11 @@ protected:
 	void CrearInterfazSeleccionDeTorres();
 
 	UFUNCTION(BlueprintImplementableEvent)
+	void CrearInterfazDeCuentaAtras();
+
+	UFUNCTION(BlueprintImplementableEvent)
 	void CrearInterfazDePartida();
+
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void CrearInterfazDeDerrota();
@@ -132,7 +151,6 @@ private:
 
 	void EliminarRobotsPreview();
 
-	void EmpezarJuego();
 
 	TArray<int> EncontrarGrandesOleadas();
 	void EmpezarCargaDeSiguienteOleada();
@@ -143,6 +161,7 @@ private:
 	void GenerarRobot();
 	void SpawnearRobot(int PosRobotEntreDisponibles);
 
+	void JugadorGana(ARobot* UltimoRobotMatado);
 
 
 

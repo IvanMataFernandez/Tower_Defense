@@ -17,4 +17,6 @@ class TOWER_DEFENSE_API UGuardador : public USaveGame
 public:
 	UPROPERTY(BlueprintReadWrite)
 	int Nivel;
+	UPROPERTY(BlueprintReadWrite)
+	TArray<int> IDsTorresDesbloqueadas;
 };

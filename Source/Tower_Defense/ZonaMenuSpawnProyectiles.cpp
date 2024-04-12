@@ -25,7 +25,6 @@ void AZonaMenuSpawnProyectiles::BeginPlay()
 
 
 void AZonaMenuSpawnProyectiles::ProgramarSpawn() {
-	UE_LOG(LogTemp, Warning, TEXT("HELLO"));
     
 	FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &AZonaMenuSpawnProyectiles::SpawnProyectil, this->SizeX * 2.f * (FMath::FRand()-0.5f), this->SizeZ * 2.f * (FMath::FRand()-0.5f));
 	FTimerHandle Timer;

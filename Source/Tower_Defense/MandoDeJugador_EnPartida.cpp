@@ -16,31 +16,72 @@ void AMandoDeJugador_EnPartida::BeginPlay() {
     bShowMouseCursor = true;
 
 
+}
+
+
+void AMandoDeJugador_EnPartida::Pausar() {
+    this->SetPause(true);
+}
+void AMandoDeJugador_EnPartida::Despausar() {
+    this->SetPause(false);
+}
+
+void AMandoDeJugador_EnPartida::PausarEn(float Segundos) {
+    FTimerHandle TimerParaPausa;
+    GetWorld()->GetTimerManager().SetTimer(TimerParaPausa, this, &AMandoDeJugador_EnPartida::Pausar,Segundos, false);               
 
 }
 
 UUserWidget* AMandoDeJugador_EnPartida::CrearHUD(int Seleccion) {
 
-
+    UUserWidget* HUD;
     if (Seleccion == 0) {
-        this->HUD = CreateWidget(this, this->ClaseHUDElegirTorre);
+        HUD = CreateWidget(this, this->ClaseHUDElegirTorre);
     } else if (Seleccion == 1) {
-        this->HUD = CreateWidget(this, this->ClaseHUDEnPartida);
+        HUD = CreateWidget(this, this->ClaseHUDCuentaAtras);
+
+    } else if (Seleccion == 2) {
+        HUD = CreateWidget(this, this->ClaseHUDEnPartida);
+    } else if (Seleccion == 3) {
+        HUD = CreateWidget(this, this->ClaseHUDDerrota);
 
     } else {
-        this->HUD = CreateWidget(this, this->ClaseHUDDerrota);
+        HUD = CreateWidget(this, this->ClaseHUDVictoria);
+
     }
-    this->HUD->AddToViewport();
-    return this->HUD;
+
+    HUD->AddToViewport();
+    this->HUDs.Add(HUD);
+
+    return HUD;
 
 }
 
 
 
-UUserWidget* AMandoDeJugador_EnPartida::ObtenerHUD() const {
-    return this->HUD;
+UUserWidget* AMandoDeJugador_EnPartida::ObtenerHUD(int Pos) const {
+
+    if (Pos >= 0 && Pos < this->HUDs.Num()) {
+        return this->HUDs[Pos];
+
+    } else {
+        return nullptr;
+    }
+
+
 }
 
+void AMandoDeJugador_EnPartida::QuitarHUD(int Pos)  {
+    if (Pos >= 0 && Pos < this->HUDs.Num()) {
+    this->HUDs[Pos]->RemoveFromParent();
+    this->HUDs.RemoveAt(Pos);
+    } else {
+        UE_LOG(LogTemp, Error, TEXT("Se habria producido crash"));
+    }
+
+
+
+}
 
 
 void AMandoDeJugador_EnPartida::SetTorresElegidas(TArray<int> IDs) {
@@ -60,7 +101,6 @@ void AMandoDeJugador_EnPartida::Pinchar() {
    
 
 
-    // Comprobar si se quiere usar la pala
 
     ACasilla* Casilla = Cast<ACasilla>(Target);
 
