@@ -21,10 +21,7 @@ void AMandoDeJugador_EnPartida::BeginPlay() {
 
 void AMandoDeJugador_EnPartida::Pausar() {
     this->SetPause(true);
-}
-void AMandoDeJugador_EnPartida::Despausar() {
-    this->SetPause(false);
-}
+}   
 
 void AMandoDeJugador_EnPartida::PausarEn(float Segundos) {
     FTimerHandle TimerParaPausa;
@@ -45,9 +42,12 @@ UUserWidget* AMandoDeJugador_EnPartida::CrearHUD(int Seleccion) {
     } else if (Seleccion == 3) {
         HUD = CreateWidget(this, this->ClaseHUDDerrota);
 
-    } else {
+    } else if (Seleccion == 4) {
         HUD = CreateWidget(this, this->ClaseHUDVictoria);
 
+    } else {
+        HUD = CreateWidget(this, this->ClaseHUDPausa);
+        
     }
 
     HUD->AddToViewport();
@@ -71,10 +71,17 @@ UUserWidget* AMandoDeJugador_EnPartida::ObtenerHUD(int Pos) const {
 
 }
 
+
+
+
+void AMandoDeJugador_EnPartida::QuitarUltimaHUDAnadida()  {
+    this->QuitarHUD(this->HUDs.Num()-1);
+}
+
 void AMandoDeJugador_EnPartida::QuitarHUD(int Pos)  {
     if (Pos >= 0 && Pos < this->HUDs.Num()) {
-    this->HUDs[Pos]->RemoveFromParent();
-    this->HUDs.RemoveAt(Pos);
+        this->HUDs[Pos]->RemoveFromParent();
+        this->HUDs.RemoveAt(Pos);
     } else {
         UE_LOG(LogTemp, Error, TEXT("Se habria producido crash"));
     }

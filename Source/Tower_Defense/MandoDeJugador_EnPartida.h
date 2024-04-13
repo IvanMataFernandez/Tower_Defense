@@ -49,7 +49,8 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> ClaseHUDVictoria;
 
-
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> ClaseHUDPausa;
 
 	TArray<UUserWidget*> HUDs;
 
@@ -65,8 +66,7 @@ public:
 // Métodos
 
 	void PausarEn(float Segundos);
-	void Pausar();
-	void Despausar();
+
 
 	void SetTorresElegidas(TArray<int> IDs);
 
@@ -84,6 +84,10 @@ public:
 	UUserWidget* ObtenerHUD(int Pos) const;
 
 
+
+	UFUNCTION(BlueprintCallable)
+	void QuitarUltimaHUDAnadida();
+
 	UFUNCTION(BlueprintCallable)
 	void QuitarHUD(int Pos);
 
@@ -97,6 +101,11 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void IncrementarEnergia(int Cantidad);
+
+private:
+
+	void Pausar();
+
 
 
 

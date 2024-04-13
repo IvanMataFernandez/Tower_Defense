@@ -90,6 +90,7 @@ void AGameMode_EnPartida::BeginPlay()
 
 }
 
+
 void AGameMode_EnPartida::SpawnearRobotsPreview() {
 
     int PesoMax = 0;
@@ -308,7 +309,8 @@ void AGameMode_EnPartida::JugadorGana(ARobot* UltimoRobotMatado) {
     this->ComunicarVictoria(this->NivelActual, PosicionEnPantalla.X, PosicionEnPantalla.Y);
 
    
-    // Pausar todas las torres porque no se necesitan ya
+    // Pausar todas las torres porque no se necesitan ya, también se han bloqueado los botones de la interfaz de donde se pueden poner mas torres
+    // para no poder colocar mas tras ganar (en blueprint)
 
     TArray<AActor*> Torres;
     
@@ -854,27 +856,7 @@ void AGameMode_EnPartida::CargarNivel(int Nivel) {
 }
 
 
-void AGameMode_EnPartida::CargarInfoDesbloqueo(int NivelCompletado, int& OutIDDesbloqueo, FString& OutNombre, FString& OutDescripcion) {
 
-    FString FilePath = FPaths::ProjectContentDir() + FString(TEXT("/InfoDeJuego/desbloqueos.json"));
-
-    FString Contenido;
-    if (FFileHelper::LoadFileToString(Contenido, *FilePath)) {
-        TSharedPtr<FJsonObject> JsonDesbloqueados;
-
-
-        if (FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Contenido), JsonDesbloqueados)) {
-            TSharedPtr<FJsonObject> Desbloqueo = JsonDesbloqueados->GetArrayField(TEXT("desbloqueos"))[NivelCompletado-1]->AsObject();
-            OutIDDesbloqueo = Desbloqueo->GetIntegerField(TEXT("idTorreDesbloqueada"));
-            OutNombre = Desbloqueo->GetStringField(TEXT("nombre"));
-            OutDescripcion = Desbloqueo->GetStringField(TEXT("descripcion"));
-        }
-
-
-    }   
-
-
-}
 
 
 TArray<int> AGameMode_EnPartida::ObtenerCostesDeTorres(TArray<int> IDs) {

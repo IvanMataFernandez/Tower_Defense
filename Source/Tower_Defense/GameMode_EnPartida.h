@@ -97,8 +97,6 @@ public:
 	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs);
 
 
-	UFUNCTION(BlueprintCallable)
-	void CargarInfoDesbloqueo(int NivelCompletado, int& OutIDDesbloqueo, FString& OutNombre, FString& OutDescripcion);
 
 
 	void EmpezarSeleccionDeTorres();
