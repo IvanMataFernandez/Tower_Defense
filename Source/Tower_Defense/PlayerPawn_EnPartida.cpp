@@ -9,6 +9,11 @@
 #include "Camera/CameraComponent.h"
 #include "GameMode_EnPartida.h"
 
+
+
+// TODO: Hacer la accion de mover la cam en Tick para evitar screen-tearing en versión final
+
+
 /*
 
 		En preview:
@@ -46,7 +51,14 @@ void APlayerPawn_EnPartida::BeginPlay()
 // Called every frame
 void APlayerPawn_EnPartida::Tick(float DeltaTime)
 {
+
 	Super::Tick(DeltaTime);
+
+//	FVector Loc = this->GetActorLocation();
+
+//	this->SetActorLocation(FVector(Loc.X, Loc.Y + 1000*DeltaTime, Loc.Z));
+//	UE_LOG(LogTemp, Display, TEXT("%f"), Loc.Y);
+
 
 }
 
@@ -64,6 +76,7 @@ void APlayerPawn_EnPartida::Pinchar() {
 }
 
 void APlayerPawn_EnPartida::MoverCamASeleccion() {
+
 
 	FVector Loc = this->GetActorLocation();
 
@@ -175,8 +188,9 @@ void APlayerPawn_EnPartida::MoverCam() {
 	FVector Loc = this->GetActorLocation();
 	
 
+//    FVector PosNueva = FMath::VInterpTo(Loc, FVector(Loc.X, 3000, Loc.Z), 0.01,  0.2f);
 	this->SetActorLocation(FVector(Loc.X+this->VelX, Loc.Y+this->VelY, Loc.Z+this->VelZ));
-	
+//	this->SetActorLocation(PosNueva);
 
 	this->TiempoAct = this->TiempoAct + this->DeltaTiempo;
 

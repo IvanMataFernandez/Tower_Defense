@@ -11,7 +11,33 @@ void AMandoDeJugador_EnMenu::BeginPlay() {
     Super::BeginPlay();
     bShowMouseCursor = true;
 
-    this->HUD = CreateWidget(this, this->ClaseHUD);
-    this->HUD->AddToViewport();
+
 
 }
+
+
+void AMandoDeJugador_EnMenu::CambiarAInterfaz(int ID) {
+
+
+    TSubclassOf<class UUserWidget> ClaseUI = nullptr;
+
+    switch (ID) {
+        case 0:
+            ClaseUI = ClaseHUDMenuPrincipal;
+            break;
+        case 1:
+            ClaseUI = ClaseHUDMenuAjustes;
+
+    }
+
+    if (this->HUD) {
+        this->HUD->RemoveFromViewport();
+    }
+
+
+    this->HUD = CreateWidget(this, ClaseUI);
+    this->HUD->AddToViewport();
+
+
+}
+

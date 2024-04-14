@@ -23,9 +23,24 @@ protected:
 
 
 
+// Atributos
+
+private:
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UUserWidget> ClaseHUD;
-	
+	TSubclassOf<class UUserWidget> ClaseHUDMenuPrincipal;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> ClaseHUDMenuAjustes;
+
 	UUserWidget* HUD;
+
+// Metodos
+
+public:
+
+	UFUNCTION(BlueprintCallable)
+	void CambiarAInterfaz(int ID);
+
+
 };
