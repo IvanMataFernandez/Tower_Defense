@@ -22,9 +22,6 @@ protected:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent &BT, uint8 *NodeMemory) override;
 
 
-private:
 
-	UPROPERTY(EditAnywhere)
-	float FrameRate;
 
 };

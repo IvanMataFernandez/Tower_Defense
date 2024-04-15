@@ -45,8 +45,10 @@ private:
 	float TiempoAct;
 	float TiempoTotal;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float DeltaTiempo = 0.016f;
+protected:
+
+	UPROPERTY(BlueprintReadOnly)
+	float DeltaTiempo = 0.2f;
 
 // Métodos
 

@@ -6,6 +6,7 @@
 #include "Proyectil.h"
 #include "GameMode_EnPartida.h"
 #include "ConstructoraDeBlueprints.h"
+#include "Kismet/GameplayStatics.h"
 
 
 /*
@@ -45,16 +46,16 @@ bool ARobot::HaMovidoEnVerticalDistanciaX(float Distancia) {
     return this->DistanciaRecorridaVertical >= Distancia;
 }
 
-void ARobot::InicializarMoverVertical(float FrameRate) {
+void ARobot::InicializarMoverVertical() {
     Super::ClearTimer();
     this->DistanciaRecorridaVertical = 0.f;
     this->Velocidad = 750;
 
     RealizarAnimacion(1); // Animar el robot para que se mueva (loop)
 
-    float Espera = FrameRate;
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot::MoverVertical, 1/Espera);
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, 1/Espera, true);   
+    float DeltaTiempo = UGameplayStatics::GetWorldDeltaSeconds(this) * 1.3f;
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot::MoverVertical, DeltaTiempo);
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, DeltaTiempo, true);   
 }
 
 void ARobot::MoverVertical(float DeltaTime) {
@@ -68,15 +69,15 @@ void ARobot::MoverVertical(float DeltaTime) {
 }
 
 
-void ARobot::InicializarMover(float FrameRate) {
+void ARobot::InicializarMover() {
 
     Super::ClearTimer();
 
     RealizarAnimacion(1); // Animar el robot para que se mueva (loop)
 
-    float Espera = FrameRate;
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot::Mover, 1/Espera);
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, 1/Espera, true);    
+    float DeltaTiempo = UGameplayStatics::GetWorldDeltaSeconds(this) * 1.3f;
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot::Mover, DeltaTiempo); // Actualizar move 3 de cada 4 frames aproximadamente para ahorrar recursos
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, DeltaTiempo, true);    
 }
 
 void ARobot::Mover(float DeltaTime) {

@@ -14,7 +14,7 @@ UBTTask_Robot_Mover::UBTTask_Robot_Mover() {
  EBTNodeResult::Type UBTTask_Robot_Mover::ExecuteTask(UBehaviorTreeComponent &BT, uint8 *NodeMemory) {
 
     Super::ExecuteTask(BT,NodeMemory);
-    Cast<ARobot>(BT.GetAIOwner()->GetPawn())->InicializarMover(this->FrameRate);
+    Cast<ARobot>(BT.GetAIOwner()->GetPawn())->InicializarMover();
     return EBTNodeResult::InProgress;
 
 

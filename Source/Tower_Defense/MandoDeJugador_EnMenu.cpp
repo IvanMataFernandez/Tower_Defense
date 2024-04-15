@@ -16,7 +16,7 @@ void AMandoDeJugador_EnMenu::BeginPlay() {
 }
 
 
-void AMandoDeJugador_EnMenu::CambiarAInterfaz(int ID) {
+UUserWidget* AMandoDeJugador_EnMenu::CambiarAInterfaz(int ID) {
 
 
     TSubclassOf<class UUserWidget> ClaseUI = nullptr;
@@ -37,6 +37,8 @@ void AMandoDeJugador_EnMenu::CambiarAInterfaz(int ID) {
 
     this->HUD = CreateWidget(this, ClaseUI);
     this->HUD->AddToViewport();
+
+    return this->HUD;
 
 
 }

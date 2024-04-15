@@ -68,13 +68,16 @@ void AGameMode_EnPartida::BeginPlay()
 
 
 
+        // Cargar info del nivel actual
 
         this->CargarNivel(this->NivelActual);
 
+        // Esperar medio segundo para empezar a mover la camara
+
+        FTimerHandle Espera;
+        GetWorld()->GetTimerManager().SetTimer(Espera, this->Camara, &APlayerPawn_EnPartida::MoverCamASeleccion, 0.5f, false);       
 
 
-        this->Camara->MoverCamASeleccion(); 
-        
         // Cuando la camara acabe de moverse, se ejecuta:  this->EmpezarSeleccionDeTorres();
 
 

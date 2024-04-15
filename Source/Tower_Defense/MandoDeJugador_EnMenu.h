@@ -40,7 +40,7 @@ private:
 public:
 
 	UFUNCTION(BlueprintCallable)
-	void CambiarAInterfaz(int ID);
+	UUserWidget* CambiarAInterfaz(int ID);
 
 
 };

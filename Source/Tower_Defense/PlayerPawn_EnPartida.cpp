@@ -68,6 +68,10 @@ void APlayerPawn_EnPartida::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAction(TEXT("Pinchar"), IE_Pressed, this, &APlayerPawn_EnPartida::Pinchar);
 
+
+
+
+
 }
 
 void APlayerPawn_EnPartida::Pinchar() {
@@ -77,13 +81,17 @@ void APlayerPawn_EnPartida::Pinchar() {
 
 void APlayerPawn_EnPartida::MoverCamASeleccion() {
 
-
+	this->DeltaTiempo = UGameplayStatics::GetWorldDeltaSeconds(this);
+	UE_LOG(LogTemp, Display, TEXT("dekta; %f"), this->DeltaTiempo);
+	
 	FVector Loc = this->GetActorLocation();
+
 
 	FTimerHandle Timer1;
 	FTimerHandle Timer2;
 	FTimerHandle Timer3;
 	FTimerHandle LlamadaAGameMode;
+
 
 
 	// Moverse Primero de lado
