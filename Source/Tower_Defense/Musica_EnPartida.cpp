@@ -46,7 +46,6 @@ void AMusica_EnPartida::Tocar(int ID) {
     } 
     this->GetAudioComponent()->SetSound(MusicaATocar);
     this->GetAudioComponent()->Play(0.f);
-
     
 }
 void AMusica_EnPartida::Parar() {

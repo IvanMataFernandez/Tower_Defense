@@ -31,6 +31,9 @@ private:
 	TSubclassOf<class UUserWidget> ClaseHUDMenuPrincipal;
 
 	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> ClaseHUDMenuTutorial;
+
+	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> ClaseHUDMenuAjustes;
 
 	UUserWidget* HUD;

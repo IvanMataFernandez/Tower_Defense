@@ -26,6 +26,9 @@ UUserWidget* AMandoDeJugador_EnMenu::CambiarAInterfaz(int ID) {
             ClaseUI = ClaseHUDMenuPrincipal;
             break;
         case 1:
+            ClaseUI = ClaseHUDMenuTutorial;
+            break;
+        case 2:
             ClaseUI = ClaseHUDMenuAjustes;
 
     }
