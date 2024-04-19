@@ -56,6 +56,9 @@ public:
 	virtual void QuitarIA();
 	void PausarEntidad();
     void DespausarEntidad();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void RealizarAnimacion(int Animacion);
 
 protected:
 	void ClearTimer();
@@ -63,8 +66,7 @@ protected:
 
 
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void RealizarAnimacion(int Animacion);
+
 
 
 	UFUNCTION(BlueprintImplementableEvent)

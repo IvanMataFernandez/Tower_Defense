@@ -44,7 +44,7 @@ void ATorre_UsoUnico::InicializacionFuncion() {
 
 
 
-    float Espera = this->Ciclo;
+    float Espera = this->TiempoParaExplosion;
     GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_UsoUnico::HacerFuncion,Espera, false);
     RealizarAnimacion(1); // Animar detonación
 

@@ -7,6 +7,7 @@
 #include "MandoDeJugador_EnPartida.h"
 #include "Kismet/GameplayStatics.h"
 #include "Math/UnrealMathUtility.h"
+#include "MandoDeIA.h"
 
 /*
 
@@ -31,25 +32,25 @@ ATorre_Producidor::ATorre_Producidor() {
 void ATorre_Producidor::BeginPlay() {
     Super::BeginPlay();
     this->MandoDeJugador = Cast<AMandoDeJugador_EnPartida>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+    this->MandoDeIA = Cast<AMandoDeIA>(this->GetController());
 }
 
 void ATorre_Producidor::PrepararTorre() {
 
     // Preparar la torre para que inicie el ciclo, se pasa al estado de empezar la animación de producir
-     RealizarAnimacion(1); // Animar el apague de produccion
 
     this->EnergiaDisponible = false;
     float TiempoParaProduccion = this->TiempoProduccionBase + (FMath::FRand() - 0.5) * 2 * this->DesviacionTiempoProduccionMax;
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_Producidor::Producir,TiempoParaProduccion, false);               
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this->MandoDeIA, &AMandoDeIA::AcabarTareaActual, TiempoParaProduccion, false);               
+
 
 }
 
 
 void ATorre_Producidor::Producir() {
-    RealizarAnimacion(2); // Animar el empiece de produccion
 
     this->EnergiaDisponible = true;
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_Producidor::PrepararTorre,this->TiempoHastaQueCaducaEnergia, false);               
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this->MandoDeIA, &AMandoDeIA::AcabarTareaActual, this->TiempoHastaQueCaducaEnergia, false);               
 
 }
 
@@ -61,6 +62,6 @@ void ATorre_Producidor::Click() {
 
         // Repetir ciclo        
         GetWorld()->GetTimerManager().ClearTimer(TimerFrame);
-        this->PrepararTorre();
+        this->MandoDeIA->AcabarTareaActual();
     }
 }

@@ -26,6 +26,9 @@
         el json level1 tiene la estructura de como deben indicarse los niveles
 
 
+        El juego comprueba si tras matar sufucientes bots para spawnear la siguiente oleada si la actual todavía esta spawneando
+        El juejo NO comprueba esto con los timers básicos de spawnear la siguiente (hacer que los timers tengan como mínimo de tiempo,
+        lo que tarden en spawnear el maximo numero de bots y 6 segundos extra si es una gran oleada)
 
 
 */
@@ -372,6 +375,9 @@ void AGameMode_EnPartida::CargarDatosOleada() {
 
 
     this->OleadaActual++; // Nueva oleada
+    UE_LOG(LogTemp, Display, TEXT("Oleada: %d"), OleadaActual);
+    UE_LOG(LogTemp, Display, TEXT("Peso: %d"), PesoRobotsVivo);
+
     // Recopilar datos de oleada actual
 
     TSharedPtr<FJsonObject> DatosOleadaActual = this->OleadasJson[this->OleadaActual]->AsObject();
@@ -381,19 +387,28 @@ void AGameMode_EnPartida::CargarDatosOleada() {
     this->TiempoEntreSpawn = DatosOleadaActual->GetNumberField(TEXT("tiempoEntreSpawn"));
     this->HastaSiguienteOleada = DatosOleadaActual->GetNumberField(TEXT("tiempoSiguienteOleada"));
 
+
+
+
+    this->PesoTargetParaSiguienteOleada = this->PesoRobotsVivo / 3 + this->PesoRestante / 2; // Spawnear siguiente orda antes si solo queda la mitad del peso de esta orda + 
+                                                                                             // el tercio de los robots que ya habían presentes previa a esta
+
+    // Refrescar listas auxiliares
+
+    this->PesosRobotActual = this->PesosRobot;
+    this->IDsRobotActual = this->IDsRobot;
+    this->ProbabilidadesRobotAcumuladas.Empty();
+
     TArray<TSharedPtr<FJsonValue>> ListaProbabilidades =  DatosOleadaActual->GetArrayField(TEXT("probabilidades"));
     float ProbabilidadAcumulada = 0.f;
 
     for (TSharedPtr< FJsonValue>& Probabilidad : ListaProbabilidades) {
-            ProbabilidadAcumulada = ProbabilidadAcumulada + Probabilidad->AsNumber();         
+            ProbabilidadAcumulada = ProbabilidadAcumulada + Probabilidad->AsNumber(); 
             this->ProbabilidadesRobotAcumuladas.Add(ProbabilidadAcumulada);
+
     }
 
 
-    this->PesosRobotActual = this->PesosRobot;
-    this->IDsRobotActual = this->IDsRobot;
-    this->PesoTargetParaSiguienteOleada = this->PesoRobotsVivo / 3 + this->PesoRestante / 2; // Spawnear siguiente orda antes si solo queda la mitad del peso de esta orda + 
-                                                                                             // el tercio de los robots que ya habían presentes previa a esta
 
     // Recopilar datos de siguiente oleada
 
@@ -494,6 +509,7 @@ void AGameMode_EnPartida::GenerarRobot() {
 
         // Encontrar donde cae el random
 
+
         Pos = 0;
         while (Random >= this->ProbabilidadesRobotAcumuladas[Pos]) {
             Pos++;
@@ -525,39 +541,48 @@ void AGameMode_EnPartida::GenerarRobot() {
                 ProbabilidadAEliminar = this->ProbabilidadesRobotAcumuladas[Pos] - this->ProbabilidadesRobotAcumuladas[Pos-1];
             }
 
-            this->PesosRobotActual.RemoveAt(Pos);
-            this->ProbabilidadesRobotAcumuladas.RemoveAt(Pos);
-            this->IDsRobotActual.RemoveAt(Pos);
+            if (ProbabilidadAEliminar <= 0.999f) {
+                this->PesosRobotActual.RemoveAt(Pos);
+                this->ProbabilidadesRobotAcumuladas.RemoveAt(Pos);
+                this->IDsRobotActual.RemoveAt(Pos);
 
 
-            for (int i = Pos; i != ProbabilidadesRobotAcumuladas.Num(); i++ ) {
-                ProbabilidadesRobotAcumuladas[i] = ProbabilidadesRobotAcumuladas[i] - ProbabilidadAEliminar;
-            }
-
-            TArray<float> ReferenciasProbabilidadesAcumuladas; // TArray para poder sacar las probabilidades sin acumular, ya que el otro se va a ir actualizando
-                                                               // y se van a mezclar los datos
-
-
-            ReferenciasProbabilidadesAcumuladas = ProbabilidadesRobotAcumuladas;
-            float ProbabilidadBase;
-            float ProbabilidadBasePrevia = 0.f;
-
-            for (int i = 0; i != ProbabilidadesRobotAcumuladas.Num(); i++) {
-
-                if (i == 0) {
-                    ProbabilidadBase = ReferenciasProbabilidadesAcumuladas[i];
-                } else {
-                    ProbabilidadBase = ReferenciasProbabilidadesAcumuladas[i] - ReferenciasProbabilidadesAcumuladas[i-1];
-
+                for (int i = Pos; i != ProbabilidadesRobotAcumuladas.Num(); i++ ) {
+                    ProbabilidadesRobotAcumuladas[i] = ProbabilidadesRobotAcumuladas[i] - ProbabilidadAEliminar;
                 }
 
-                this->ProbabilidadesRobotAcumuladas[i] = ProbabilidadBasePrevia + ProbabilidadBase + (ProbabilidadBase/(1.f - ProbabilidadAEliminar)) * ProbabilidadAEliminar;
-            
-                ProbabilidadBasePrevia = ProbabilidadBase;
-                        
-                        
+                TArray<float> ReferenciasProbabilidadesAcumuladas; // TArray para poder sacar las probabilidades sin acumular, ya que el otro se va a ir actualizando
+                                                                // y se van a mezclar los datos
 
+
+                ReferenciasProbabilidadesAcumuladas = ProbabilidadesRobotAcumuladas;
+                float ProbabilidadBase;
+                float ProbabilidadBasePrevia = 0.f;
+
+                for (int i = 0; i != ProbabilidadesRobotAcumuladas.Num(); i++) {
+
+                    if (i == 0) {
+                        ProbabilidadBase = ReferenciasProbabilidadesAcumuladas[i];
+                    } else {
+                        ProbabilidadBase = ReferenciasProbabilidadesAcumuladas[i] - ReferenciasProbabilidadesAcumuladas[i-1];
+
+                    }
+
+                    this->ProbabilidadesRobotAcumuladas[i] = ProbabilidadBasePrevia + ProbabilidadBase + (ProbabilidadBase/(1.f - ProbabilidadAEliminar)) * ProbabilidadAEliminar;
+                
+                    ProbabilidadBasePrevia = ProbabilidadBase;
+                            
+                            
+
+                }
+            
+            } else {
+                // NO SE PUEDE ELEGIR, el resto de bots tienen chance 0% de spawnear en esta wave
+                Sel = true;
+                Val = false;        
             }
+
+
 
 
 
@@ -820,7 +845,6 @@ void AGameMode_EnPartida::CargarNivel(int Nivel) {
 
            
             TArray<TSharedPtr<FJsonValue>> ListaIDsRobots =  JsonNivel->GetArrayField(TEXT("robotsPermitidos"));
-
             for (TSharedPtr< FJsonValue>& ValorId : ListaIDsRobots) {
                 this->IDsRobot.Add(ValorId->AsNumber());
             }

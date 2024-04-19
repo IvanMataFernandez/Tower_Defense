@@ -7,6 +7,7 @@
 #include "Torre_Producidor.generated.h"
 class UStaticMeshComponent;
 class AMandoDeJugador_EnPartida;
+class AMandoDeIA;
 
 /**
  * 
@@ -50,15 +51,15 @@ private:
 	bool EnergiaDisponible;
 
 	AMandoDeJugador_EnPartida* MandoDeJugador;
+	AMandoDeIA* MandoDeIA;
 
 // Métodos
 
-private:
-	void Producir();
 
 public:
 	void PrepararTorre();
 	void Click();
+	void Producir();
 
 
 };

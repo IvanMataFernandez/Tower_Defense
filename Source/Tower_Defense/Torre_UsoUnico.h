@@ -36,8 +36,13 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float DanoDeExplosion;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Datos")
-	float Ciclo;
+
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Datos")
+	float TiempoParaExplosion;
+
 // Métodos
 
 public:
