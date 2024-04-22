@@ -36,6 +36,8 @@ enum class Robots :uint8 {
 	// 0x00 - 0x07 -> Básicos
 	Basico = 0x00,
 	LiderOleada = 0x01,
+	Medio = 0x02,
+	Duro = 0x03,
 
 	// 0x08 - 0x10 -> Bombas
 

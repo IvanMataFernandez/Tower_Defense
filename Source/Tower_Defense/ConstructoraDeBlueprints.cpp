@@ -62,6 +62,8 @@ UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase, bool Torre) {
           switch (Clase) {
             case Robots::Basico:
             case Robots::LiderOleada:
+            case Robots::Medio:
+            case Robots::Duro:
             case Robots::Bomba:
                 RutaBT = TEXT("/Game/Blueprints/IA/Robots/RobotBasico/BT_RobotBasico"); 
 
@@ -147,15 +149,17 @@ int ConstructoraDeBlueprints::GetCosteDeTorre(uint8 Clase) {
 int ConstructoraDeBlueprints::GetPesoDeRobot(uint8 Clase) {
 
           switch (Clase) {
+            case Robots::Basico:
             case Robots::LiderOleada:
                 return 1;
-
-            case Robots::Basico:
-                return 1;
+            case Robots::Medio:
+                return 2;
             case Robots::Bomba:
                 return 3;
             
             case Robots::BombaRadar:
+            case Robots::Duro:
+
                 return 4;
 
         }  

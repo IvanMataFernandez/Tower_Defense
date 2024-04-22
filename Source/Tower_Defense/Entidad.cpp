@@ -9,6 +9,7 @@
 #include "Torre.h"
 #include "ComponenteVida.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "Components/AudioComponent.h"
 
 // Sets default values
 AEntidad::AEntidad()
@@ -18,11 +19,12 @@ AEntidad::AEntidad()
 	this->PosicionBase = CreateDefaultSubobject<USceneComponent>(TEXT("PosiciónBase"));
 	this->Hitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Hitbox"));
 	this->CuerpoBase = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CuerpoBase"));
+	this->ComponenteDeAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("Componente De Audio"));
+
 	RootComponent = this->PosicionBase;
 	this->Hitbox->SetupAttachment(this->PosicionBase);
 	this->CuerpoBase->SetupAttachment(this->PosicionBase);
-
-
+	this->ComponenteDeAudio->SetupAttachment(this->PosicionBase);
 
 }
 

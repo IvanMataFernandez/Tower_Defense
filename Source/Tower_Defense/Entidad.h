@@ -8,6 +8,7 @@
 class UBoxComponent;
 class UStaticMeshComponent;
 class USceneComponent;
+class UAudioComponent;
 
 UCLASS()
 class TOWER_DEFENSE_API AEntidad : public APawn
@@ -44,6 +45,9 @@ protected:
 	UBoxComponent* Hitbox;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UStaticMeshComponent* CuerpoBase;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UAudioComponent* ComponenteDeAudio;
 
 
 //	UPROPERTY(EditDefaultsOnly)

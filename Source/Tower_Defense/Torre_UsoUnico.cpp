@@ -57,7 +57,7 @@ void ATorre_UsoUnico::HacerFuncion() {
 
 
 void ATorre_UsoUnico::Activar() {
-    // Em principio dañar aquí, pero si se quieren hacer otras funciones en un area, entonces hacer esto Virtual y heredar de esta clase
+    // En principio dañar aquí, pero si se quieren hacer otras funciones en un area, entonces hacer esto Virtual y heredar de esta clase
 
     // Por defecto hace BOOM! Pero se puede heredar de esta clase e implementar este metodo despues si se necesitan usos instantaneos que no hagan daño.
     // Si hacen daño con un efecto añadido, se puede considerar heredar de aqui. Para ello dividir buscar targets y dañar en dos metodos aparte

@@ -104,7 +104,7 @@ void AGameMode_EnPartida::SpawnearRobotsPreview() {
     int RobotsTotalesPorTipo = FMath::RoundToInt(RobotsTotalesPorTipoF);
     TArray<int> RobotsASpawnear;
 
-
+    UE_LOG(LogTemp, Display, TEXT("sieze: %d"),this->IDsRobot.Num());
     // Por cada tipo de robot, ver cuantos caben en la preview segun el peso maximo seleccionado
 
     for (int i = 0; i != IDsRobot.Num(); i++) {
