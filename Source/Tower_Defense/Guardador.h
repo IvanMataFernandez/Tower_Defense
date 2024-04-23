@@ -18,5 +18,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	int Nivel;
 	UPROPERTY(BlueprintReadWrite)
+	int TotalNiveles;
+	UPROPERTY(BlueprintReadWrite)
+	bool JuegoCompleto;
+	UPROPERTY(BlueprintReadWrite)
 	TArray<int> IDsTorresDesbloqueadas;
 };

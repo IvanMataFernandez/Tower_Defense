@@ -54,15 +54,17 @@ void ATorre_Disparador::Idle() {
 
 
 bool ATorre_Disparador::EnRango() {
+    
+    // Realiza el line trace y devuelve si hay hit.
 
     FVector Start =  this->SpawnProyectiles->GetComponentLocation();
     FVector End = Start + (FVector(0,256.f+this->RangoEnCasillas*512.f,0) ); //Cada casilla son 512.f. 256.f para offsettear la casilla sobre la que está
 
-    // Realiza el line trace y devuelve si hay hit.
     FHitResult HitResult;
  //   DrawDebugLine(GetWorld(), Start, End, FColor::Green, true);
 
 
+    // TODO: Check que el restulado del linetrace es bot para return true
 
     return GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_GameTraceChannel5); // 5 vision torre, 6 vision robot
 

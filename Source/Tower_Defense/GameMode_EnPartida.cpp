@@ -73,7 +73,7 @@ void AGameMode_EnPartida::BeginPlay()
 
         // Cargar info del nivel actual
 
-        this->CargarNivel(this->NivelActual);
+        this->CargarNivel(this->NivelActual); 
 
         // Esperar medio segundo para empezar a mover la camara
 
@@ -310,9 +310,11 @@ void AGameMode_EnPartida::JugadorGana(ARobot* UltimoRobotMatado) {
     FVector2D PosicionEnPantalla;
     MandoDeJugador->ProjectWorldLocationToScreen(UltimoRobotMatado->GetActorLocation(), PosicionEnPantalla);
 
-    // Comunicar a la UI de lo ocurrido
 
-    this->ComunicarVictoria(this->NivelActual, PosicionEnPantalla.X, PosicionEnPantalla.Y);
+
+    // Comunicar a la UI de lo ocurrido y de lo que debería mostrar
+
+    this->ComunicarVictoria(this->ConseguirDesbloqueo(this->NivelActual), PosicionEnPantalla.X, PosicionEnPantalla.Y);
 
    
     // Pausar todas las torres porque no se necesitan ya, también se han bloqueado los botones de la interfaz de donde se pueden poner mas torres
@@ -331,6 +333,52 @@ void AGameMode_EnPartida::JugadorGana(ARobot* UltimoRobotMatado) {
 
 }
 
+int AGameMode_EnPartida::ConseguirDesbloqueo(int Nivel) {
+    // Leyendo el nivel que se acaba de superar (valor entre 1 y la cantidad de niveles existentes), se devuelve el id de la torre desbloqueada (valor >= 0)
+    // Se puede devolver -1 si no se desbloquea torre y -2 si se completó el último nivel
+
+    UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
+
+    if (Nivel == Guardado->TotalNiveles) {
+        // Es el último nivel
+        return -2;
+    } else {
+
+        if (Guardado->JuegoCompleto) {
+            // Si ya se pasó el juego entero al menos una vez se tienen todos los desbloqueos, no desbloquear nada
+            return -1;
+        } else {
+
+
+            // Leer JSON de desbloqueos para ver si desbloqueamos torre nueva
+
+            FString FilePath = FPaths::ProjectContentDir() + FString(TEXT("/InfoDeJuego/Desbloqueos/desbloqueos.json"));
+            FString Contenido;
+            if (FFileHelper::LoadFileToString(Contenido, *FilePath)) {
+                TSharedPtr<FJsonObject> JsonDesbloqueos;
+
+                if (FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Contenido), JsonDesbloqueos)) {
+                
+                    // Obtener la respuesta correspondiente del array json
+                    return JsonDesbloqueos->GetArrayField(TEXT("desbloqueos"))[Nivel-1]->AsNumber();
+                } else {
+                    UE_LOG(LogTemp, Error, TEXT("JSON de desbloqueos no se pudo parsear"));
+                    return -1;       
+                }
+
+
+            } else {
+                UE_LOG(LogTemp, Error, TEXT("JSON de desbloqueos no encontrado"));
+                return -1;
+            }
+
+        }
+
+    }
+
+}
+
+
 
 void AGameMode_EnPartida::ProcesarClickEnRecompensa() {
 
@@ -343,20 +391,47 @@ void AGameMode_EnPartida::ProcesarClickEnRecompensa() {
 
 void AGameMode_EnPartida::AvanzarNivel(int TorreDesbloqueo) {
 
-
-    // Obtener la save
-
+    // Pre: Torre desbloqueo contiene la torre a desbloquear para añadir a la save por completar el nivel. 
+    // -1 indica que no hubo desbloqueo
+    // -2 indica que no hubo desbloqueo y que se completó el último nivel del juego
+    
+    
     UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
+    
+    // Avanzar contador del nivel
 
-    // Decirle a la save que hemos avanzado un nivel y desbloqueado una torre
-
-    Guardado->IDsTorresDesbloqueadas.Add(TorreDesbloqueo); // TODO: Handlear caso en el que no se desbloquea una torre
     Guardado->Nivel = this->NivelActual + 1;
-    UGameplayStatics::SaveGameToSlot(Guardado, TEXT("save"), 0);
 
-    // Cargar este nivel de nuevo para que se carge la información del nuevo nivel al que apunta la save ahora
-     
-    UGameplayStatics::OpenLevel(GetWorld(), TEXT("NivelPrincipal"));
+    if (TorreDesbloqueo != -2) {
+
+        // Obtener la save
+
+        if (TorreDesbloqueo >= 0) {
+            // Si hubo unlock, añadirlo a la save
+            Guardado->IDsTorresDesbloqueadas.Add(TorreDesbloqueo); 
+        }
+
+        // Guardar los cambios
+        UGameplayStatics::SaveGameToSlot(Guardado, TEXT("save"), 0);
+
+        // Cargar este nivel de nuevo para que se carge la información del nuevo nivel al que apunta la save ahora
+        UGameplayStatics::OpenLevel(GetWorld(), TEXT("NivelPrincipal"));
+    } else {
+        
+        // Se completó el último nivel del juego
+
+        // Guardar los cambios
+        UGameplayStatics::SaveGameToSlot(Guardado, TEXT("save"), 0);
+
+        // Redirigir al menú principal (verá que no existe un nivel que cargar y tratará el caso)
+        UGameplayStatics::OpenLevel(GetWorld(), TEXT("NivelMenu"));
+
+
+    }
+
+
+
+
 }
 
 
@@ -875,7 +950,7 @@ void AGameMode_EnPartida::CargarNivel(int Nivel) {
         UE_LOG(LogTemp, Warning, TEXT("EL NIVEL NO EXISTE"));
 
         // Por ahora, redirigir al menú principal
-    UGameplayStatics::OpenLevel(GetWorld(), TEXT("NivelMenu"));
+        UGameplayStatics::OpenLevel(GetWorld(), TEXT("NivelMenu"));
 
 
 

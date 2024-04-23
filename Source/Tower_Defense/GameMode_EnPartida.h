@@ -146,6 +146,7 @@ private:
 
 
 	void CargarNivel(int Nivel);
+	int ConseguirDesbloqueo(int Nivel);
 
 	void EliminarRobotsPreview();
 

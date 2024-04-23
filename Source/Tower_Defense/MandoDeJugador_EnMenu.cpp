@@ -30,7 +30,10 @@ UUserWidget* AMandoDeJugador_EnMenu::CambiarAInterfaz(int ID) {
             break;
         case 2:
             ClaseUI = ClaseHUDMenuAjustes;
+            break;
 
+        case 3:
+            ClaseUI = ClaseHUDPopUpJuegoCompleto;
     }
 
     if (this->HUD) {
