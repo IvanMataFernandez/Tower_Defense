@@ -18,14 +18,11 @@
 
 		En preview:
 
-		Position: -1311.746828, 2177.097946, 1899.845983
-		Rotation: 0, -57.600855 °, 0
+		Position: -1741.56, -2373.20, 1935.17
+		Rotation: 0, 319.59°, 0
 
 
-		En partida:
-		
-	    Position: -546.010253 -376.218195 2719.0
-	    Rotation:        0, -71.523093 °  ,0
+
 
 
 */
@@ -54,10 +51,6 @@ void APlayerPawn_EnPartida::Tick(float DeltaTime)
 
 	Super::Tick(DeltaTime);
 
-//	FVector Loc = this->GetActorLocation();
-
-//	this->SetActorLocation(FVector(Loc.X, Loc.Y + 1000*DeltaTime, Loc.Z));
-//	UE_LOG(LogTemp, Display, TEXT("%f"), Loc.Y);
 
 
 }
@@ -82,7 +75,6 @@ void APlayerPawn_EnPartida::Pinchar() {
 void APlayerPawn_EnPartida::MoverCamASeleccion() {
 
 	this->DeltaTiempo = UGameplayStatics::GetWorldDeltaSeconds(this);
-	UE_LOG(LogTemp, Display, TEXT("dekta; %f"), this->DeltaTiempo);
 	
 	FVector Loc = this->GetActorLocation();
 
@@ -95,17 +87,17 @@ void APlayerPawn_EnPartida::MoverCamASeleccion() {
 
 
 	// Moverse Primero de lado
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -545.f, 2178.f, 2719.0f, 3.f);
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -1741.567245f, 2156.f, 1935.176425f, 3.f);
     GetWorld()->GetTimerManager().SetTimer(Timer1, Delegate, 0.01f, false);   
 
 
 	// Luego poner la camara más abajo y rotarla hacia arriba
 
-    FTimerDelegate Delegate2 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -1312.f, 2178.f, 1900.f, 1.0f);
+    FTimerDelegate Delegate2 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -1679.f, 2156.f, 2013.f, 1.0f);
     GetWorld()->GetTimerManager().SetTimer(Timer2, Delegate2, 3.f, false);   
 	
 
-    FTimerDelegate Delegate3 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::RotarCamEnPitchA, -57.f, 1.0f);
+    FTimerDelegate Delegate3 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::RotarCamEnPitchA, 317.f, 1.0f);
     GetWorld()->GetTimerManager().SetTimer(Timer3, Delegate3, 3.f, false);   
 
 
@@ -128,17 +120,17 @@ void APlayerPawn_EnPartida::MoverCamAJugar() {
 
 	// Moverse Primero hacia arriba
 
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -546.f, 2178.f, 2719.f, 1.0f);
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -267.f, 2156.f, 2950.f, 1.0f);
     GetWorld()->GetTimerManager().SetTimer(Timer2, Delegate, 0.01f, false);   
 	
 
-    FTimerDelegate Delegate2 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::RotarCamEnPitchA, -71.f, 1.0f);
+    FTimerDelegate Delegate2 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::RotarCamEnPitchA, -76.f, 1.0f);
     GetWorld()->GetTimerManager().SetTimer(Timer3, Delegate2, 0.01f, false);   
 
 
 	// Luego moverse de lado
 
-    FTimerDelegate Delegate3 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -546.f, -376.f, 2719.0f, 1.5f);
+    FTimerDelegate Delegate3 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -267.f, -452.f, 2950.0f, 1.5f);
     GetWorld()->GetTimerManager().SetTimer(Timer1, Delegate3, 1.f, false);   
 
 
@@ -161,7 +153,7 @@ void APlayerPawn_EnPartida::MoverCamAIzquierda() {
 
 	// Mover de lado
 
-	FTimerDelegate Delegate3 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -546.f, -1317.f, 2719.0f, 3.f);
+	FTimerDelegate Delegate3 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -267.f, -1317.f, 2950.0f, 3.f);
     GetWorld()->GetTimerManager().SetTimer(Timer1, Delegate3, 1.f, false);   
 
 
@@ -184,11 +176,28 @@ void APlayerPawn_EnPartida::MoverCamA(float X, float Y, float Z, float Duracion)
 	this->VelY = ((Y) - Loc.Y) / Duracion * this->DeltaTiempo;
 	this->VelZ = ((Z) - Loc.Z) / Duracion * this->DeltaTiempo;
 
+	this->PosTarget = FVector(X,Y,Z);
+
     GetWorld()->GetTimerManager().SetTimer(this->Timer, this, &APlayerPawn_EnPartida::MoverCam, this->DeltaTiempo, true);
 
 
 }
 
+void APlayerPawn_EnPartida::RotarCamEnPitchA(float Pitch, float Duracion) {
+	FRotator Rot = this->Camara->GetRelativeRotation();
+
+	this->TiempoActRot = 0.f;
+	this->TiempoTotalRot = Duracion;
+
+	this->VelPitch = (Pitch - Rot.Pitch) / Duracion * this->DeltaTiempo;
+
+
+    GetWorld()->GetTimerManager().SetTimer(this->TimerRotacion, this, &APlayerPawn_EnPartida::RotarCam, this->DeltaTiempo, true);
+	this->RotTarget = FRotator(Pitch,Rot.Yaw,Rot.Roll);
+    UE_LOG(LogTemp, Warning, TEXT("Speed/s: %f"), (VelPitch / this->DeltaTiempo));
+
+
+}
 
 void APlayerPawn_EnPartida::MoverCam() {
 
@@ -196,16 +205,34 @@ void APlayerPawn_EnPartida::MoverCam() {
 	FVector Loc = this->GetActorLocation();
 	
 
-//    FVector PosNueva = FMath::VInterpTo(Loc, FVector(Loc.X, 3000, Loc.Z), 0.01,  0.2f);
 	this->SetActorLocation(FVector(Loc.X+this->VelX, Loc.Y+this->VelY, Loc.Z+this->VelZ));
-//	this->SetActorLocation(PosNueva);
 
 	this->TiempoAct = this->TiempoAct + this->DeltaTiempo;
 
 	if (this->TiempoAct >= this->TiempoTotal) {
 		GetWorldTimerManager().ClearTimer(this->Timer);
+		this->SetActorLocation(this->PosTarget);
 
 	}
 }
+
+void APlayerPawn_EnPartida::RotarCam() {
+	
+	FRotator Rot = this->Camara->GetRelativeRotation();
+	this->Camara->SetWorldRotation(FRotator(Rot.Pitch+this->VelPitch,0 , 0));
+
+	this->TiempoActRot = this->TiempoActRot + this->DeltaTiempo;
+
+	if (this->TiempoActRot >= this->TiempoTotalRot) {
+		GetWorldTimerManager().ClearTimer(this->TimerRotacion);
+		this->SetActorRotation(this->RotTarget);
+
+	}
+
+
+}
+
+
+
 
 

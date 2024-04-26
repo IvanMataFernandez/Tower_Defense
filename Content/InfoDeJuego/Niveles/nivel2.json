@@ -1,7 +1,7 @@
 {
     "header": {
         "robotsPermitidos": [0, 2],
-        "tiempoSinEnemigos": 58
+        "tiempoSinEnemigos": 0.01
     },
 
     "oleadas": [

@@ -39,11 +39,19 @@ protected:
 private:
 
 	FTimerHandle Timer;
+	FTimerHandle TimerRotacion;
+
 	float VelX;
 	float VelY;
 	float VelZ;
 	float TiempoAct;
 	float TiempoTotal;
+	FVector PosTarget;
+
+	float VelPitch;
+	float TiempoActRot;
+	float TiempoTotalRot;
+	FRotator RotTarget;
 
 protected:
 
@@ -62,13 +70,10 @@ private:
 
 	void Pinchar();
 	void MoverCamA(float X, float Y, float Z, float Duracion);
-
-	void MoverCam();
-
-protected:
-
-	UFUNCTION(BlueprintImplementableEvent)
 	void RotarCamEnPitchA(float Pitch, float Duracion);
+	void MoverCam();
+	void RotarCam();
+
 
 
 };

@@ -74,7 +74,6 @@ void AGameMode_EnPartida::BeginPlay()
         // Cargar info del nivel actual
 
         this->CargarNivel(this->NivelActual); 
-
         // Esperar medio segundo para empezar a mover la camara
 
         FTimerHandle Espera;
