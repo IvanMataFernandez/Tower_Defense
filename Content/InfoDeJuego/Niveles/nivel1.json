@@ -1,11 +1,33 @@
 {
     "header": {
         "robotsPermitidos": [0],
-        "tiempoSinEnemigos": 0.01
+        "tiempoSinEnemigos": 0.0001
     },
 
     "oleadas": [
 
+        {
+            "id": 0,
+            "oleadaGrande": false,
+            "peso": 1,
+            "probabilidades": [1.0],
+            "tiempoEntreSpawn": 0.2,
+            "tiempoSiguienteOleada": 80
+
+
+            
+        },
+        {
+            "id": 0,
+            "oleadaGrande": false,
+            "peso": 1,
+            "probabilidades": [1.0],
+            "tiempoEntreSpawn": 0.2,
+            "tiempoSiguienteOleada": 0.001
+
+
+            
+        },
         {
             "id": 0,
             "oleadaGrande": true,
