@@ -8,7 +8,19 @@
 
         {
             "id": 0,
-            "oleadaGrande": false,
+            "oleadaGrande": true,
+            "peso": 1,
+            "probabilidades": [1.0],
+            "tiempoEntreSpawn": 0.2,
+            "tiempoSiguienteOleada": 80
+
+
+            
+        },
+
+        {
+            "id": 0,
+            "oleadaGrande": true,
             "peso": 1,
             "probabilidades": [1.0],
             "tiempoEntreSpawn": 0.2,
@@ -19,22 +31,11 @@
         },
         {
             "id": 0,
-            "oleadaGrande": false,
-            "peso": 1,
-            "probabilidades": [1.0],
-            "tiempoEntreSpawn": 0.2,
-            "tiempoSiguienteOleada": 0.001
-
-
-            
-        },
-        {
-            "id": 0,
             "oleadaGrande": true,
             "peso": 1,
             "probabilidades": [1.0],
             "tiempoEntreSpawn": 0.2,
-            "tiempoSiguienteOleada": 0.001
+            "tiempoSiguienteOleada": 80
 
 
             

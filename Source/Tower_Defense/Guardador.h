@@ -18,7 +18,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	int Nivel;
 	UPROPERTY(BlueprintReadWrite)
-	int TotalNiveles;
+	bool UltimoNivelSuperado;
 	UPROPERTY(BlueprintReadWrite)
 	bool JuegoCompleto;
 	UPROPERTY(BlueprintReadWrite)

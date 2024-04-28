@@ -79,4 +79,5 @@ public:
 
 	int GetPesoDeRobot(uint8 Clase);
 
+
 };

@@ -57,27 +57,24 @@ void AGameMode_EnPartida::BeginPlay()
 
 
         UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
-
-        
-        
-        // TODO: Quitar esto en version final, por ahora fallsafe a lv 1 si no hay save file (aunque deberia haberla pq main menu la crea)
-
-        if (Guardado) {
-            this->NivelActual = Guardado->Nivel;
-
-        } else {
-            this->NivelActual = 1;
-        }
-
+        this->NivelActual = Guardado->Nivel;
 
 
         // Cargar info del nivel actual
 
-        this->CargarNivel(this->NivelActual); 
-        // Esperar medio segundo para empezar a mover la camara
+        if (this->CargarNivel(this->NivelActual)) {
 
-        FTimerHandle Espera;
-        GetWorld()->GetTimerManager().SetTimer(Espera, this->Camara, &APlayerPawn_EnPartida::MoverCamASeleccion, 0.5f, false);       
+            // Carga correcta del nivel
+            // Esperar medio segundo para empezar a mover la camara
+            FTimerHandle Espera;
+            GetWorld()->GetTimerManager().SetTimer(Espera, this->Camara, &APlayerPawn_EnPartida::MoverCamASeleccion, 0.5f, false);   
+        } else {
+            // Si hay fallo, procesar la corrupción de datos
+
+            this->ProcesarCorrupcionDeDatos();
+        }
+    
+    
 
 
         // Cuando la camara acabe de moverse, se ejecuta:  this->EmpezarSeleccionDeTorres();
@@ -103,7 +100,6 @@ void AGameMode_EnPartida::SpawnearRobotsPreview() {
     int RobotsTotalesPorTipo = FMath::RoundToInt(RobotsTotalesPorTipoF);
     TArray<int> RobotsASpawnear;
 
-    UE_LOG(LogTemp, Display, TEXT("sieze: %d"),this->IDsRobot.Num());
     // Por cada tipo de robot, ver cuantos caben en la preview segun el peso maximo seleccionado
 
     for (int i = 0; i != IDsRobot.Num(); i++) {
@@ -203,14 +199,7 @@ void AGameMode_EnPartida::CargarCuentaAtrasParaEmpezarJuego() {
     this->EliminarRobotsPreview();
 
     this->CrearInterfazDeCuentaAtras();
-    this->ReproductorEnPartida->Tocar(4); // Hacer sonar cuenta atrás
-
-
-
-    // La interfaz de cuenta atrás se crea y cuando acabe su cue
-
-  //  FTimerHandle EsperarACountDown;
-  //  GetWorld()->GetTimerManager().SetTimer(EsperarACountDown, this, &AGameMode_EnPartida::EmpezarJuego, 3.f, false);               
+    this->ReproductorEnPartida->Tocar(4); // Hacer sonar cuenta atrás            
 
 }
 
@@ -299,6 +288,20 @@ void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMa
 
 }
 
+void AGameMode_EnPartida::ProcesarCorrupcionDeDatos() {
+
+    // Hay datos corrompidos, poner el nivel actual a "-1" para indicar corrupción de datos y volver al menú principal
+    UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
+    Guardado->Nivel = -1;
+    
+    // Guardar la save con el nivel en -1
+    UGameplayStatics::SaveGameToSlot(Guardado, TEXT("save"), 0);
+
+    // Cargar este nivel de nuevo para que se carge la información del nuevo nivel al que apunta la save ahora
+    UGameplayStatics::OpenLevel(GetWorld(), TEXT("NivelMenu"));
+}
+
+
 void AGameMode_EnPartida::JugadorGana(ARobot* UltimoRobotMatado) {
 
 
@@ -313,7 +316,21 @@ void AGameMode_EnPartida::JugadorGana(ARobot* UltimoRobotMatado) {
 
     // Comunicar a la UI de lo ocurrido y de lo que debería mostrar
 
-    this->ComunicarVictoria(this->ConseguirDesbloqueo(this->NivelActual), PosicionEnPantalla.X, PosicionEnPantalla.Y);
+    int Desbloqueo = this->ConseguirDesbloqueo(this->NivelActual);
+
+    if (Desbloqueo != -3) {
+        // Si no hay fallo en parseo de datos, comunicar al juego de lo que debería mostrar por pantalla (la torre desbloqueada o algun indicador de nivel superado)
+        this->ComunicarVictoria(Desbloqueo, PosicionEnPantalla.X, PosicionEnPantalla.Y);
+
+    } else {
+
+        // Si hay fallo, procesar la corrupción de datos
+
+        this->ProcesarCorrupcionDeDatos();
+
+
+    }   
+
 
    
     // Pausar todas las torres porque no se necesitan ya, también se han bloqueado los botones de la interfaz de donde se pueden poner mas torres
@@ -334,46 +351,69 @@ void AGameMode_EnPartida::JugadorGana(ARobot* UltimoRobotMatado) {
 
 int AGameMode_EnPartida::ConseguirDesbloqueo(int Nivel) {
     // Leyendo el nivel que se acaba de superar (valor entre 1 y la cantidad de niveles existentes), se devuelve el id de la torre desbloqueada (valor >= 0)
-    // Se puede devolver -1 si no se desbloquea torre y -2 si se completó el último nivel
+    // Se puede devolver -1 si no se desbloquea torre, -2 si se completó el último nivel y -3 si hay fallo en el parseo del json
 
     UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
 
-    if (Nivel == Guardado->TotalNiveles) {
-        // Es el último nivel
-        return -2;
-    } else {
+    // Leer JSON de desbloqueos para ver si desbloqueamos torre nueva
 
-        if (Guardado->JuegoCompleto) {
-            // Si ya se pasó el juego entero al menos una vez se tienen todos los desbloqueos, no desbloquear nada
-            return -1;
-        } else {
+    FString FilePath = FPaths::ProjectContentDir() + FString(TEXT("/InfoDeJuego/Desbloqueos/desbloqueos.json"));
+    FString Contenido;
 
+    if (FFileHelper::LoadFileToString(Contenido, *FilePath)) {
+      TSharedPtr<FJsonObject> JsonDesbloqueos;
 
-            // Leer JSON de desbloqueos para ver si desbloqueamos torre nueva
+        if (FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Contenido), JsonDesbloqueos)) {
 
-            FString FilePath = FPaths::ProjectContentDir() + FString(TEXT("/InfoDeJuego/Desbloqueos/desbloqueos.json"));
-            FString Contenido;
-            if (FFileHelper::LoadFileToString(Contenido, *FilePath)) {
-                TSharedPtr<FJsonObject> JsonDesbloqueos;
+            // Obtener la respuesta correspondiente del array json
+            int Desbloqueo = 0;
+            TArray<TSharedPtr<FJsonValue>> ArrayDesbloqueos = JsonDesbloqueos->GetArrayField(TEXT("desbloqueos"));
 
-                if (FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Contenido), JsonDesbloqueos)) {
-                
-                    // Obtener la respuesta correspondiente del array json
-                    return JsonDesbloqueos->GetArrayField(TEXT("desbloqueos"))[Nivel-1]->AsNumber();
-                } else {
-                    UE_LOG(LogTemp, Error, TEXT("JSON de desbloqueos no se pudo parsear"));
-                    return -1;       
-                }
+            // Obtener el valor de la torre desbloqueada y ver si es valido.
+            /* Un desbloqueo es válido si:
+                - Existe un array de desbloqueos en el juego
+                - La posicion del nivel apunta a una posicion de dicho array, y es un número (si es string se parsea como 0 en este paso)
+                - Dicho número no corresponde al id de una torre que ya tiene el jugador (a no ser que ya haya completado el juego al menos una vez)
+                - Si el número no es negativo se asume que es el de una torre, dicha torre debe existir en el código del juego (tiene coste 900+ si no existe)
+                - Si el número del desbloqueo es negativo, no debe ser inferior a -2 (-1 indica no desbloqueo y -2 indica que se completó el último nivel).
 
-
-            } else {
-                UE_LOG(LogTemp, Error, TEXT("JSON de desbloqueos no encontrado"));
-                return -1;
+            */
+            bool IDInvalido = ArrayDesbloqueos.Num() < Nivel || !ArrayDesbloqueos[Nivel-1]->TryGetNumber(Desbloqueo) || 
+                              (!Guardado->JuegoCompleto && Guardado->IDsTorresDesbloqueadas.Contains(Desbloqueo)) || 
+                              (Desbloqueo >= 0 && ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetCosteDeTorre(Desbloqueo) >= 900) || 
+                               Desbloqueo < -2;
+             
+            // Si el ID no es válido, se devuelve código de error
+            if (IDInvalido) {
+                return -3;
             }
 
+            // El ID es válido, procesarlo
+
+            // Comprobar si se desbloquearía una torre nueva y se está en NG+ (ya se pasó el juego entero una vez)
+            if (Desbloqueo >= 0 && Guardado->JuegoCompleto) {
+                // Es el caso, en su lugar devolver -1 para no desbloquear la torre de nuevo
+                return -1;
+            } else {
+                // No es el caso, dar el valor original (0+ para torre, -1 si el nivel no daba ya desbloqueo o -2 si era el último)
+                return Desbloqueo;
+            }
+           
+                    
+
+
+        } else {
+            UE_LOG(LogTemp, Error, TEXT("JSON de desbloqueos no se pudo parsear"));
+            return -3;       
         }
 
+
+    } else {
+        UE_LOG(LogTemp, Error, TEXT("JSON de desbloqueos no encontrado"));
+        return -3;
     }
+
+
 
 }
 
@@ -418,7 +458,7 @@ void AGameMode_EnPartida::AvanzarNivel(int TorreDesbloqueo) {
     } else {
         
         // Se completó el último nivel del juego
-
+        Guardado->UltimoNivelSuperado = true;
         // Guardar los cambios
         UGameplayStatics::SaveGameToSlot(Guardado, TEXT("save"), 0);
 
@@ -447,10 +487,8 @@ void AGameMode_EnPartida::EmpezarCargaDeSiguienteOleada() {
 void AGameMode_EnPartida::CargarDatosOleada() {
 
 
-
     this->OleadaActual++; // Nueva oleada
-    UE_LOG(LogTemp, Display, TEXT("Oleada: %d"), OleadaActual);
-    UE_LOG(LogTemp, Display, TEXT("Peso: %d"), PesoRobotsVivo);
+
 
     // Recopilar datos de oleada actual
 
@@ -461,6 +499,7 @@ void AGameMode_EnPartida::CargarDatosOleada() {
     this->TiempoEntreSpawn = DatosOleadaActual->GetNumberField(TEXT("tiempoEntreSpawn"));
     this->HastaSiguienteOleada = DatosOleadaActual->GetNumberField(TEXT("tiempoSiguienteOleada"));
 
+    
 
 
 
@@ -476,6 +515,8 @@ void AGameMode_EnPartida::CargarDatosOleada() {
     TArray<TSharedPtr<FJsonValue>> ListaProbabilidades =  DatosOleadaActual->GetArrayField(TEXT("probabilidades"));
     float ProbabilidadAcumulada = 0.f;
 
+
+
     for (TSharedPtr< FJsonValue>& Probabilidad : ListaProbabilidades) {
             ProbabilidadAcumulada = ProbabilidadAcumulada + Probabilidad->AsNumber(); 
             this->ProbabilidadesRobotAcumuladas.Add(ProbabilidadAcumulada);
@@ -484,28 +525,49 @@ void AGameMode_EnPartida::CargarDatosOleada() {
 
 
 
+
+
     // Recopilar datos de siguiente oleada
 
     if (this->OleadaActual != this->OleadasTotales-1) {
         this->SeAproximaOrdaGrande = this->GrandesOleadas.Contains(this->OleadaActual+1);
+    } else {
+        this->SeAproximaOrdaGrande = false;
     }
 
 
+    // Comprobar que los datos procesados de la oleada actual del nivel son correctos y tienen sentido:
 
-    // Ya se han cargado los datos de esta oleada, programar la siguiente
+    /*
+        - Debe haber un campo con la cantidad de peso a spawnear. Debe ser positivo
+        - Debe haber un campo en el que indica el tiempo a esperar hasta la siguiente oleada. Debe ser positivo o al menos 10s si se aproxima una gran oleada
+          (para asegurarse de que el juego contabilice correctamente la oleada en la que estamos)
+        - La lista de probabilidades de spawnear cada robot debe encajar en longitud con la de la cabecera del nivel en la que se indican que robots van a spawnear
+        - La suma de las probabilidades a spawnear de los robots debe sumar 1 (con un margen pequeño de error)
+    
+    
+    */
 
+   bool OleadaInvalida = this->PesoRestante <= 0 || this->TiempoEntreSpawn <= 0.f || (this->HastaSiguienteOleada <= 0.f || 
+                         this->SeAproximaOrdaGrande && this->HastaSiguienteOleada < 10.f) || ListaProbabilidades.Num() != this->IDsRobot.Num() || 
+                         (ProbabilidadAcumulada < 0.999f || ProbabilidadAcumulada > 1.001f);
+
+    if (OleadaInvalida) {
+        // Si la oleada es invalida, se procesa el metodo de corrupcion de datos y se redirige al menú principal
+        this->ProcesarCorrupcionDeDatos();
+    }
+
+    // Ya que los datos cargados son validos...  Ya se han cargado los datos de esta oleada, programar la siguiente
 
     this->EmpezarCargaDeSiguienteOleada(); 
 
 
-    // Ya tenemos los datos de la oleada, empezar a handlear logica de spawnear enemigos
+    // Ya tenemos los datos de la oleada y son validos, empezar a handlear logica de spawnear enemigos con dicha información
 
 
     if (this->GrandesOleadas.Contains(this->OleadaActual)) {
  
-
-
-        // Se aproxima FLAG de robots (oleada grande), esperar unos 6 segundos para 
+        // Se aproxima FLAG de robots (oleada grande), esperar unos 6 segundos para mostrar por UI y hacer avisos sonoros
        
         // TODO:  Mostrar cosas por UI
 
@@ -513,6 +575,7 @@ void AGameMode_EnPartida::CargarDatosOleada() {
         GetWorld()->GetTimerManager().SetTimer(this->TimerParaSpawnRobot, this, &AGameMode_EnPartida::GenerarOleadaGrande, 6.f, false);   
 
 
+        // Cambiar la música también para informar de la orda, la última orda tiene música distinta a las demás
         if (this->OleadaActual != this->OleadasTotales-1) {
             // No ultima orda
             this->ReproductorEnPartida->Tocar(1);
@@ -525,7 +588,7 @@ void AGameMode_EnPartida::CargarDatosOleada() {
 
     } else {
 
-        // Spawnear la oleada normal ya
+        // Si no es una orda, spawnear la oleada normal ya (no se requieren avisos previos)
 
         this->GenerarOleada();
 
@@ -887,10 +950,9 @@ void AGameMode_EnPartida::FinalizarAnimacionDerrota() {
 
 
 
-void AGameMode_EnPartida::CargarNivel(int Nivel) {
+bool AGameMode_EnPartida::CargarNivel(int Nivel) {
 
-    // Resetear variables
-
+    // Post: Si el nivel se ha cargado correctamente o no
 
     // Cargar JSON
 
@@ -903,26 +965,26 @@ void AGameMode_EnPartida::CargarNivel(int Nivel) {
 
 
         if (FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Contenido), JsonNivel)) {
-            
 
             // Obtener los campos de los datos de la oleada
-
-            this->OleadasJson = JsonNivel->GetArrayField(TEXT("oleadas"));
+            this->OleadasJson = JsonNivel->GetArrayField(TEXT("oleadas")); 
 
             // Obtener el header json con los datos principales del nivel
 
             JsonNivel = JsonNivel->GetObjectField(TEXT("header"));
-            
-            this->HastaSiguienteOleada = JsonNivel->GetNumberField(TEXT("tiempoSinEnemigos"));
 
-            this->OleadasTotales = this->OleadasJson.Num();
 
-           
-            TArray<TSharedPtr<FJsonValue>> ListaIDsRobots =  JsonNivel->GetArrayField(TEXT("robotsPermitidos"));
+
+            TArray<TSharedPtr<FJsonValue>> ListaIDsRobots = JsonNivel->GetArrayField(TEXT("robotsPermitidos"));
+
+            this->HastaSiguienteOleada = JsonNivel->GetNumberField(TEXT("tiempoSinEnemigos")); 
+
+
+
+
             for (TSharedPtr< FJsonValue>& ValorId : ListaIDsRobots) {
                 this->IDsRobot.Add(ValorId->AsNumber());
             }
-
 
             // Se han obtenido los robots spawneables, obtener sus pesos ahora
 
@@ -930,26 +992,42 @@ void AGameMode_EnPartida::CargarNivel(int Nivel) {
                 PesosRobot.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetPesoDeRobot(Id));  
             }
 
-
+            this->OleadasTotales = this->OleadasJson.Num();
             this->GrandesOleadas = this->EncontrarGrandesOleadas();
+
+
+            // Comprobar que la descripcion general del nivel es válida y no tiene datos corrompidos:
+            /*
+    
+                - Debe haber un campo que indica el tiempo inicial sin robots
+                - Debe haber una lista en la que se dice que robots van a aparecer en el nivel
+                - La última oleada del nivel debe ser una gran oleada, además, debe haber al menos una oleada en todo el nivel
+                - No pueden haber más de 4 grandes oleadas.
+            */
+
+
+           bool NivelInvalido = this->HastaSiguienteOleada <= 0.f || ListaIDsRobots.Num() == 0 || this->GrandesOleadas.Num() < 1 || 
+                                this->GrandesOleadas[this->GrandesOleadas.Num()-1] != this->OleadasTotales-1 || this->GrandesOleadas.Num() > 4;
+
+            return !NivelInvalido;
+
+      
 
  
 
         } else {
-            UE_LOG(LogTemp, Warning, TEXT("ERROR"));
+            // El json no pudo ser parseado
 
+            return false;
         }
 
 
 
     } else {
+        // El json del nivel no pudo ser encontrado
 
-        // TODO: Tratar con niveles que no existen, en la build final probablemente no haga falta este check
+        return false;
 
-        UE_LOG(LogTemp, Warning, TEXT("EL NIVEL NO EXISTE"));
-
-        // Por ahora, redirigir al menú principal
-        UGameplayStatics::OpenLevel(GetWorld(), TEXT("NivelMenu"));
 
 
 

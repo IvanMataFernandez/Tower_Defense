@@ -25,7 +25,7 @@ public:
 
 private:
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta= (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* Mesh;
 
 	UPROPERTY(BlueprintReadWrite, meta= (AllowPrivateAccess = "true"))
@@ -41,6 +41,8 @@ public:
 	void QuitarTorre();
 	void LiberarCasilla();
 	bool CasillaVacia();
+	ATorre* ObtenerTorreEnCasilla();
+
 
 
 

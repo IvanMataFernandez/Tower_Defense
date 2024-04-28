@@ -50,4 +50,6 @@ void ACasilla::LiberarCasilla() {
 }
 
 
-
+ATorre* ACasilla::ObtenerTorreEnCasilla() {
+	return this->Torre;
+}

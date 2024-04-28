@@ -167,3 +167,7 @@ int ConstructoraDeBlueprints::GetPesoDeRobot(uint8 Clase) {
         return 99;
 
 }
+
+
+
+

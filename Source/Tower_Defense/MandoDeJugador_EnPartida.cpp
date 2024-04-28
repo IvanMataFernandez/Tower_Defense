@@ -126,14 +126,26 @@ void AMandoDeJugador_EnPartida::Pinchar() {
 
         } else {
 
-            // Comprobar si el quitador (equivalente Pala en PvZ) está seleccionado
+            // Comprobar si la TNT está seleccionado
             this->SettearBorradorDeTorre();
 
             if (this->SeleccionDeTorre == 1) { 
 
                 Casilla->QuitarTorre(); // Si lo está, quitamos la torre del nivel
 
-            } 
+            } else {
+
+                // Si no se tiene la TNT elegida, comprobar si la casilla pinchada aloja un producidor
+
+                ATorre_Producidor* TorreProducidor = Cast<ATorre_Producidor>(Casilla->ObtenerTorreEnCasilla());
+
+                if (TorreProducidor) {
+                    // Si lo hace, tratar de recolectar su energia
+                    TorreProducidor->Click();
+                }
+
+                
+            }
         }
 
     } else {

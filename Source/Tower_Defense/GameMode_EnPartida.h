@@ -145,7 +145,7 @@ protected:
 private:
 
 
-	void CargarNivel(int Nivel);
+	bool CargarNivel(int Nivel);
 	int ConseguirDesbloqueo(int Nivel);
 
 	void EliminarRobotsPreview();
@@ -163,7 +163,7 @@ private:
 	void JugadorGana(ARobot* UltimoRobotMatado);
 
 
-
+	void ProcesarCorrupcionDeDatos();
 
 
 	

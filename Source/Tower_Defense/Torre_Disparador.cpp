@@ -64,8 +64,6 @@ bool ATorre_Disparador::EnRango() {
  //   DrawDebugLine(GetWorld(), Start, End, FColor::Green, true);
 
 
-    // TODO: Check que el restulado del linetrace es bot para return true
-
     return GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_GameTraceChannel5); // 5 vision torre, 6 vision robot
 
 

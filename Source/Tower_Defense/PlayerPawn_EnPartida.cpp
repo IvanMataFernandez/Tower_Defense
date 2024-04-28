@@ -11,9 +11,6 @@
 
 
 
-// TODO: Hacer la accion de mover la cam en Tick para evitar screen-tearing en versión final
-
-
 /*
 
 		En preview:
@@ -21,6 +18,18 @@
 		Position: -1741.56, -2373.20, 1935.17
 		Rotation: 0, 319.59°, 0
 
+
+		En partida:
+
+		Antiguo:
+		Position:  -267.f, -452.f, 2950.0f
+		Rotation: 0, -76, 0
+
+
+		Nuevo:
+
+		Position: -683.5, -452, 3147.73331
+		Rotation: 0, -72.42, 0
 
 
 
@@ -120,17 +129,17 @@ void APlayerPawn_EnPartida::MoverCamAJugar() {
 
 	// Moverse Primero hacia arriba
 
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -267.f, 2156.f, 2950.f, 1.0f);
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -683.5f, 2156.f, 3147.73331f, 1.0f);
     GetWorld()->GetTimerManager().SetTimer(Timer2, Delegate, 0.01f, false);   
 	
 
-    FTimerDelegate Delegate2 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::RotarCamEnPitchA, -76.f, 1.0f);
+    FTimerDelegate Delegate2 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::RotarCamEnPitchA, -72.45f, 1.0f);
     GetWorld()->GetTimerManager().SetTimer(Timer3, Delegate2, 0.01f, false);   
 
 
 	// Luego moverse de lado
 
-    FTimerDelegate Delegate3 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -267.f, -452.f, 2950.0f, 1.5f);
+    FTimerDelegate Delegate3 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA,  -683.5f, -452.f,  3147.73331f, 1.5f);
     GetWorld()->GetTimerManager().SetTimer(Timer1, Delegate3, 1.f, false);   
 
 
@@ -153,7 +162,7 @@ void APlayerPawn_EnPartida::MoverCamAIzquierda() {
 
 	// Mover de lado
 
-	FTimerDelegate Delegate3 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -267.f, -1317.f, 2950.0f, 3.f);
+	FTimerDelegate Delegate3 = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA,  -683.5f, -1317.f,  3147.73331f, 3.f);
     GetWorld()->GetTimerManager().SetTimer(Timer1, Delegate3, 1.f, false);   
 
 

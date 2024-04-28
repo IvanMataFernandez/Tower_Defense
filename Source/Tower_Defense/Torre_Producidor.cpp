@@ -65,3 +65,4 @@ void ATorre_Producidor::Click() {
         this->MandoDeIA->AcabarTareaActual();
     }
 }
+
