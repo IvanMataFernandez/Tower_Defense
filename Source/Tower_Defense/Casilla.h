@@ -32,6 +32,7 @@ private:
 	ATorre* Torre; 
 
 
+
 // Métodos:
 
 
@@ -39,12 +40,13 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void SpawnearTorre(uint8 ID);
 	void QuitarTorre();
-	void LiberarCasilla();
 	bool CasillaVacia();
 	ATorre* ObtenerTorreEnCasilla();
 
 
-
+protected:
+	UFUNCTION(BlueprintImplementableEvent)
+	void PonerMaterialBase();
 
 
 

@@ -35,7 +35,10 @@ public:
 
 // Métodos
 
-
 	UFUNCTION()
-	void AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador);
+	virtual void AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador);
+
+protected:
+	float ObtenerFraccionVidaRestante();
+
 };

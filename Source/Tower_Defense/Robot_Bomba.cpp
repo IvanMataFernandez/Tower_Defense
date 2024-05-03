@@ -10,11 +10,13 @@
 /*
 
     IDs de animaciones:
-   -1: Mover ruedas (quitar loop)
+   -2: Mostrar estado 2 vida
+   -1: Mostrar estado 1 vida 
     0: Morir
     1: Mover ruedas (activar loop)
-    2: Disparar laser
-    3: Detonar
+    2: Mover ruedas (quitar loop)
+    3: Disparar laser
+    4: Detonar
 
 */
 
@@ -41,8 +43,8 @@ void ARobot_Bomba::EmpezarDetonar() {
     Velocidad = 0;
     float Espera = this->TiempoParaExplosion;
     
-    RealizarAnimacion(-1); // Quitar el loop de animacion de movimiento de ruedas
-    RealizarAnimacion(3);
+    RealizarAnimacion(2); // Quitar el loop de animacion de movimiento de ruedas
+    RealizarAnimacion(4);
     // Animar el robot para que detone
     GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ARobot_Bomba::Detonar,Espera, false);
 

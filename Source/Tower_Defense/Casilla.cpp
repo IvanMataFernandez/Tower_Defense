@@ -4,10 +4,10 @@
 #include "Casilla.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "Torre.h"
+#include "Materials/Material.h"
 
 
 
-#include "ConstructoraDeBlueprints.h"
 
 
 // Sets default values
@@ -35,19 +35,18 @@ void ACasilla::QuitarTorre() {
 
 	// Pre: Casilla con Torre
 
-	this->Torre->QuitarTorre();
-	
+
+
+
+  	this->Torre = nullptr;
+	this->PonerMaterialBase(); // En blueprint, comprobar si la casilla se iluminó por un Productor, y si lo fue, apagarla y ponerla con su material original de nuevo
+
+
+
 }
 
 
 
-void ACasilla::LiberarCasilla() {
-  // This->Torre Llama aquí para quitarse de la casilla
-
-  this->Torre->SetOwner(nullptr);
-  this->Torre = nullptr;
-
-}
 
 
 ATorre* ACasilla::ObtenerTorreEnCasilla() {

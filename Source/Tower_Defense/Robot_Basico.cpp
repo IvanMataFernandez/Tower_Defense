@@ -9,10 +9,12 @@
 /*
 
     IDs de animaciones:
-   -1: Mover ruedas (quitar loop)
+   -2: Mostrar estado 2 vida
+   -1: Mostrar estado 1 vida 
     0: Morir
     1: Mover ruedas (activar loop)
-    2: Disparar laser
+    2: Mover ruedas (quitar loop)
+    3: Disparar laser
 
 */
 
@@ -53,7 +55,7 @@ bool ARobot_Basico::TorreEnRango() {
 
 void ARobot_Basico::InicializarAtaque() {
 
-    RealizarAnimacion(-1); // Quitar el loop de animacion de movimiento de ruedas
+    RealizarAnimacion(2); // Quitar el loop de animacion de movimiento de ruedas
     Super::ClearTimer();
     this->RepetirAtaque();
 
@@ -76,7 +78,7 @@ void ARobot_Basico::Atacar(float DeltaTime) {
 
     if (Timer == this->TiempoParaAnimacionDisparo) {
 
-        RealizarAnimacion(2); // Animar el robot para que realize el disparo
+        RealizarAnimacion(3); // Animar el robot para que realize el disparo
         float Espera = this->TiempoPorDisparo - Timer;
 
         FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Basico::Atacar, Espera);

@@ -41,6 +41,16 @@ void UComponenteVida::AplicarDano(AActor* Danado, float DanoBase, const UDamageT
 
 }
 
+float UComponenteVida::ObtenerFraccionVidaRestante() {
+	if (this->Vida > 0) {
+		return this->Vida / this->VidaMaxima;
+
+	} else {
+		return 0.f;
+	}
+}
+
+
 
 
 

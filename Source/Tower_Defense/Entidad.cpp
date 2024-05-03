@@ -43,10 +43,6 @@ void AEntidad::Matar() {
 	// Se llama a este método cuando vida = 0
 	// Quitar BT de la clase porque se va a morir
 
-
-
-	// RealizarAnimacion(int Animacion)
-
 	this->QuitarIA();
 	this->Hitbox->SetCollisionEnabled(ECollisionEnabled::NoCollision); // Quitar hitbox para que los enemigos ignoren a esta entidad y los proyectiles la sobrepasen
 

@@ -22,7 +22,6 @@ public:
 
 	virtual void Matar() override;
 
-	void QuitarTorre();
 
 
 

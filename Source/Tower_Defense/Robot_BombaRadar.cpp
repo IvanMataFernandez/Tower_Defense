@@ -8,19 +8,21 @@
 /*
 
     IDs de animaciones:
-   -1: Mover ruedas (quitar loop) y mover helice (quitar loop)
+   -2: Mostrar estado 2 vida
+   -1: Mostrar estado 1 vida 
     0: Morir
     1: Mover ruedas (activar loop) 
-    2: Disparar laser
-    3: Detonar
-    4: Mover helice (activar loop)
+    2: Mover ruedas (quitar loop) 
+    3: Disparar laser
+    4: Detonar
+    5: Mover helice (activar loop)
 
 */
 
 
 void ARobot_BombaRadar::BeginPlay() {
     Super::BeginPlay();
-    RealizarAnimacion(4);
+    RealizarAnimacion(5);
 
 }
 

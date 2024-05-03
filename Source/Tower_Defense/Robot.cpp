@@ -12,9 +12,9 @@
 /*
 
     IDs de animaciones:
-   -1: Mover ruedas (quitar loop) 
     0: Morir
     1: Mover ruedas (activar loop) 
+    2: Mover ruedas (quitar loop) 
 
 
 */
@@ -37,7 +37,7 @@ void ARobot::QuitarIA() {
     Super::QuitarIA();
 
     // En los robots, al quitar IA se debe quitar la animacion de moverse tmb
-    RealizarAnimacion(-1); 
+    RealizarAnimacion(2); 
 
 }
 
@@ -104,6 +104,6 @@ void ARobot::Matar() {
     }
 
 
-    this->RealizarAnimacion(-1);
+    this->RealizarAnimacion(2);
     Super::Matar();
 }
