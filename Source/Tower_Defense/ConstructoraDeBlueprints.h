@@ -23,9 +23,13 @@ enum class Torres :uint8 {
 	PanelSolar = 0x08,
 	PanelSolarDoble = 0x09,
 
-	// 0x0B - W/E -> Usos Unicos
+	// 0x0B - 0x0F -> Usos Unicos
 	Mina = 0x0B,
-	Bomba = 0x0C
+	Bomba = 0x0C,
+
+	// 0x10 - 0x13 -> Muros
+
+	Escudo = 0x10
 
 
 };
@@ -39,10 +43,11 @@ enum class Robots :uint8 {
 	Medio = 0x02,
 	Duro = 0x03,
 
-	// 0x08 - 0x10 -> Bombas
+	// 0x08 - 0x10 -> Especiales
 
 	Bomba = 0x08,
 	BombaRadar = 0x09,
+	Ocultador = 0x0A,
 
 	// 0xFF -> IA reservada para preview, usable por todo bot
 	Preview = 0xFF

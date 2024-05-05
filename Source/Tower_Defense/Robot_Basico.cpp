@@ -12,8 +12,8 @@
    -2: Mostrar estado 2 vida
    -1: Mostrar estado 1 vida 
     0: Morir
-    1: Mover ruedas (activar loop)
-    2: Mover ruedas (quitar loop)
+    1: Moverse
+    2: Parar de moverse
     3: Disparar laser
 
 */
@@ -57,11 +57,10 @@ void ARobot_Basico::InicializarAtaque() {
 
     RealizarAnimacion(2); // Quitar el loop de animacion de movimiento de ruedas
     Super::ClearTimer();
-    this->RepetirAtaque();
-
+    this->PrepararAtaque();
 }
 
-void ARobot_Basico::RepetirAtaque() {
+void ARobot_Basico::PrepararAtaque() {
 
 
     float Espera = this->TiempoParaAnimacionDisparo;
@@ -86,7 +85,7 @@ void ARobot_Basico::Atacar(float DeltaTime) {
 
     } else {
         this->Disparar();
-        this->RepetirAtaque();
+        this->PrepararAtaque();
 
     }
 

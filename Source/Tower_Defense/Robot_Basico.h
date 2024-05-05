@@ -35,7 +35,7 @@ private:
 	float RangoEnCasillas;
 
 
-	
+
 	
 
 
@@ -52,13 +52,17 @@ private:
 
 
 public:
-	void InicializarAtaque();
+	virtual void InicializarAtaque();
 	bool TorreEnRango();
+
+
+protected:
+	void PrepararAtaque();
+
 
 private:
 
 	void Atacar(float DeltaTime);
-	void RepetirAtaque();
 	void Disparar();
 
 };

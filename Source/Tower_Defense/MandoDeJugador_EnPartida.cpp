@@ -131,7 +131,8 @@ void AMandoDeJugador_EnPartida::Pinchar() {
 
             if (this->SeleccionDeTorre == 1) { 
 
-                Casilla->QuitarTorre(); // Si lo está, quitamos la torre del nivel
+
+                Casilla->DestruirTorre(); // Si lo está, quitamos la torre del nivel
 
             } else {
 
@@ -156,7 +157,7 @@ void AMandoDeJugador_EnPartida::Pinchar() {
 
         if (Torre) {
 
-            // Si lo es, ver si tenemos la "pala" seleccionada
+            // Si lo es, ver si tenemos la TNT seleccionada
             this->SettearBorradorDeTorre();
             
             if (this->SeleccionDeTorre == 1) {
@@ -166,7 +167,7 @@ void AMandoDeJugador_EnPartida::Pinchar() {
                 ACasilla* CasillaDeTorre = Cast<ACasilla>(Torre->GetOwner());
 
                 if (CasillaDeTorre) {
-                    CasillaDeTorre->QuitarTorre();
+                    CasillaDeTorre->DestruirTorre();
                 }
 
 

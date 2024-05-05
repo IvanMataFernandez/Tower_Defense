@@ -1,0 +1,182 @@
+{
+    "header": {
+        "robotsPermitidos": [0, 8],
+        "tiempoSinEnemigos": 58
+    },
+
+    "oleadas": [
+
+        {
+            "id": 0,
+            "oleadaGrande": false,
+            "peso": 1,
+            "probabilidades": [1.0, 0],
+            "tiempoEntreSpawn": 0.2,
+            "tiempoSiguienteOleada": 20
+
+
+            
+        },
+
+        {
+            "id": 1,
+            "oleadaGrande": false,
+            "peso": 1,
+            "probabilidades": [1.0, 0],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+        {
+            "id": 2,
+            "oleadaGrande": false,
+            "peso": 2,
+            "probabilidades": [1.0, 0],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+
+        {
+            "id": 3,
+            "oleadaGrande": false,
+            "peso": 3,
+            "probabilidades": [1.0, 0],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+
+        {
+            "id": 4,
+            "oleadaGrande": false,
+            "peso": 3,
+            "probabilidades": [1.0, 0],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+
+        {
+            "id": 5,
+            "oleadaGrande": false,
+            "peso": 6,
+            "probabilidades": [0.2, 0.8],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+
+        {
+            "id": 6,
+            "oleadaGrande": false,
+            "peso": 4,
+            "probabilidades": [0.8, 0.2],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+
+        {
+            "id": 7,
+            "oleadaGrande": false,
+            "peso": 5,
+            "probabilidades": [0.7, 0.3],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+        {
+            "id": 8,
+            "oleadaGrande": true,
+            "peso": 10,
+            "probabilidades": [0.7, 0.3],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 35
+
+
+        },
+
+
+        {
+            "id": 9,
+            "oleadaGrande": false,
+            "peso": 5,
+            "probabilidades": [1.0, 0],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+
+        {
+            "id": 10,
+            "oleadaGrande": false,
+            "peso": 5,
+            "probabilidades": [0.1, 0.9],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+
+        {
+            "id": 11,
+            "oleadaGrande": false,
+            "peso": 6,
+            "probabilidades": [0.5, 0.5],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+
+        {
+            "id": 12,
+            "oleadaGrande": false,
+            "peso": 6,
+            "probabilidades": [0.8, 0.2],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 20
+
+
+        },
+
+        {
+            "id": 13,
+            "oleadaGrande": true,
+            "peso": 14,
+            "probabilidades": [0.85, 0.15],
+            "tiempoEntreSpawn": 0.5,
+            "tiempoSiguienteOleada": 999999
+
+
+        }
+
+
+
+
+
+    ]
+
+
+}
+
+

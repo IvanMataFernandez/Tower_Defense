@@ -8,7 +8,7 @@
 void UComponenteVidaConEstados::BeginPlay()
 {
 	Super::BeginPlay();
-    this->Estado = 3;
+    this->Estado = this->NumEstados;
 
 
 }
@@ -17,11 +17,11 @@ void UComponenteVidaConEstados::BeginPlay()
 void UComponenteVidaConEstados::AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador) {
 
     Super::AplicarDano(Danado, DanoBase, TipoDano, Instigator, Causador);
-    int ThresholdVida = FMath::Floor(Super::ObtenerFraccionVidaRestante() * 3)+1;
+    int ThresholdVida = FMath::Floor(Super::ObtenerFraccionVidaRestante() * this->NumEstados)+1;
 
     if (ThresholdVida < this->Estado) {
         this->Estado = ThresholdVida;
-        Cast<ARobot>(this->GetOwner())->RealizarAnimacion(this->Estado * -1); // TODO: Cast a Entidad si se desarrolla una torre Wall
+        Cast<AEntidad>(this->GetOwner())->RealizarAnimacion(this->Estado * -1);
     }
     
 	

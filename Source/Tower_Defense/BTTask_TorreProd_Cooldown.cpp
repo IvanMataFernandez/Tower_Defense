@@ -14,7 +14,7 @@ UBTTask_TorreProd_Cooldown::UBTTask_TorreProd_Cooldown() {
  EBTNodeResult::Type UBTTask_TorreProd_Cooldown::ExecuteTask(UBehaviorTreeComponent &BT, uint8 *NodeMemory) {
 
     Super::ExecuteTask(BT,NodeMemory);
-    Cast<ATorre_Producidor>(BT.GetAIOwner()->GetPawn())->PrepararTorre();
+    Cast<ATorre_Producidor>(BT.GetAIOwner()->GetPawn())->PrepararParaProduccion();
     return EBTNodeResult::InProgress;
 
  }

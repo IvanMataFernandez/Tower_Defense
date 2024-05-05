@@ -39,6 +39,7 @@ void AEntidad::Invisibilizar() {
 }
 
 
+
 void AEntidad::Matar() {
 	// Se llama a este método cuando vida = 0
 	// Quitar BT de la clase porque se va a morir
@@ -84,7 +85,7 @@ void AEntidad::PausarEntidad() {
 
 	AMandoDeIA* IA = Cast<AMandoDeIA>(this->GetController());
 
-	if (IA) {
+	if (IA && IA->TieneIA()) {
 		IA->ActivarIA(false);
 		GetWorld()->GetTimerManager().ClearTimer(TimerFrame);
 		UE_LOG(LogTemp, Display, TEXT("DESACTIVA"));

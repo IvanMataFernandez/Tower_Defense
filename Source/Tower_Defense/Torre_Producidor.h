@@ -57,10 +57,10 @@ private:
 
 
 public:
-	void PrepararTorre();
+	void PrepararParaProduccion();
 	void Click();
 	void Producir();
-
+	void FinProduccion(); 
 
 
 };

@@ -23,7 +23,11 @@ protected:
 // Atrubutos
 
 private:
-	int Estado;  // 3 -> (66-100)% | 2 -> (33-66)% | 1-> (0-33)%
+
+UPROPERTY(EditAnywhere, Category = "Datos")
+	int NumEstados;
+
+	int Estado;  
 
 
 // Métodos

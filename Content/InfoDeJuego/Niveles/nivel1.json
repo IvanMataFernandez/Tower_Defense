@@ -16,29 +16,6 @@
 
 
             
-        },
-
-        {
-            "id": 0,
-            "oleadaGrande": true,
-            "peso": 1,
-            "probabilidades": [1.0],
-            "tiempoEntreSpawn": 0.2,
-            "tiempoSiguienteOleada": 80
-
-
-            
-        },
-        {
-            "id": 0,
-            "oleadaGrande": true,
-            "peso": 1,
-            "probabilidades": [1.0],
-            "tiempoEntreSpawn": 0.2,
-            "tiempoSiguienteOleada": 80
-
-
-            
         }
 
     ]

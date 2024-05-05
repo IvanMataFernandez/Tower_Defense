@@ -31,6 +31,9 @@ void AMandoDeIA::SettearIA(uint8 Clase, bool Torre) {
 
 }
 
+bool AMandoDeIA::TieneIA() {
+    return this->BT != nullptr;
+}
 
 void AMandoDeIA::ActivarIA(bool Activar) {
     UBehaviorTreeComponent* BehaviorTreeComponent = this->FindComponentByClass<UBehaviorTreeComponent>();

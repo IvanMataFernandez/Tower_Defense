@@ -26,8 +26,9 @@ private:
 public:
 	void SettearIA(uint8 Clase, bool Torre);
 
-
+ 	bool TieneIA();
 	void ActivarIA(bool Activar);
+
 
 public:
 

@@ -39,7 +39,9 @@ private:
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void SpawnearTorre(uint8 ID);
-	void QuitarTorre();
+	void QuitarReferenciaTorre();
+	void DestruirTorre();
+
 	bool CasillaVacia();
 	ATorre* ObtenerTorreEnCasilla();
 

@@ -25,7 +25,7 @@ protected:
 
 private:
 
-	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	UPROPERTY(EditAnywhere, Category = "Datos")
 	float VidaMaxima;
 	float Vida;
 

@@ -4,26 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_Entidad_HacerAnimacion.generated.h"
+#include "BTTask_TorreProd_FinProduccion.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TOWER_DEFENSE_API UBTTask_Entidad_HacerAnimacion : public UBTTaskNode
+class TOWER_DEFENSE_API UBTTask_TorreProd_FinProduccion : public UBTTaskNode
 {
 	GENERATED_BODY()
 
 public:	
-	UBTTask_Entidad_HacerAnimacion();
+	UBTTask_TorreProd_FinProduccion();
 
 protected:
 
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent &BT, uint8 *NodeMemory) override;
 
 
-private:
-	UPROPERTY(EditAnywhere)
-	int Animacion;
 
 };

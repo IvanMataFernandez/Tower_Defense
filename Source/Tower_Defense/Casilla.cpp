@@ -30,10 +30,18 @@ bool ACasilla::CasillaVacia() {
   return !this->Torre;
 
 }
+void ACasilla::DestruirTorre() {
 
-void ACasilla::QuitarTorre() {
+	// Se quiere quitar la referencia y destruir el actor (e.j, cuando se usa la TNT para quitar la torre y se skippea la animacion de muerte)
+	
+	this->Torre->Destroy();
+	this->QuitarReferenciaTorre();
 
-	// Pre: Casilla con Torre
+
+}
+void ACasilla::QuitarReferenciaTorre() {
+
+	// Solo quita la referencia de la torre pero no la destruye (e.j, cuando se va a morir una torre, la propia clase se destruye pero se debe quitar su pointer)
 
 
 

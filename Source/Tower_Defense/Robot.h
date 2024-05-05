@@ -53,11 +53,11 @@ private:
 
 
 public:
-	void InicializarMoverVertical();
+	virtual void InicializarMoverVertical();
 	void MoverVertical(float DeltaTime);
 	bool HaMovidoEnVerticalDistanciaX(float Distancia);
 
-	void InicializarMover();
+	virtual void InicializarMover();
 	void Mover(float DeltaTime);
 
 

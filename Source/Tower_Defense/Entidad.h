@@ -67,7 +67,7 @@ public:
 protected:
 	void ClearTimer();
 	void Invisibilizar();
-
+	void VisibilizarATorres();
 
 
 

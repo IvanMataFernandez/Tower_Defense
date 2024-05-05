@@ -746,6 +746,7 @@ void AGameMode_EnPartida::GenerarRobot() {
             // Si queda budget, llamar a esta funcion de nuevo tras el cooldown de spawnear un robot
             GetWorld()->GetTimerManager().SetTimer(this->TimerParaSpawnRobot, this, &AGameMode_EnPartida::GenerarRobot, this->TiempoEntreSpawn , false);
 
+
         } else if (this->SeQuiereSpawnearLaSiguienteOleada) {
             // Si no queda budget pero se habia triggeado el flag de querer spawnear la siguiente oleada YA, como justo hemos acabdo de spawnear esta, crear la siguiente.
 
@@ -757,7 +758,11 @@ void AGameMode_EnPartida::GenerarRobot() {
             this->CargarDatosOleada();
 
         }
-    } 
+    
+    } else {
+        // Si no se pudo spawnear bot porque no tenemos suficente budget, settear el budget a cero para indicar que no hay más spawns
+        this->PesoRestante = 0;
+    }
  
 
 

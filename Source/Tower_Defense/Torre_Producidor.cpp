@@ -35,7 +35,7 @@ void ATorre_Producidor::BeginPlay() {
     this->MandoDeIA = Cast<AMandoDeIA>(this->GetController());
 }
 
-void ATorre_Producidor::PrepararTorre() {
+void ATorre_Producidor::PrepararParaProduccion() {
 
     // Preparar la torre para que inicie el ciclo, se pasa al estado de empezar la animación de producir
 
@@ -49,8 +49,17 @@ void ATorre_Producidor::PrepararTorre() {
 
 void ATorre_Producidor::Producir() {
 
+    this->RealizarAnimacion(2);
     this->EnergiaDisponible = true;
     GetWorld()->GetTimerManager().SetTimer(TimerFrame, this->MandoDeIA, &AMandoDeIA::AcabarTareaActual, this->TiempoHastaQueCaducaEnergia, false);               
+
+}
+
+void ATorre_Producidor::FinProduccion() {
+    this->RealizarAnimacion(1);
+    this->EnergiaDisponible = false;
+   // this->MandoDeIA->AcabarTareaActual();
+
 
 }
 

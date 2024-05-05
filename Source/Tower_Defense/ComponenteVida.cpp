@@ -29,14 +29,18 @@ void UComponenteVida::BeginPlay()
 
 void UComponenteVida::AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador) {
 
-	this->Vida -= DanoBase;
+	if (this->Vulnerable) {
+		this->Vida -= DanoBase;
 
-	if (this->Vida <= 0.f && this->Vulnerable) {
-		Cast<AEntidad>(GetOwner())->Matar();
-		this->Vulnerable = false;
-
-	}
+		if (this->Vida <= 0.f) {
+			Cast<AEntidad>(GetOwner())->Matar();
+			this->Vulnerable = false;
+		}
 	
+	}
+
+
+
 
 
 }
