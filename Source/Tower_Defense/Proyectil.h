@@ -63,6 +63,12 @@ private:
 
 	void Caducar();
 
+
+protected:
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void AnimarHit();
+
 public:
 
 	void Pausar();

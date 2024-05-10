@@ -1,7 +1,7 @@
 {
     "header": {
-        "robotsPermitidos": [10],
-        "tiempoSinEnemigos": 14
+        "robotsPermitidos": [0,2,3,8,9,10],
+        "tiempoSinEnemigos": 0.01
     },
 
     "oleadas": [
@@ -10,7 +10,7 @@
             "id": 0,
             "oleadaGrande": true,
             "peso": 5,
-            "probabilidades": [1.0],
+            "probabilidades": [1.0,0,0,0,0,0],
             "tiempoEntreSpawn": 0.2,
             "tiempoSiguienteOleada": 20
 

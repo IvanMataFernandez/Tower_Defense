@@ -76,6 +76,7 @@ void AProyectil::EnColision(UPrimitiveComponent* ComponenteNuestro, AActor* Otro
 
 	if (Cast<AEntidad>(OtroActor)) {
 		UGameplayStatics::ApplyDamage(OtroActor, this->CapacidadDestruccion, nullptr, this, UDamageType::StaticClass());
+		this->AnimarHit();
 		this->ObjetivosRestantes--;
 	} else {
 		// Si se colisionó con algo que no es una entidad, eliminar inmediatamente el proyectil

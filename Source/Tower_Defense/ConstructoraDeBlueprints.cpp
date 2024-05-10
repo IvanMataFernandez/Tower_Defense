@@ -54,6 +54,7 @@ UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase, bool Torre) {
 
             case Torres::Bomba:
                 RutaBT = TEXT("/Game/Blueprints/IA/Torres/TorreUsoInstantaneo/BT_TorreUsoInstantaneo"); 
+                break;
             case Torres::Escudo:
                 return nullptr;
 

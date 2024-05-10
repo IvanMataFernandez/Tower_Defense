@@ -568,8 +568,12 @@ void AGameMode_EnPartida::CargarDatosOleada() {
     if (this->GrandesOleadas.Contains(this->OleadaActual)) {
  
         // Se aproxima FLAG de robots (oleada grande), esperar unos 6 segundos para mostrar por UI y hacer avisos sonoros
+
        
         // TODO:  Mostrar cosas por UI
+
+        this->ComunicarAvisoDeOleadaGrande();
+
 
  
         GetWorld()->GetTimerManager().SetTimer(this->TimerParaSpawnRobot, this, &AGameMode_EnPartida::GenerarOleadaGrande, 6.f, false);   
