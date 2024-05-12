@@ -6,6 +6,8 @@
 #include "Musica_EnPartida.h"
 #include "Sound/SoundBase.h"
 #include "Components/AudioComponent.h"
+#include "Guardador.h"
+#include "Kismet/GameplayStatics.h"
 
 
 
@@ -44,6 +46,12 @@ void AMusica_EnPartida::Tocar(int ID) {
             MusicaATocar = this->MusicaVictoria;
 
     } 
+    UGuardador* Guardador = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
+
+    this->GetAudioComponent()->VolumeMultiplier = Guardador->VolumenAudio;
+
+
+
     this->GetAudioComponent()->SetSound(MusicaATocar);
     this->GetAudioComponent()->Play(0.f);
     

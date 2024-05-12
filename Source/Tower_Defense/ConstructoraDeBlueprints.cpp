@@ -102,18 +102,16 @@ float ConstructoraDeBlueprints::GetTiempoDeRecargaDeTorre(uint8 Clase) {
             case Torres::Canon:
             case Torres::CanonDoble:
             case Torres::PistolaLaser:
+            case Torres::PanelSolar:
+            case Torres::PanelSolarDoble:
                 return 5.f;
                 
 
 
-            case Torres::PanelSolar:
-            case Torres::PanelSolarDoble:
-                return 3.f;
             
             case Torres::Mina:
             case Torres::Bomba:
             case Torres::Escudo:
-
                 return 25.f;
 
         }
@@ -124,17 +122,22 @@ float ConstructoraDeBlueprints::GetTiempoDeRecargaDeTorre(uint8 Clase) {
 
 
 bool ConstructoraDeBlueprints::GetEmpiezaRecargadaTorre(uint8 Clase) {
-    return Clase > 7 && Clase < 11;
+    switch (Clase) {
+        case Torres::PanelSolar:
+            return true;
+        default:
+            return false;    
+    }
 }
 
 int ConstructoraDeBlueprints::GetCosteDeTorre(uint8 Clase) {
         switch (Clase) {
             case Torres::Canon:
-                return 20;
+                return 25;
             case Torres::CanonDoble:
-                return 45;
-            case Torres::PistolaLaser:
                 return 55;
+            case Torres::PistolaLaser:
+                return 75;
                 
 
 
@@ -149,7 +152,7 @@ int ConstructoraDeBlueprints::GetCosteDeTorre(uint8 Clase) {
                 return 5;
 
             case Torres::Bomba:
-                return 35;
+                return 50;
 
         }
 
@@ -163,14 +166,15 @@ int ConstructoraDeBlueprints::GetPesoDeRobot(uint8 Clase) {
             case Robots::LiderOleada:
                 return 1;
             case Robots::Medio:
-                return 2;
             case Robots::Bomba:
+
+                return 2;
             case Robots::Ocultador:
+            case Robots::Duro:
 
                 return 3;
             
             case Robots::BombaRadar:
-            case Robots::Duro:
 
 
                 return 4;

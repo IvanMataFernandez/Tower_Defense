@@ -33,6 +33,7 @@ void ATorre_Producidor::BeginPlay() {
     Super::BeginPlay();
     this->MandoDeJugador = Cast<AMandoDeJugador_EnPartida>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
     this->MandoDeIA = Cast<AMandoDeIA>(this->GetController());
+    this->PrimeraProduccion = true;
 }
 
 void ATorre_Producidor::PrepararParaProduccion() {
@@ -41,6 +42,14 @@ void ATorre_Producidor::PrepararParaProduccion() {
 
     this->EnergiaDisponible = false;
     float TiempoParaProduccion = this->TiempoProduccionBase + (FMath::FRand() - 0.5) * 2 * this->DesviacionTiempoProduccionMax;
+
+    if (this->PrimeraProduccion) {
+        // La primera produccion se acorta para empezar a dar profit al player antes
+        TiempoParaProduccion = TiempoParaProduccion / 4;
+        this->PrimeraProduccion = false;
+
+    }
+
     GetWorld()->GetTimerManager().SetTimer(TimerFrame, this->MandoDeIA, &AMandoDeIA::AcabarTareaActual, TiempoParaProduccion, false);               
 
 

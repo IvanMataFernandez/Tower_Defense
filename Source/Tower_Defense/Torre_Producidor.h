@@ -49,6 +49,7 @@ private:
 	float TiempoHastaQueCaducaEnergia;
 
 	bool EnergiaDisponible;
+	bool PrimeraProduccion;
 
 	AMandoDeJugador_EnPartida* MandoDeJugador;
 	AMandoDeIA* MandoDeIA;

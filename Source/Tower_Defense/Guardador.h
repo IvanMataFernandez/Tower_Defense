@@ -23,4 +23,8 @@ public:
 	bool JuegoCompleto;
 	UPROPERTY(BlueprintReadWrite)
 	TArray<int> IDsTorresDesbloqueadas;
+	UPROPERTY(BlueprintReadWrite)
+	float VolumenAudio;
+	UPROPERTY(BlueprintReadWrite)
+	float VolumenSFX;
 };
