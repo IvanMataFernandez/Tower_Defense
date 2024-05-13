@@ -46,14 +46,12 @@ void AGameMode_EnPartida::BeginPlay()
 
    
     this->ZonaSpawn = Cast<AZonaSpawnRobot>(UGameplayStatics::GetActorOfClass(GetWorld(), AZonaSpawnRobot::StaticClass()));
-    this->ReproductorEnPartida = Cast<AMusica_EnPartida>(UGameplayStatics::GetActorOfClass(GetWorld(), AMusica_EnPartida::StaticClass()));
     this->ZonaSpawnPreview = Cast<AZonaSpawnRobotPreview>(UGameplayStatics::GetActorOfClass(GetWorld(), AZonaSpawnRobotPreview::StaticClass()));
     this->Camara = Cast<APlayerPawn_EnPartida>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
 
-    if (this->ZonaSpawn && this->ReproductorEnPartida && this->ZonaSpawnPreview ) {
+    if (this->ZonaSpawn && this->ZonaSpawnPreview ) {
 
-        this->ReproductorEnPartida->Tocar(3);
-
+      //  this->TocarMusica(3);  --> Por defecto AmbientSound empieza tocando la musica 3, la de pantalla de selección
 
 
         UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
@@ -65,7 +63,7 @@ void AGameMode_EnPartida::BeginPlay()
         if (this->CargarNivel(this->NivelActual)) {
 
             // Carga correcta del nivel
-            // Esperar medio segundo para empezar a mover la camara
+            // Esperar 0.5s para empezar a mover la camara
             FTimerHandle Espera;
             GetWorld()->GetTimerManager().SetTimer(Espera, this->Camara, &APlayerPawn_EnPartida::MoverCamASeleccion, 0.5f, false);   
         } else {
@@ -199,7 +197,8 @@ void AGameMode_EnPartida::CargarCuentaAtrasParaEmpezarJuego() {
     this->EliminarRobotsPreview();
 
     this->CrearInterfazDeCuentaAtras();
-    this->ReproductorEnPartida->Tocar(4); // Hacer sonar cuenta atrás            
+    // Hacer sonar cuenta atrás            
+    this->TocarMusica(4);
 
 }
 
@@ -221,10 +220,14 @@ void AGameMode_EnPartida::EmpezarJuego() {
     this->CantidadRobotsSpawneadosPorLinea.Add(0);
     this->CantidadRobotsSpawneadosPorLinea.Add(0);
 
-    this->ReproductorEnPartida->Tocar(0);
+    this->TocarMusica(0);
+
     this->CrearInterfazDePartida();
 
-    this->EmpezarCargaDeSiguienteOleada();
+    this->EmpezarCargaDePrimeraOleada();
+
+              
+
 
 }
 
@@ -423,7 +426,7 @@ void AGameMode_EnPartida::ProcesarClickEnRecompensa() {
 
     // Cuando se hace click en la recompensa, se cambia a musica de victoria y se quita la interfaz de EnPartida (esto ultimo en blueprint)
 
-    this->ReproductorEnPartida->Tocar(7);
+    this->TocarMusica(7);
 
 }
 
@@ -474,6 +477,13 @@ void AGameMode_EnPartida::AvanzarNivel(int TorreDesbloqueo) {
 }
 
 
+void AGameMode_EnPartida::EmpezarCargaDePrimeraOleada() {
+
+    GetWorld()->GetTimerManager().SetTimer(this->TimerParaOleadas, this, &AGameMode_EnPartida::CargarDatosOleada, this->HastaSiguienteOleada, false);      
+    FTimerHandle TimerSFX;         
+    GetWorld()->GetTimerManager().SetTimer(TimerSFX, this, &AGameMode_EnPartida::SonarSFXGlobal, this->HastaSiguienteOleada, false);  
+
+}
 
 
 
@@ -582,10 +592,10 @@ void AGameMode_EnPartida::CargarDatosOleada() {
         // Cambiar la música también para informar de la orda, la última orda tiene música distinta a las demás
         if (this->OleadaActual != this->OleadasTotales-1) {
             // No ultima orda
-            this->ReproductorEnPartida->Tocar(1);
+             this->TocarMusica(1);
         }  else {
             // Ultima orda
-            this->ReproductorEnPartida->Tocar(2);
+            this->TocarMusica(2);
         }          
 
 
@@ -882,7 +892,7 @@ void AGameMode_EnPartida::CongelarMundoPorDerrota(ARobot* Causante) {
 
 
     this->CausanteDerrota = Causante;
-    this->ReproductorEnPartida->Tocar(5);
+    this->TocarMusica(5);
    
     // Parar spawns
 
@@ -951,7 +961,7 @@ void AGameMode_EnPartida::FinalizarAnimacionDerrota() {
     this->CausanteDerrota->Destroy();
     
     this->CrearInterfazDeDerrota(); // Llamado por blueprint
-    this->ReproductorEnPartida->Tocar(6);
+    this->TocarMusica(6);
 
 
 

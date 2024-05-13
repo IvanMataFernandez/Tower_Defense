@@ -28,8 +28,13 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float DanoDeExplosion;
 
+
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float TiempoParaExplosion;
+
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float TiempoDeExplosion;
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
@@ -43,10 +48,15 @@ public:
 	virtual void Matar() override; 
 
 
+protected:
+
+	virtual void AutoDestruir() override;
+
 private:
 	void EmpezarDetonar();
 
 	void Detonar();
+
 
 
 

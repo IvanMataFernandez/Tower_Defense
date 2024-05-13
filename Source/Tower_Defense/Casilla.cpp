@@ -4,8 +4,10 @@
 #include "Casilla.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "Torre.h"
-#include "Materials/Material.h"
+#include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
 
+float ACasilla::VolumenEfectos = 1.0f;
 
 
 
@@ -20,6 +22,8 @@ ACasilla::ACasilla()
 	// Settear el mesh
 	this->Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	RootComponent = this->Mesh;
+	this->ComponenteDeAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("Componente De Audio"));
+	this->ComponenteDeAudio->SetupAttachment(this->Mesh);
 
 }
 
@@ -30,20 +34,28 @@ bool ACasilla::CasillaVacia() {
   return !this->Torre;
 
 }
+
+
+void ACasilla::PonerTorre(ATorre* NuevaTorre) {
+	this->Torre = NuevaTorre;
+	NuevaTorre->SetOwner(this);
+	this->AnimarPonerTorre();
+
+}
+
 void ACasilla::DestruirTorre() {
 
-	// Se quiere quitar la referencia y destruir el actor (e.j, cuando se usa la TNT para quitar la torre y se skippea la animacion de muerte)
+	// Se usa la TNT sobre la casilla.
 	
 	this->Torre->Destroy();
 	this->QuitarReferenciaTorre();
+	this->AnimarDestruirTorre();
 
 
 }
 void ACasilla::QuitarReferenciaTorre() {
 
 	// Solo quita la referencia de la torre pero no la destruye (e.j, cuando se va a morir una torre, la propia clase se destruye pero se debe quitar su pointer)
-
-
 
 
   	this->Torre = nullptr;
@@ -59,4 +71,20 @@ void ACasilla::QuitarReferenciaTorre() {
 
 ATorre* ACasilla::ObtenerTorreEnCasilla() {
 	return this->Torre;
+}
+
+
+void ACasilla::SetVolumenEfectosDeCasillas(float Vol, UObject* ContextoMundo) {
+
+	ACasilla::VolumenEfectos = Vol;
+
+	TArray<AActor*> Casillas;
+    
+    UGameplayStatics::GetAllActorsOfClass(ContextoMundo, ACasilla::StaticClass(), Casillas);
+
+    for (AActor* Casilla : Casillas) {
+
+        Cast<ACasilla>(Casilla)->ComponenteDeAudio->SetVolumeMultiplier(ACasilla::VolumenEfectos);
+    }
+
 }

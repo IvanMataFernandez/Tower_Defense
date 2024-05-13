@@ -42,12 +42,20 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Datos")
 	float TiempoParaExplosion;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Datos")
+	float TiempoDeExplosion;
 
 // Métodos
 
 public:
 
 	void InicializacionFuncion();
+
+
+protected:
+
+	virtual void AutoDestruir() override;
+
 private:
 
 	void Activar();

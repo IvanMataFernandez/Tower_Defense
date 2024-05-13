@@ -18,6 +18,8 @@
     3: Disparar laser
     4: Detonar
 
+
+
 */
 
 
@@ -71,5 +73,14 @@ void ARobot_Bomba::Detonar() {
 
     Super::Matar();
 
+
+
+
+}
+
+
+void ARobot_Bomba::AutoDestruir() {
+    Super::AutoDestruir();
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ARobot_Bomba::Destruir, this->TiempoDeExplosion, false);
 
 }

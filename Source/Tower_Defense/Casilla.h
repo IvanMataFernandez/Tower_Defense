@@ -7,6 +7,7 @@
 #include "Casilla.generated.h"
 
 class ATorre;
+class UAudioComponent;
 
 UCLASS()
 class TOWER_DEFENSE_API ACasilla : public AActor
@@ -28,8 +29,14 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta= (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* Mesh;
 
-	UPROPERTY(BlueprintReadWrite, meta= (AllowPrivateAccess = "true"))
 	ATorre* Torre; 
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  meta= (AllowPrivateAccess = "true"))
+	UAudioComponent* ComponenteDeAudio;
+
+
+	static float VolumenEfectos;
+
 
 
 
@@ -45,11 +52,20 @@ public:
 	bool CasillaVacia();
 	ATorre* ObtenerTorreEnCasilla();
 
+	UFUNCTION(BlueprintCallable)
+	static void SetVolumenEfectosDeCasillas(float Vol, UObject* ContextoMundo);
 
 protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void PonerMaterialBase();
+	
+	UFUNCTION(BlueprintCallable)
+	void PonerTorre(ATorre* NuevaTorre);
 
-
+	UFUNCTION(BlueprintImplementableEvent)
+	void AnimarPonerTorre();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void AnimarDestruirTorre();
 
 };

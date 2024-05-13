@@ -10,6 +10,11 @@
 #include "ComponenteVida.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
+
+
+float AEntidad::VolumenEfectos = 1.0f;
+
 
 // Sets default values
 AEntidad::AEntidad()
@@ -25,6 +30,21 @@ AEntidad::AEntidad()
 	this->Hitbox->SetupAttachment(this->PosicionBase);
 	this->CuerpoBase->SetupAttachment(this->PosicionBase);
 	this->ComponenteDeAudio->SetupAttachment(this->PosicionBase);
+
+}
+
+
+void AEntidad::SetVolumenEfectosDeEntidades(float Vol, UObject* Contexto) {
+	AEntidad::VolumenEfectos = Vol;
+
+	TArray<AActor*> Entidades;
+    
+    UGameplayStatics::GetAllActorsOfClass(Contexto, AEntidad::StaticClass(), Entidades);
+
+    for (AActor* Entidad : Entidades) {
+
+        Cast<AEntidad>(Entidad)->ComponenteDeAudio->SetVolumeMultiplier(AEntidad::VolumenEfectos);
+    }
 
 }
 
@@ -57,7 +77,7 @@ void AEntidad::Matar() {
 		GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &AEntidad::Destruir,this->TiempoDeAnimacionDeMuerte, false);    
 
 	} else {
-		this->Destruir(); // Es esencialmente Destroy()
+		this->AutoDestruir(); // Es esencialmente Destroy(), pero con un timer de espera potencialmente distinto segun la clase antes de quitarse
 	}
 
 
@@ -114,8 +134,25 @@ void AEntidad::Destruir() {
 	AActor::Destroy(); // Eliminar la entidad (Robot o Torre, debe eliminarse igual)
 }
 
+void AEntidad::AutoDestruir() {
+	
+
+	/* Reimplementado en aquellas entidades que se pueden autodestruirm cada hija pone el tiempo a esperar antes de que se autodestruya, junto con la llamada a Destruir()*/
+
+	this->SetActorLocation(FVector(0,0,-2000)); // Mover el actor para hacer pensar que se ha destruido (se destruirá después, para dar tiempo a audio a que se acabe de reproducir)
+
+	
+	
+}
+
+
+
+
 void AEntidad::BeginPlay() {
 	Super::BeginPlay();
+		UE_LOG(LogTemp, Display, TEXT("Vol: %f"), VolumenEfectos);
+	this->ComponenteDeAudio->SetVolumeMultiplier(AEntidad::VolumenEfectos); // Settear el volumen de SFX en el componente de audio
+
 
 	// Dar controller de IA
 
@@ -142,7 +179,7 @@ void AEntidad::BeginPlay() {
 
 	} else {
 
-		// Si no tienen IA, no deberían contabilizar vida. Entidades sin IA se usan como decoración o mostrar info.
+		// Si no tienen IA, no deberían contabilizar vida. Entidades sin IA se usan como decoración
 
 		UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>();
 

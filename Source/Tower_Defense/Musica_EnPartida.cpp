@@ -2,6 +2,7 @@
 
 // Fill out your copyright notice in the Description page of Project Settings.
 
+// TODO: BOrrar esta clase
 
 #include "Musica_EnPartida.h"
 #include "Sound/SoundBase.h"

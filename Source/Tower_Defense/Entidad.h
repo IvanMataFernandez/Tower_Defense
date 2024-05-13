@@ -50,12 +50,19 @@ protected:
 	UAudioComponent* ComponenteDeAudio;
 
 
-//	UPROPERTY(EditDefaultsOnly)
-//  UAnimacionComponent Animador;
 
+private:
+
+	static float VolumenEfectos;
 // Métodos:
 
 public:
+
+	UFUNCTION(BlueprintCallable)
+	static void SetVolumenEfectosDeEntidades(float Vol, UObject* ContextoMundo);
+	
+
+
 	virtual void Matar();
 	virtual void QuitarIA();
 	void PausarEntidad();
@@ -70,14 +77,14 @@ protected:
 	void VisibilizarATorres();
 
 
+	virtual void AutoDestruir();
+	void Destruir();
 
 
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void DestruirAnimaciones();
 
-private:
 
-	void Destruir();
 
 };

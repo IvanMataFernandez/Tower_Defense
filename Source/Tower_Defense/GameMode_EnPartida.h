@@ -41,7 +41,6 @@ private:
 
 	AZonaSpawnRobot* ZonaSpawn;
 	AZonaSpawnRobotPreview* ZonaSpawnPreview;
-	AMusica_EnPartida* ReproductorEnPartida;
 
 	TArray<TSharedPtr<FJsonValue>> OleadasJson;
 	FTimerHandle TimerParaSpawnRobot;
@@ -117,6 +116,13 @@ public:
 
 protected:
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void TocarMusica(int Id);	
+
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void SonarSFXGlobal();	
+
 	UFUNCTION(BlueprintCallable)
 	void FinSeleccionTorres(TArray<int> IDsTorresElegidas);
 
@@ -156,6 +162,8 @@ private:
 
 	TArray<int> EncontrarGrandesOleadas();
 	void EmpezarCargaDeSiguienteOleada();
+	void EmpezarCargaDePrimeraOleada();
+
 	void CargarDatosOleada();
 	void GenerarOleada();
 	void GenerarOleadaGrande();

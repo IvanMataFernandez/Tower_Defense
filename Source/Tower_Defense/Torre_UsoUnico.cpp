@@ -88,3 +88,11 @@ void ATorre_UsoUnico::Activar() {
     Super::Matar(); // La torre desaparece tras hacer su función
 
 }
+
+
+
+void ATorre_UsoUnico::AutoDestruir() {
+    Super::AutoDestruir();
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_UsoUnico::Destruir, this->TiempoDeExplosion, false);
+
+}
