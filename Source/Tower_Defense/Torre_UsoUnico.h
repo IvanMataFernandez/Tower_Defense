@@ -28,22 +28,26 @@ protected:
 
 // Atributos
 
-private:
 
+protected:
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* ZonaDeAfecto;
+
+private:
+
+
 
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float DanoDeExplosion;
 
 
 
-protected:
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Datos")
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float TiempoParaExplosion;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Datos")
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float TiempoDeExplosion;
+
+
 
 // Métodos
 
@@ -53,6 +57,7 @@ public:
 
 
 protected:
+
 
 	virtual void AutoDestruir() override;
 

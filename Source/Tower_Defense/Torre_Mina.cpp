@@ -50,13 +50,14 @@ void ATorre_Mina::Prepararse() {
 
 void ATorre_Mina::Preparado() {
 
-	// Invisibilizar la mina y hacerla invencible, para esperar a que un bot pise en ella para detonarla
+	// Invisibilizar la mina y quitarle la colision de daño, para esperar a que un bot pise en ella para detonarla
 	this->RealizarAnimacion(2);
 
 	Super::Invisibilizar();
+	Super::DesactivarHitbox();
 	
     UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>();
-	ComponenteVida->Vulnerable = false;
+	ComponenteVida->Invulnerabilizar();
 
 	// Activar el trigger para cuando un bot pase por encima detone
 
@@ -70,6 +71,8 @@ void ATorre_Mina::EnContacto(UPrimitiveComponent* ComponenteNuestro, AActor* Otr
  	
 	
 	// Un bot ha pasado por encima, completar la tarea actual. El siguiente paso es detonar que está ya implementado en Torre_UsoUnico
+	
+	this->ZonaTrigger->SetCollisionEnabled(ECollisionEnabled::NoCollision); // Quitar la hitbox de deteccion de bots encima para que no intente detonar otra vez
 
 	Cast<AMandoDeIA> (this->GetController())->AcabarTareaActual();
 

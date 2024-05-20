@@ -30,7 +30,7 @@ void ARobot_Ocultador::InicializarAtaque() {
     Super::ClearTimer();
     RealizarAnimacion(2);
     RealizarAnimacion(4);
-    this->Vulnerabilizar();
+    this->Vida->Vulnerabilizar();
     GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ARobot_Ocultador::TrasAbrirPuntoExpuesto, this->TiempoParaAbrirCerrarPuntoExpuesto, false);               
 
 }
@@ -53,22 +53,12 @@ void ARobot_Ocultador::InicializarMover() {
 }
 
 void ARobot_Ocultador::TrasCerrarPuntoExpuesto() {
-    this->Invulnerabilizar();
+    this->Vida->Invulnerabilizar();
     Super::InicializarMover();
 }
 
 
 
-void ARobot_Ocultador::Invulnerabilizar() {
-    this->Vida->Vulnerable = false;
-
-
-}
-void ARobot_Ocultador::Vulnerabilizar() {
-    this->Vida->Vulnerable = true;
-
-
-}
 void ARobot_Ocultador::InicializarMoverVertical() {
 
     RealizarAnimacion(5); 

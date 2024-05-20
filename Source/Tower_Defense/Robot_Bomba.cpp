@@ -25,7 +25,7 @@
 
 ARobot_Bomba::ARobot_Bomba() {
     this->AreaDeExplosion = CreateDefaultSubobject<UBoxComponent>(TEXT("RangoDeExplosion"));
-    this->AreaDeExplosion->SetupAttachment(PosicionBase);
+    this->AreaDeExplosion->SetupAttachment(RootComponent);
 }
 
 void ARobot_Bomba::Matar() {
@@ -38,11 +38,11 @@ void ARobot_Bomba::EmpezarDetonar() {
 
     // Desactivar el robot para que no haga nada mientras detona
 
-    Super::ClearTimer(); // Quitar la subrutina de disparo
+    Super::QuitarIA(); // Desactivar la IA y sus timers
     UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>(); // Hacer al robot invulnerable durante la explosión para que no pueda detonar dos veces seguidas
-    ComponenteVida->Vulnerable = false;
+    ComponenteVida->Invulnerabilizar();
 
-    Velocidad = 0;
+    Super::Parar(); // set Velocidad = 0;
     float Espera = this->TiempoParaExplosion;
     
     RealizarAnimacion(2); // Quitar el loop de animacion de movimiento de ruedas

@@ -34,8 +34,6 @@ public:
 	virtual void QuitarIA() override;
 
 private:
-	void Invulnerabilizar();
-	void Vulnerabilizar();
 	void TrasCerrarPuntoExpuesto();
 	void TrasAbrirPuntoExpuesto();
 	

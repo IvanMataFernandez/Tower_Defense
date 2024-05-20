@@ -25,7 +25,7 @@ ATorre_UsoUnico::ATorre_UsoUnico() {
 
     // super() se hace solo
     this->ZonaDeAfecto = CreateDefaultSubobject<UBoxComponent>(TEXT("ZonaDeAfecto"));
-    this->ZonaDeAfecto->SetupAttachment(PosicionBase);
+    this->ZonaDeAfecto->SetupAttachment(RootComponent);
 }
 
 
@@ -96,3 +96,4 @@ void ATorre_UsoUnico::AutoDestruir() {
     GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_UsoUnico::Destruir, this->TiempoDeExplosion, false);
 
 }
+

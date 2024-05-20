@@ -23,6 +23,10 @@ public:
 
 // Atributos
 
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	UBoxComponent* AreaDeExplosion;
+
 private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
@@ -36,9 +40,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float TiempoDeExplosion;
 
-protected:
-	UPROPERTY(EditDefaultsOnly)
-	UBoxComponent* AreaDeExplosion;
+
 
 
 // Métodos

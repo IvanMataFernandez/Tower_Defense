@@ -26,7 +26,7 @@
 
 ATorre_Producidor::ATorre_Producidor() {
     this->Placas = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Placas"));
-    this->Placas->SetupAttachment(PosicionBase);
+    this->Placas->SetupAttachment(RootComponent);
 }
 
 void ATorre_Producidor::BeginPlay() {
@@ -76,8 +76,7 @@ void ATorre_Producidor::Click() {
 
     if (this->EnergiaDisponible) {
         // DAR MONEY!
-        this->MandoDeJugador->IncrementarEnergia(this->CantidadProducida);
-
+        this->MandoDeJugador->ActualizarEnergiaPor(this->CantidadProducida);
         // Repetir ciclo        
         GetWorld()->GetTimerManager().ClearTimer(TimerFrame);
         this->MandoDeIA->AcabarTareaActual();

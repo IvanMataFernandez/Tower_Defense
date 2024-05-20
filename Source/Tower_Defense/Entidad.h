@@ -23,35 +23,46 @@ public:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-// Atrubutos:
 
 
+// Componentes
 
 protected:
-	// Referir a ConstructoraDeBlueprints para info de IDs.
-	UPROPERTY(EditDefaultsOnly, Category = "ID")
-	uint8 ID;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Datos")
-	float TiempoDeAnimacionDeMuerte = 1.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	USceneComponent* PosicionBase;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UAudioComponent* ComponenteDeAudio;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UStaticMeshComponent* CuerpoBase;
+
+
+
+
 
 	float Timer;
 
 	FTimerHandle TimerFrame;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	USceneComponent* PosicionBase;
-	UPROPERTY(EditDefaultsOnly)
-	UBoxComponent* Hitbox;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	UStaticMeshComponent* CuerpoBase;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	UAudioComponent* ComponenteDeAudio;
 
+
+// Atrubutos:
 
 
 private:
+
+	// Referir a ConstructoraDeBlueprints para info de IDs.
+	UPROPERTY(EditDefaultsOnly, Category = "ID")
+	uint8 ID;
+
+	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = "true"))
+	UBoxComponent* Hitbox;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float TiempoDeAnimacionDeMuerte = 1.f;
 
 	static float VolumenEfectos;
 // Métodos:
@@ -75,10 +86,12 @@ protected:
 	void ClearTimer();
 	void Invisibilizar();
 	void VisibilizarATorres();
-
-
+	void DesactivarHitbox();
+	
 	virtual void AutoDestruir();
 	void Destruir();
+
+	uint8 ObtenerID();
 
 
 

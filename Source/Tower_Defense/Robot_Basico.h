@@ -37,7 +37,7 @@ private:
 
 
 	
-
+// Componentes
 
 	UPROPERTY(EditDefaultsOnly)
 	USceneComponent* SpawnProyectiles;

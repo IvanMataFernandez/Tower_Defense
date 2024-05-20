@@ -31,6 +31,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UBoxComponent* ZonaDeSpawn;
 
+
+
 private:
 	int ContadorSpawns;
 

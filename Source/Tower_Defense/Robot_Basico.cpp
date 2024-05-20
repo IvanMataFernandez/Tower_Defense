@@ -23,7 +23,7 @@ ARobot_Basico::ARobot_Basico() {
     this->MeshDisparador = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshDisparador"));
     this->SpawnProyectiles = CreateDefaultSubobject<USceneComponent>(TEXT("SpawnProyectiles"));
 
-    this->MeshDisparador->SetupAttachment(PosicionBase);
+    this->MeshDisparador->SetupAttachment(RootComponent);
     this->SpawnProyectiles->SetupAttachment(this->MeshDisparador);
 
 }

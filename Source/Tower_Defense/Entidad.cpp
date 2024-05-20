@@ -34,6 +34,10 @@ AEntidad::AEntidad()
 }
 
 
+uint8 AEntidad::ObtenerID() {
+	return this->ID;
+}
+
 void AEntidad::SetVolumenEfectosDeEntidades(float Vol, UObject* Contexto) {
 	AEntidad::VolumenEfectos = Vol;
 
@@ -49,6 +53,15 @@ void AEntidad::SetVolumenEfectosDeEntidades(float Vol, UObject* Contexto) {
 }
 
 
+
+         //   FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, Espera);
+         //   GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, Espera, false);
+  //  GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &Func ,Espera, false);   
+
+
+
+
+
 void AEntidad::Invisibilizar() {
 
 	// Settear Trace Responses de Visto por Robot y Torre a ignore, para que las entidades no puedan targettearlo
@@ -59,20 +72,23 @@ void AEntidad::Invisibilizar() {
 }
 
 
+void AEntidad::DesactivarHitbox() {
+	this->Hitbox->SetCollisionEnabled(ECollisionEnabled::NoCollision); // Quitar hitbox para que los enemigos ignoren a esta entidad y los proyectiles la sobrepasen
+
+}
 
 void AEntidad::Matar() {
 	// Se llama a este método cuando vida = 0
 	// Quitar BT de la clase porque se va a morir
 
 	this->QuitarIA();
-	this->Hitbox->SetCollisionEnabled(ECollisionEnabled::NoCollision); // Quitar hitbox para que los enemigos ignoren a esta entidad y los proyectiles la sobrepasen
-
+	this->DesactivarHitbox();
 	// Comprobar si la entidad tenia componente de vida y es vulnerable, si lo es, entonces animar su muerte
 	// Si no cumple la condicion, la unidad se habria automatado y no tiene sentido animar esa muerte (ej, matarse tras haber realizado una explosion)
 
 	UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>();
 
-	if (ComponenteVida && ComponenteVida->Vulnerable) {
+	if (ComponenteVida && ComponenteVida->EsVulnerable()) {
 		this->RealizarAnimacion(0);
 		GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &AEntidad::Destruir,this->TiempoDeAnimacionDeMuerte, false);    
 
@@ -139,7 +155,7 @@ void AEntidad::AutoDestruir() {
 
 	/* Reimplementado en aquellas entidades que se pueden autodestruirm cada hija pone el tiempo a esperar antes de que se autodestruya, junto con la llamada a Destruir()*/
 
-	this->SetActorLocation(FVector(0,0,-2000)); // Mover el actor para hacer pensar que se ha destruido (se destruirá después, para dar tiempo a audio a que se acabe de reproducir)
+	this->SetActorLocation(FVector(0,0,-99999)); // Mover el actor para hacer pensar que se ha destruido (se destruirá después, para dar tiempo a audio a que se acabe de reproducir)
 
 	
 	
@@ -184,7 +200,7 @@ void AEntidad::BeginPlay() {
 		UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>();
 
 		if (ComponenteVida) {
-			ComponenteVida->Vulnerable = false;
+			ComponenteVida->Invulnerabilizar();
 		} 
 	}
 

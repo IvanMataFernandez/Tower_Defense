@@ -32,15 +32,28 @@ protected:
 	UBoxComponent* ZonaDeSpawn;
 
 
+private:
 
-	UPROPERTY(BlueprintReadOnly)
 	TArray<float> PosicionesDeSpawn;
+	TArray<float> EspacioOcupadoPorFila;
+
+	FVector Localizacion;
+	FVector TamanoBox;
+
+
 
 
 // Métodos
 
 public:
+
 	UFUNCTION(BlueprintImplementableEvent)
+	void MaterealizarRobot(int ID, FVector Posicion);
+
 	void SpawnearRobot(int ID ,int Fila); 
+
+
+	void RefrescarNuevaOleada();
+
 
 };

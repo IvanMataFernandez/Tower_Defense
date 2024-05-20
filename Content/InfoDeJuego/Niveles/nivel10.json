@@ -10,7 +10,6 @@
             "oleadaGrande": false,
             "peso": 1,
             "probabilidades": [1.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            "tiempoEntreSpawn": 0.5,
             "tiempoSiguienteOleada": 30
             
         },
@@ -20,7 +19,6 @@
             "oleadaGrande": false,
             "peso": 1,
             "probabilidades": [1.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            "tiempoEntreSpawn": 0.5,
             "tiempoSiguienteOleada": 20
             
         },
@@ -30,7 +28,6 @@
             "oleadaGrande": false,
             "peso": 3,
             "probabilidades": [0.1, 0.6, 0.0, 0.3, 0.0, 0.0],
-            "tiempoEntreSpawn": 0.5,
             "tiempoSiguienteOleada": 20
             
         },
@@ -40,7 +37,6 @@
             "oleadaGrande": false,
             "peso": 4,
             "probabilidades": [0.1, 0.6, 0.0, 0.3, 0.0, 0.0],
-            "tiempoEntreSpawn": 0.5,
             "tiempoSiguienteOleada": 20
             
         },
@@ -49,8 +45,7 @@
             "id": 3,
             "oleadaGrande": false,
             "peso": 5,
-            "probabilidades": [0.1, 0.6, 0.0, 0.3, 0.0, 0.0],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.5, 0.3, 0.0, 0.2, 0.0, 0.0],
             "tiempoSiguienteOleada": 20
             
         },
@@ -59,8 +54,7 @@
             "id": 4,
             "oleadaGrande": false,
             "peso": 6,
-            "probabilidades": [0.1, 0.6, 0.0, 0.3, 0.0, 0.0],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.5, 0.3, 0.0, 0.2, 0.0, 0.0],
             "tiempoSiguienteOleada": 20
             
         },
@@ -69,8 +63,7 @@
             "id": 5,
             "oleadaGrande": false,
             "peso": 6,
-            "probabilidades": [0.05, 0.25, 0.5, 0.2, 0.0, 0.0],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.5, 0.18, 0.2, 0.12, 0.0, 0.0],
             "tiempoSiguienteOleada": 20
             
         },
@@ -79,8 +72,7 @@
             "id": 6,
             "oleadaGrande": false,
             "peso": 7,
-            "probabilidades": [0.05, 0.25, 0.5, 0.2, 0.0, 0.0],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.5, 0.18, 0.2, 0.12, 0.0, 0.0],
             "tiempoSiguienteOleada": 20
             
         },
@@ -89,8 +81,7 @@
             "id": 7,
             "oleadaGrande": false,
             "peso": 8,
-            "probabilidades": [0.05, 0.25, 0.5, 0.2, 0.0, 0.0],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.5, 0.18, 0.2, 0.12, 0.0, 0.0],
             "tiempoSiguienteOleada": 20
             
         },
@@ -99,8 +90,7 @@
             "id": 8,
             "oleadaGrande": true,
             "peso": 16,
-            "probabilidades": [0.15, 0.2, 0.15, 0.2, 0.0, 0.3],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.15, 0.1, 0.15, 0.0, 0.2],
             "tiempoSiguienteOleada": 20
             
         },
@@ -110,8 +100,7 @@
             "id": 9,
             "oleadaGrande": false,
             "peso": 9,
-            "probabilidades": [0.05, 0.2, 0.35, 0.1, 0.0, 0.3],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.0, 0.2],
             "tiempoSiguienteOleada": 20
             
         },
@@ -120,8 +109,7 @@
             "id": 10,
             "oleadaGrande": false,
             "peso": 10,
-            "probabilidades": [0.05, 0.2, 0.35, 0.1, 0.0, 0.3],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.0, 0.2],
             "tiempoSiguienteOleada": 20
             
         },
@@ -130,8 +118,7 @@
             "id": 11,
             "oleadaGrande": false,
             "peso": 12,
-            "probabilidades": [0.05, 0.2, 0.35, 0.1, 0.0, 0.3],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.0, 0.2],
             "tiempoSiguienteOleada": 20
             
         },
@@ -140,8 +127,7 @@
             "id": 12,
             "oleadaGrande": false,
             "peso": 12,
-            "probabilidades": [0.05, 0.2, 0.35, 0.1, 0.0, 0.3],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.0, 0.2],
             "tiempoSiguienteOleada": 20
             
         },
@@ -151,8 +137,7 @@
             "id": 13,
             "oleadaGrande": false,
             "peso": 12,
-            "probabilidades": [0.05, 0.2, 0.35, 0.1, 0.0, 0.3],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.0, 0.2],
             "tiempoSiguienteOleada": 20
             
         },
@@ -161,8 +146,7 @@
             "id": 14,
             "oleadaGrande": true,
             "peso": 25,
-            "probabilidades": [0.05, 0.1, 0.25, 0.05, 0.35, 0.2],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.05, 0.15, 0.05, 0.25, 0.1],
             "tiempoSiguienteOleada": 20
             
         },
@@ -171,8 +155,7 @@
             "id": 14,
             "oleadaGrande": false,
             "peso": 14,
-            "probabilidades": [0.05, 0.15, 0.35, 0.1, 0.1, 0.25],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             
         },
@@ -181,8 +164,7 @@
             "id": 15,
             "oleadaGrande": false,
             "peso": 16,
-            "probabilidades": [0.05, 0.15, 0.35, 0.1, 0.1, 0.25],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             
         },
@@ -191,8 +173,7 @@
             "id": 16,
             "oleadaGrande": false,
             "peso": 16,
-            "probabilidades": [0.05, 0.15, 0.35, 0.1, 0.1, 0.25],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             
         },
@@ -201,8 +182,7 @@
             "id": 17,
             "oleadaGrande": false,
             "peso": 16,
-            "probabilidades": [0.05, 0.15, 0.35, 0.1, 0.1, 0.25],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             
         },
@@ -211,8 +191,7 @@
             "id": 18,
             "oleadaGrande": false,
             "peso": 18,
-            "probabilidades": [0.05, 0.15, 0.35, 0.1, 0.1, 0.25],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             
         },
@@ -221,8 +200,7 @@
             "id": 19,
             "oleadaGrande": false,
             "peso": 18,
-            "probabilidades": [0.05, 0.15, 0.35, 0.1, 0.1, 0.25],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             
         },
@@ -231,8 +209,7 @@
             "id": 20,
             "oleadaGrande": true,
             "peso": 32,
-            "probabilidades": [0.1, 0.15, 0.3, 0.15, 0.1, 0.2],
-            "tiempoEntreSpawn": 0.5,
+            "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             
         }

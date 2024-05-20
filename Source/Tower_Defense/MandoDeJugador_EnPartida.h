@@ -54,26 +54,37 @@ private:
 
 	TArray<UUserWidget*> HUDs;
 
-	TArray<int> IDTorresElegidas;
 
+
+
+	TArray<int> IDsDeTorresElegidas;
+	TArray<float> TiempoDeRecargaDeTorres;
+	TArray<int> CosteDeTorres;
+	TArray<float> MomentoEnQueTorreRecarga;
+	int SeleccionDelJugador; // 0-5 torres, 6 TNT, -1 nothing
+
+	int Energia;
+
+	bool EnPartida; // True si en partida, False si en seleccion de torres
 
 public:
 
 
-	UPROPERTY(BlueprintReadWrite)
-	int SeleccionDeTorre;
-
 // Métodos
+
 
 	void PausarEn(float Segundos);
 
-
+	
 	void SetTorresElegidas(TArray<int> IDs);
 
 
 	UFUNCTION(BlueprintCallable)
 	TArray<int> GetTorresElegidas() const;
 
+
+	void InicializarVariablesDePartida();
+		
 	void Pinchar();
 
 	UFUNCTION(BlueprintCallable)
@@ -93,16 +104,59 @@ public:
 
 
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void SettearSeleccionDeTorre();
+
+
+
+
+
+
+	UFUNCTION(BlueprintCallable)
+	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs);
+	UFUNCTION(BlueprintCallable)
+	TArray<float> ObtenerRecargasDeTorres(TArray<int> IDs);
+	UFUNCTION(BlueprintCallable)
+	TArray<bool> ObtenerEmpiezaRecargadosTorres(TArray<int> IDs);
+
+	UFUNCTION(BlueprintCallable)
+	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs);
+
+
+	UFUNCTION(BlueprintCallable)
+	void ElegirTorre(int PosTorre, bool& SeleccionCorrecta, int& SeleccionPrevia, bool& SeleccionPreviaCorrecta);
+
+	UFUNCTION(BlueprintCallable)
+	void ElegirTNT(int& SeleccionPrevia, bool& TntElegida);
+
+	UFUNCTION(BlueprintCallable)
+	void ObtenerUltimaSeleccionTorre(int& Seleccion, bool& Correcto) const;
+
+	bool TNTElegida();
+
+
+	void ActualizarEnergiaPor(int Surplus);
+	void UsarSeleccionElegida();
+
+
+	UFUNCTION(BlueprintCallable)
+	int ObtenerCantidadEnergia() const;
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void SettearBorradorDeTorre();
+	void NotificarAInterfazColoqueTorre(int Pos);
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void IncrementarEnergia(int Cantidad);
+	void NotificarAInterfazUsoTNT();
+
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void NotificarAInterfazCambioEnDinero(int Cantidad);
+
+
 
 private:
+
+
+	int ObtenerIDDeTorreElegida();
+
 
 	void Pausar();
 

@@ -27,6 +27,18 @@ void UComponenteVida::BeginPlay()
 }
 
 
+bool UComponenteVida::EsVulnerable() {
+	return this->Vulnerable;
+}
+
+void UComponenteVida::Invulnerabilizar() {
+	this->Vulnerable = false;
+}
+
+void UComponenteVida::Vulnerabilizar() {
+	this->Vulnerable = true;
+}
+
 void UComponenteVida::AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador) {
 
 	if (this->Vulnerable) {
@@ -34,7 +46,7 @@ void UComponenteVida::AplicarDano(AActor* Danado, float DanoBase, const UDamageT
 
 		if (this->Vida <= 0.f) {
 			Cast<AEntidad>(GetOwner())->Matar();
-			this->Vulnerable = false;
+			this->Invulnerabilizar();
 		}
 	
 	}

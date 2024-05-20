@@ -43,6 +43,7 @@ void AProyectil::BeginPlay()
 
 void AProyectil::Pausar() {
 	PrimaryActorTick.bCanEverTick = false;
+	this->Velocidad = 0.f;
 	GetWorld()->GetTimerManager().ClearTimer(this->TimerParaAutodestruir);
 }
 

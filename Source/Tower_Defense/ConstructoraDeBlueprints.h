@@ -70,7 +70,7 @@ public:
 
 private:
 	static ConstructoraDeBlueprints Objeto;
-	UClass* ClaseBomba;
+//	UClass* ClaseBomba;
 
 public:
 	static ConstructoraDeBlueprints* GetConstructoraDeBlueprints();
@@ -84,5 +84,8 @@ public:
 
 	int GetPesoDeRobot(uint8 Clase);
 
+	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs);
+
+	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs);
 
 };

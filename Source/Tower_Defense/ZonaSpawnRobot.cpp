@@ -3,6 +3,7 @@
 
 #include "ZonaSpawnRobot.h"
 #include "Components/BoxComponent.h"
+#include "Math/UnrealMathUtility.h"
 
 
 
@@ -30,7 +31,34 @@ void AZonaSpawnRobot::BeginPlay()
 		PosicionesDeSpawn.Add(LongX * (0.4 * i - 0.8));
 	}
 
-           
+    this->TamanoBox = this->ZonaDeSpawn->GetScaledBoxExtent();
+	this->Localizacion = AActor::GetActorLocation();   
+
+	for (int Fila = 0; Fila != 5; Fila++) {
+		this->EspacioOcupadoPorFila.Add(FMath::FRand() * 400.f);
+	}
+
 
 }
+
+void AZonaSpawnRobot::SpawnearRobot(int ID ,int Fila) {
+
+	
+	FVector Pos = FVector(this->Localizacion.X + this->PosicionesDeSpawn[Fila], this->Localizacion.Y + this->EspacioOcupadoPorFila[Fila] , this->Localizacion.Z - this->TamanoBox.Z );
+	this->MaterealizarRobot(ID, Pos);
+	
+	this->EspacioOcupadoPorFila[Fila] = this->EspacioOcupadoPorFila[Fila] + 400.f + FMath::FRand() * 400.f;
+
+}
+
+
+void AZonaSpawnRobot::RefrescarNuevaOleada() {
+
+	for (int Fila = 0; Fila != this->EspacioOcupadoPorFila.Num(); Fila++) {
+		this->EspacioOcupadoPorFila[Fila] = FMath::FRand() * 400.f;
+
+	}
+
+}
+
 

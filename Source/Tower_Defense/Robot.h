@@ -25,15 +25,9 @@ public:
 
 // Atributos
 
-
-protected:
-	UPROPERTY()
-	float Velocidad;
-
-
-
-
 private:
+//  UPROPERTY()
+	float Velocidad;
 
 	float DistanciaRecorridaVertical;
 
@@ -62,7 +56,12 @@ public:
 
 
 
+
+
 	virtual void Matar() override;
 	virtual void QuitarIA() override;
+
+protected:
+	void Parar();
 
 };

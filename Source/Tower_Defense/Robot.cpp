@@ -89,12 +89,15 @@ void ARobot::Mover(float DeltaTime) {
 
 }
 
+void ARobot::Parar() {
+    this->Velocidad = 0;
+}
 
 
 void ARobot::Matar() {
 
     // En el caso de los robots, se debe procesar el hecho de que se ha muerto para contabilizar cuando spawnear siguiente oleada y procesar win con logic.
-    int Peso = ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetPesoDeRobot(ID);
+    int Peso = ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetPesoDeRobot(Super::ObtenerID());
     
 
     // TODO: En version final este cast siempre funciona, quitar este check. Por ahora se deja para poder testear bots en stages debug sin gamemode

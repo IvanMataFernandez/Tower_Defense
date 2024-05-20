@@ -58,20 +58,22 @@ private:
 	TArray<float> ProbabilidadesRobotAcumuladas;
 
 	int PesoRestante;
-	float TiempoEntreSpawn;
+	
 
 
 	TArray<int> PesosRobotActual;
 	TArray<int> IDsRobotActual;
 
-	TArray<int> CantidadRobotsSpawneadosPorLinea;
-	int CantidadRobotsSpawneados;
+	TArray<int> FilasHabilitadasParaSpawn;
 
 	bool VictoriaPosible;
 
 	ARobot* CausanteDerrota;
 
-	
+
+
+
+
 
 // Métodos
 
@@ -85,15 +87,7 @@ public:
 	void FocusearCausanteDerrota();
 	void FinalizarAnimacionDerrota();
 
-	UFUNCTION(BlueprintCallable)
-	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs);
-	UFUNCTION(BlueprintCallable)
-	TArray<float> ObtenerRecargasDeTorres(TArray<int> IDs);
-	UFUNCTION(BlueprintCallable)
-	TArray<bool> ObtenerEmpiezaRecargadosTorres(TArray<int> IDs);
 
-	UFUNCTION(BlueprintCallable)
-	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs);
 
 
 
@@ -111,6 +105,19 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void AvanzarNivel(int TorreDesbloqueo);
+
+	UFUNCTION(BlueprintCallable)
+	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs);
+
+
+	UFUNCTION(BlueprintCallable)
+	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs);
+
+
+
+// ---------------------------------------------------------
+
+
 
 
 

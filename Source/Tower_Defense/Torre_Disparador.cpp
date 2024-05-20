@@ -5,6 +5,7 @@
 #include "Components/SceneComponent.h"
 #include "Proyectil.h"
 #include "TimerManager.h"
+#include "Robot.h"
 
 #include "DrawDebugHelpers.h"
 
@@ -61,10 +62,12 @@ bool ATorre_Disparador::EnRango() {
     FVector End = Start + (FVector(0,256.f+this->RangoEnCasillas*512.f,0) ); //Cada casilla son 512.f. 256.f para offsettear la casilla sobre la que está
 
     FHitResult HitResult;
- //   DrawDebugLine(GetWorld(), Start, End, FColor::Green, true);
 
 
-    return GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_GameTraceChannel5); // 5 vision torre, 6 vision robot
+    // Hay target si el linetrace hittea algo que ve una torre (Robot o zona de spawn de robots) y se trata de un robot (o sea, no la zona de spawn de robots en
+    // la esquina de la pantalla)
+
+    return GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_GameTraceChannel5) && Cast<ARobot>(HitResult.GetActor()) != nullptr; 
 
 
 
@@ -125,7 +128,7 @@ void ATorre_Disparador::Atacar(float DeltaTime) {
             // Settear la llmamada al método de vuelta
             FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, Espera);
             GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, Espera, false);
-        
+
         } else {
         
             // Si no quedaban tiros, esperar cooldown final para empezar el siguiente ciclo

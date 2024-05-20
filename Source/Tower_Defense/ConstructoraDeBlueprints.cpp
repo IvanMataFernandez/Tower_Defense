@@ -159,6 +159,8 @@ int ConstructoraDeBlueprints::GetCosteDeTorre(uint8 Clase) {
         return 999;
 }
 
+
+
 int ConstructoraDeBlueprints::GetPesoDeRobot(uint8 Clase) {
 
           switch (Clase) {
@@ -185,6 +187,28 @@ int ConstructoraDeBlueprints::GetPesoDeRobot(uint8 Clase) {
 
 }
 
+TArray<UTexture2D*> ConstructoraDeBlueprints::ObtenerImagenesDeTorres(TArray<int> IDs) {
+    
+    TArray<UTexture2D*> ListaTexturas;
 
+    for (int ID : IDs) { 
+        FString Ruta = TEXT("/Game/Assets/Texturas/Torre") + FString::Printf(TEXT("%d"), ID);
+        UTexture2D* Textura = LoadObject<UTexture2D>(nullptr, *Ruta);
+
+        ListaTexturas.Add(Textura);
+    }
+    return ListaTexturas;
+}
+
+TArray<int> ConstructoraDeBlueprints::ObtenerCostesDeTorres(TArray<int> IDs) {
+
+    TArray<int> ListaCostes;
+
+    for (int ID : IDs) {
+        ListaCostes.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetCosteDeTorre(ID));
+    }
+    return ListaCostes;
+    
+}
 
 

@@ -28,17 +28,21 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Datos")
 	float VidaMaxima;
 	float Vida;
-
-public:
-
 	bool Vulnerable;
 
-// Métodos
 
+
+// Métodos
+public:
 	UFUNCTION()
 	virtual void AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador);
 
 protected:
 	float ObtenerFraccionVidaRestante();
+
+public:
+	bool EsVulnerable();
+	void Invulnerabilizar();
+	void Vulnerabilizar();
 
 };
