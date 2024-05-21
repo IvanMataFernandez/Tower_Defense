@@ -28,10 +28,14 @@ void ARobot_Ocultador::InicializarAtaque() {
     // Reimplementar Inicializar ataque para poder syncear bien las animaciones y vulnerabilizar el robot
 
     Super::ClearTimer();
-    RealizarAnimacion(2);
-    RealizarAnimacion(4);
+    Super::RealizarAnimacion(2);
+    Super::RealizarAnimacion(4);
     this->Vida->Vulnerabilizar();
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ARobot_Ocultador::TrasAbrirPuntoExpuesto, this->TiempoParaAbrirCerrarPuntoExpuesto, false);               
+
+
+    float Espera = this->TiempoParaAbrirCerrarPuntoExpuesto;
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Ocultador::TrasAbrirPuntoExpuesto);    
+    Super::ProgramarTimer(Delegate, Espera, false);
 
 }
 
@@ -42,13 +46,13 @@ void ARobot_Ocultador::TrasAbrirPuntoExpuesto() {
 void ARobot_Ocultador::InicializarMover() {
 
     Super::ClearTimer();
-    RealizarAnimacion(5); 
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ARobot_Ocultador::TrasCerrarPuntoExpuesto, this->TiempoParaAbrirCerrarPuntoExpuesto, false);               
+    Super::RealizarAnimacion(5); 
 
 
-
-
-
+    float Espera = this->TiempoParaAbrirCerrarPuntoExpuesto;
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Ocultador::TrasCerrarPuntoExpuesto);    
+    Super::ProgramarTimer(Delegate, Espera, false);
+    
   
 }
 
@@ -64,36 +68,14 @@ void ARobot_Ocultador::InicializarMoverVertical() {
     RealizarAnimacion(5); 
     Super::InicializarMoverVertical();
 
-    // En super
-
-    /*
-
-    Super::ClearTimer();
-    this->DistanciaRecorridaVertical = 0.f;
-    this->Velocidad = 750;
-
-    RealizarAnimacion(1); // Animar el robot para que se mueva (loop)
-
-    float DeltaTiempo = UGameplayStatics::GetWorldDeltaSeconds(this) * 1.3f;
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot::MoverVertical, DeltaTiempo);
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, DeltaTiempo, true); 
-    */ 
 }
 
 void ARobot_Ocultador::QuitarIA() {
     
     Super::ClearTimer();
     RealizarAnimacion(4); 
-   // GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ARobot::QuitarIA, this->TiempoParaAbrirCerrarPuntoExpuesto, false);   
+
     Super::QuitarIA();
 
-    /*
-    // En super
-    Super::QuitarIA();
-
-    // En los robots, al quitar IA se debe quitar la animacion de moverse tmb
-    RealizarAnimacion(2); 
-
-    */
 
 }

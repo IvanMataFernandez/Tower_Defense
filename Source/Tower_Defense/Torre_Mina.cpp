@@ -43,7 +43,12 @@ void ATorre_Mina::Prepararse() {
 	// Esperar tiempodepreparacion para marcar la tarea de preparar como completada en su BT. La siguiente tarea será pasar al estado Preparado
 
 	AMandoDeIA* MandoDeIA = Cast<AMandoDeIA> (this->GetController());
-	GetWorld()->GetTimerManager().SetTimer(TimerFrame, MandoDeIA, &AMandoDeIA::AcabarTareaActual, this->TiempoDePreparacion, false);               
+
+	float Espera = this->TiempoDePreparacion;
+	FTimerDelegate Delegate = FTimerDelegate::CreateUObject(MandoDeIA, &AMandoDeIA::AcabarTareaActual);    
+	Super::ProgramarTimer(Delegate, Espera, false);
+
+
 
 
 }

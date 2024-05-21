@@ -20,9 +20,6 @@ public:
 	ATorre_UsoUnico();
 
 
-protected:
-
-	virtual void BeginPlay() override;
 
 
 

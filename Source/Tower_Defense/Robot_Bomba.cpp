@@ -43,13 +43,15 @@ void ARobot_Bomba::EmpezarDetonar() {
     ComponenteVida->Invulnerabilizar();
 
     Super::Parar(); // set Velocidad = 0;
-    float Espera = this->TiempoParaExplosion;
     
     RealizarAnimacion(2); // Quitar el loop de animacion de movimiento de ruedas
     RealizarAnimacion(4);
-    // Animar el robot para que detone
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ARobot_Bomba::Detonar,Espera, false);
 
+
+    // Animar el robot para que detone
+    float Espera = this->TiempoParaExplosion;
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Bomba::Detonar);    
+    Super::ProgramarTimer(Delegate, Espera, false);
 
 }
 
@@ -81,6 +83,10 @@ void ARobot_Bomba::Detonar() {
 
 void ARobot_Bomba::AutoDestruir() {
     Super::AutoDestruir();
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ARobot_Bomba::Destruir, this->TiempoDeExplosion, false);
+
+    float Espera = this->TiempoDeExplosion;
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Bomba::Destruir);    
+    Super::ProgramarTimer(Delegate, Espera, false);
+
 
 }

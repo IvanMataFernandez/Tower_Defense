@@ -24,7 +24,7 @@ ConstructoraDeBlueprints* ConstructoraDeBlueprints::GetConstructoraDeBlueprints(
 }
 
 
-UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase, bool Torre) {
+UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase, bool Torre) const {
    
     // Dada la Ruta (clase) que se quiere usar, obtener su BT en blueprint correspondiente
 
@@ -97,7 +97,7 @@ UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase, bool Torre) {
 
 
 
-float ConstructoraDeBlueprints::GetTiempoDeRecargaDeTorre(uint8 Clase) {
+float ConstructoraDeBlueprints::GetTiempoDeRecargaDeTorre(uint8 Clase) const {
         switch (Clase) {
             case Torres::Canon:
             case Torres::CanonDoble:
@@ -121,7 +121,7 @@ float ConstructoraDeBlueprints::GetTiempoDeRecargaDeTorre(uint8 Clase) {
 }
 
 
-bool ConstructoraDeBlueprints::GetEmpiezaRecargadaTorre(uint8 Clase) {
+bool ConstructoraDeBlueprints::GetEmpiezaRecargadaTorre(uint8 Clase) const {
     switch (Clase) {
         case Torres::PanelSolar:
             return true;
@@ -130,7 +130,7 @@ bool ConstructoraDeBlueprints::GetEmpiezaRecargadaTorre(uint8 Clase) {
     }
 }
 
-int ConstructoraDeBlueprints::GetCosteDeTorre(uint8 Clase) {
+int ConstructoraDeBlueprints::GetCosteDeTorre(uint8 Clase) const {
         switch (Clase) {
             case Torres::Canon:
                 return 25;
@@ -161,7 +161,7 @@ int ConstructoraDeBlueprints::GetCosteDeTorre(uint8 Clase) {
 
 
 
-int ConstructoraDeBlueprints::GetPesoDeRobot(uint8 Clase) {
+int ConstructoraDeBlueprints::GetPesoDeRobot(uint8 Clase) const {
 
           switch (Clase) {
             case Robots::Basico:
@@ -187,28 +187,15 @@ int ConstructoraDeBlueprints::GetPesoDeRobot(uint8 Clase) {
 
 }
 
-TArray<UTexture2D*> ConstructoraDeBlueprints::ObtenerImagenesDeTorres(TArray<int> IDs) {
+UTexture2D* ConstructoraDeBlueprints::ObtenerImagenDeTorre(int ID) const {
     
-    TArray<UTexture2D*> ListaTexturas;
 
-    for (int ID : IDs) { 
         FString Ruta = TEXT("/Game/Assets/Texturas/Torre") + FString::Printf(TEXT("%d"), ID);
-        UTexture2D* Textura = LoadObject<UTexture2D>(nullptr, *Ruta);
+        return LoadObject<UTexture2D>(nullptr, *Ruta);
 
-        ListaTexturas.Add(Textura);
-    }
-    return ListaTexturas;
-}
-
-TArray<int> ConstructoraDeBlueprints::ObtenerCostesDeTorres(TArray<int> IDs) {
-
-    TArray<int> ListaCostes;
-
-    for (int ID : IDs) {
-        ListaCostes.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetCosteDeTorre(ID));
-    }
-    return ListaCostes;
     
 }
+
+
 
 

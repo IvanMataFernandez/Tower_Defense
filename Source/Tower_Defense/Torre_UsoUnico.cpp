@@ -29,23 +29,16 @@ ATorre_UsoUnico::ATorre_UsoUnico() {
 }
 
 
-void ATorre_UsoUnico::BeginPlay() {
-    Super::BeginPlay();
 
-    // Algunas torres son de uso instaneo que heredan de esta, estas clases no tienen componente de vida por lo que no mueren de forma tradicional
-    // en su lugar, se matan tras hacer su funcion
-
-
-}
 
 void ATorre_UsoUnico::InicializacionFuncion() {
 
 
 
+    float Espera =  this->TiempoParaExplosion;
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_UsoUnico::HacerFuncion);    
+    Super::ProgramarTimer(Delegate, Espera, false);
 
-
-    float Espera = this->TiempoParaExplosion;
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_UsoUnico::HacerFuncion,Espera, false);
     RealizarAnimacion(1); // Animar detonación
 
 }
@@ -93,7 +86,10 @@ void ATorre_UsoUnico::Activar() {
 
 void ATorre_UsoUnico::AutoDestruir() {
     Super::AutoDestruir();
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_UsoUnico::Destruir, this->TiempoDeExplosion, false);
+
+    float Espera =  this->TiempoDeExplosion;
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_UsoUnico::Destruir);    
+    Super::ProgramarTimer(Delegate, Espera, false);
 
 }
 

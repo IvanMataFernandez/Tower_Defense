@@ -106,12 +106,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AvanzarNivel(int TorreDesbloqueo);
 
-	UFUNCTION(BlueprintCallable)
-	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs);
 
-
-	UFUNCTION(BlueprintCallable)
-	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs);
 
 
 
@@ -131,7 +126,7 @@ protected:
 	void SonarSFXGlobal();	
 
 	UFUNCTION(BlueprintCallable)
-	void FinSeleccionTorres(TArray<int> IDsTorresElegidas);
+	void FinSeleccionTorres();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void CrearInterfazSeleccionDeTorres();

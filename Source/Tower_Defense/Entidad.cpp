@@ -34,6 +34,13 @@ AEntidad::AEntidad()
 }
 
 
+void AEntidad::ProgramarTimer(FTimerDelegate Delegate, float TiempoDeEspera, bool EnBucle) {
+    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, TiempoDeEspera, EnBucle);
+}
+
+
+
+
 uint8 AEntidad::ObtenerID() {
 	return this->ID;
 }
@@ -50,13 +57,10 @@ void AEntidad::SetVolumenEfectosDeEntidades(float Vol, UObject* Contexto) {
         Cast<AEntidad>(Entidad)->ComponenteDeAudio->SetVolumeMultiplier(AEntidad::VolumenEfectos);
     }
 
+
 }
 
 
-
-         //   FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, Espera);
-         //   GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, Espera, false);
-  //  GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &Func ,Espera, false);   
 
 
 
@@ -166,7 +170,7 @@ void AEntidad::AutoDestruir() {
 
 void AEntidad::BeginPlay() {
 	Super::BeginPlay();
-		UE_LOG(LogTemp, Display, TEXT("Vol: %f"), VolumenEfectos);
+
 	this->ComponenteDeAudio->SetVolumeMultiplier(AEntidad::VolumenEfectos); // Settear el volumen de SFX en el componente de audio
 
 

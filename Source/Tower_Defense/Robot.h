@@ -45,23 +45,28 @@ private:
 
 // Métodos
 
+protected:
+	void Parar();
+
 
 public:
-	virtual void InicializarMoverVertical();
-	void MoverVertical(float DeltaTime);
-	bool HaMovidoEnVerticalDistanciaX(float Distancia);
-
-	virtual void InicializarMover();
-	void Mover(float DeltaTime);
-
-
-
 
 
 	virtual void Matar() override;
 	virtual void QuitarIA() override;
 
-protected:
-	void Parar();
+
+	virtual void InicializarMoverVertical();
+	virtual void InicializarMover();
+
+
+	void MoverVertical(float DeltaTime);
+	bool HaMovidoEnVerticalDistanciaX(float Distancia);
+	void Mover(float DeltaTime);
+	void SetVelocidad(float Vel);
+
+
+
+
 
 };

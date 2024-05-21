@@ -35,7 +35,7 @@ private:
 	float RangoEnCasillas;
 
 
-
+protected:
 	
 // Componentes
 
@@ -62,7 +62,7 @@ protected:
 
 private:
 
-	void Atacar(float DeltaTime);
+	void Atacar(bool FasePrepararTiro);
 	void Disparar();
 
 };

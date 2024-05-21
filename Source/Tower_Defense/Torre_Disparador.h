@@ -42,10 +42,7 @@ private:
 	float TiempoEntreTiros;
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float TiempoParaAnimacionEnTiro;
-	int TirosRestantes;
-	float SigTiroEn;
 
-	bool TocaAnimar;
 
 
 // Métodos
@@ -58,7 +55,7 @@ public:
 
 private:
 	void Disparar();
-	void Atacar(float DeltaTime);
+	void Atacar(bool FasePrepararTiro, int NumDisparo);
 	void RepetirCicloAtaque();
 	void Idle();
 

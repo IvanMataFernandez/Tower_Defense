@@ -10,6 +10,9 @@ class UStaticMeshComponent;
 class USceneComponent;
 class UAudioComponent;
 
+
+
+
 UCLASS()
 class TOWER_DEFENSE_API AEntidad : public APawn
 {
@@ -38,13 +41,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UStaticMeshComponent* CuerpoBase;
 
+	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = "true"))
+	UBoxComponent* Hitbox;
 
 
 
 
-	float Timer;
-
-	FTimerHandle TimerFrame;
 
 
 
@@ -54,49 +56,64 @@ protected:
 
 private:
 
+
+
+
 	// Referir a ConstructoraDeBlueprints para info de IDs.
 	UPROPERTY(EditDefaultsOnly, Category = "ID")
 	uint8 ID;
 
-	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = "true"))
-	UBoxComponent* Hitbox;
+
 
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float TiempoDeAnimacionDeMuerte = 1.f;
 
+
+
+	FTimerHandle TimerFrame;
+
 	static float VolumenEfectos;
+
+
+
 // Métodos:
+
+protected:
+
+
+	virtual void AutoDestruir();
+
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void DestruirAnimaciones();
+
+
+
+	void ClearTimer();
+	void Invisibilizar();
+	void VisibilizarATorres();
+	void DesactivarHitbox();
+	void Destruir();
+	uint8 ObtenerID();
+
+	void ProgramarTimer(FTimerDelegate Delegate, float TiempoDeEspera, bool EnBucle);
+
+
 
 public:
 
 	UFUNCTION(BlueprintCallable)
 	static void SetVolumenEfectosDeEntidades(float Vol, UObject* ContextoMundo);
 	
-
-
 	virtual void Matar();
 	virtual void QuitarIA();
+
+
 	void PausarEntidad();
     void DespausarEntidad();
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void RealizarAnimacion(int Animacion);
-
-protected:
-	void ClearTimer();
-	void Invisibilizar();
-	void VisibilizarATorres();
-	void DesactivarHitbox();
-	
-	virtual void AutoDestruir();
-	void Destruir();
-
-	uint8 ObtenerID();
-
-
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void DestruirAnimaciones();
 
 
 

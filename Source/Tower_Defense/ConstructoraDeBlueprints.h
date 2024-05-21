@@ -70,22 +70,20 @@ public:
 
 private:
 	static ConstructoraDeBlueprints Objeto;
-//	UClass* ClaseBomba;
 
 public:
 	static ConstructoraDeBlueprints* GetConstructoraDeBlueprints();
-	UBehaviorTree* GetBT(uint8 Clase, bool Torre);
+	UBehaviorTree* GetBT(uint8 Clase, bool Torre) const;
 
 
-	float GetTiempoDeRecargaDeTorre(uint8 Clase);
-	bool GetEmpiezaRecargadaTorre(uint8 Clase);
+	float GetTiempoDeRecargaDeTorre(uint8 Clase) const ;
+	bool GetEmpiezaRecargadaTorre(uint8 Clase) const ;
 
-	int GetCosteDeTorre(uint8 Clase);
+	int GetCosteDeTorre(uint8 Clase) const;
 
-	int GetPesoDeRobot(uint8 Clase);
+	int GetPesoDeRobot(uint8 Clase) const;
 
-	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs);
+	UTexture2D* ObtenerImagenDeTorre(int ID) const;
 
-	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs);
 
 };

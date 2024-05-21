@@ -57,6 +57,8 @@ private:
 
 
 
+	TArray<int> IDsTorresDesbloqueadas;
+
 	TArray<int> IDsDeTorresElegidas;
 	TArray<float> TiempoDeRecargaDeTorres;
 	TArray<int> CosteDeTorres;
@@ -76,7 +78,9 @@ public:
 	void PausarEn(float Segundos);
 
 	
-	void SetTorresElegidas(TArray<int> IDs);
+	UFUNCTION(BlueprintCallable)
+	void ProcesarClickEnSeleccionInicialDeTorres(int Slot, int& PosAccion, bool& PermiteEmpezar);
+
 
 
 	UFUNCTION(BlueprintCallable)
@@ -110,16 +114,21 @@ public:
 
 
 
-	UFUNCTION(BlueprintCallable)
-	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs);
-	UFUNCTION(BlueprintCallable)
-	TArray<float> ObtenerRecargasDeTorres(TArray<int> IDs);
-	UFUNCTION(BlueprintCallable)
-	TArray<bool> ObtenerEmpiezaRecargadosTorres(TArray<int> IDs);
 
 	UFUNCTION(BlueprintCallable)
-	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs);
+	TArray<float> ObtenerRecargasDeTorres(TArray<int> IDs) const;
+	UFUNCTION(BlueprintCallable)
+	TArray<bool> ObtenerEmpiezaRecargadosTorres(TArray<int> IDs) const;
 
+	UFUNCTION(BlueprintCallable)
+	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs) const;
+	
+	UFUNCTION(BlueprintCallable)
+	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs) const;
+
+
+	UFUNCTION(BlueprintCallable)
+	void ObtenerTodasLasImagenesYCostesDeTorre(TArray<UTexture2D*>& Imagenes, TArray<int>& Costes) const;
 
 	UFUNCTION(BlueprintCallable)
 	void ElegirTorre(int PosTorre, bool& SeleccionCorrecta, int& SeleccionPrevia, bool& SeleccionPreviaCorrecta);
@@ -154,8 +163,9 @@ public:
 
 private:
 
+	int SlotDeTorreDesbloqueadaEnPosDeSeleccion(int Slot);
 
-	int ObtenerIDDeTorreElegida();
+	int ObtenerIDDeTorreElegidaEnPartida();
 
 
 	void Pausar();

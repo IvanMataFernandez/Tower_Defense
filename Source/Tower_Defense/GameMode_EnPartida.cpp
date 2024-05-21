@@ -144,17 +144,13 @@ void AGameMode_EnPartida::SpawnearRobotsPreview() {
 
 }
 
-void AGameMode_EnPartida::FinSeleccionTorres(TArray<int> IDsTorresElegidas) {
+void AGameMode_EnPartida::FinSeleccionTorres() {
 
 
-
-    // Dar al mando del jugador las torres elegidas por la interfaz
-    Cast<AMandoDeJugador_EnPartida>(GetWorld()->GetFirstPlayerController())->SetTorresElegidas(IDsTorresElegidas);
-
-
-    this->Camara->MoverCamAJugar();
 
     // Tras acabar de mover la cam, se llama a EmpezarJuego()
+    this->Camara->MoverCamAJugar();
+
 
   
 
@@ -950,6 +946,7 @@ void AGameMode_EnPartida::FocusearCausanteDerrota() {
 
     // Descongelar al robot causante de la derrota, manteniendo el resto del tablero congelado
 
+    this->CausanteDerrota->SetVelocidad(300.f);
     this->CausanteDerrota->DespausarEntidad();
 
     FTimerHandle TimerParaUI;
@@ -1054,17 +1051,6 @@ bool AGameMode_EnPartida::CargarNivel(int Nivel) {
 
     }
 
-
-}
-
-TArray<UTexture2D*> AGameMode_EnPartida::ObtenerImagenesDeTorres(TArray<int> IDs) {
-    
-    return ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->ObtenerImagenesDeTorres(IDs);
-}
-
-TArray<int> AGameMode_EnPartida::ObtenerCostesDeTorres(TArray<int> IDs) {
-
-    return ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->ObtenerCostesDeTorres(IDs);
 
 }
 

@@ -50,9 +50,10 @@ void ATorre_Producidor::PrepararParaProduccion() {
 
     }
 
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this->MandoDeIA, &AMandoDeIA::AcabarTareaActual, TiempoParaProduccion, false);               
 
-
+	float Espera = TiempoParaProduccion;
+	FTimerDelegate Delegate = FTimerDelegate::CreateUObject(MandoDeIA, &AMandoDeIA::AcabarTareaActual);    
+	Super::ProgramarTimer(Delegate, Espera, false);
 }
 
 
@@ -60,8 +61,10 @@ void ATorre_Producidor::Producir() {
 
     this->RealizarAnimacion(2);
     this->EnergiaDisponible = true;
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this->MandoDeIA, &AMandoDeIA::AcabarTareaActual, this->TiempoHastaQueCaducaEnergia, false);               
-
+	
+    float Espera = this->TiempoHastaQueCaducaEnergia;
+	FTimerDelegate Delegate = FTimerDelegate::CreateUObject(MandoDeIA, &AMandoDeIA::AcabarTareaActual);    
+	Super::ProgramarTimer(Delegate, Espera, false);
 }
 
 void ATorre_Producidor::FinProduccion() {
@@ -78,7 +81,7 @@ void ATorre_Producidor::Click() {
         // DAR MONEY!
         this->MandoDeJugador->ActualizarEnergiaPor(this->CantidadProducida);
         // Repetir ciclo        
-        GetWorld()->GetTimerManager().ClearTimer(TimerFrame);
+        Super::ClearTimer();
         this->MandoDeIA->AcabarTareaActual();
     }
 }

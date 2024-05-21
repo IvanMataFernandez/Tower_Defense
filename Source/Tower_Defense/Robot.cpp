@@ -52,10 +52,12 @@ void ARobot::InicializarMoverVertical() {
     this->Velocidad = 750;
 
     RealizarAnimacion(1); // Animar el robot para que se mueva (loop)
+ 
 
-    float DeltaTiempo = UGameplayStatics::GetWorldDeltaSeconds(this) * 1.3f;
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot::MoverVertical, DeltaTiempo);
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, DeltaTiempo, true);   
+    float DeltaTiempo =  UGameplayStatics::GetWorldDeltaSeconds(this) * 1.3f;
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot::MoverVertical, DeltaTiempo);    
+    Super::ProgramarTimer(Delegate, DeltaTiempo, true);
+
 }
 
 void ARobot::MoverVertical(float DeltaTime) {
@@ -75,9 +77,12 @@ void ARobot::InicializarMover() {
 
     RealizarAnimacion(1); // Animar el robot para que se mueva (loop)
 
-    float DeltaTiempo = UGameplayStatics::GetWorldDeltaSeconds(this) * 1.3f;
+
+    float DeltaTiempo =  UGameplayStatics::GetWorldDeltaSeconds(this) * 1.3f;
     FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot::Mover, DeltaTiempo); // Actualizar move 3 de cada 4 frames aproximadamente para ahorrar recursos
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, DeltaTiempo, true);    
+    Super::ProgramarTimer(Delegate, DeltaTiempo, true);
+
+    
 }
 
 void ARobot::Mover(float DeltaTime) {
@@ -93,6 +98,9 @@ void ARobot::Parar() {
     this->Velocidad = 0;
 }
 
+void ARobot::SetVelocidad(float Vel) {
+    this->Velocidad = Vel;
+}
 
 void ARobot::Matar() {
 

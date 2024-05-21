@@ -10,7 +10,8 @@
 #include "GameMode_EnPartida.h"
 #include "Engine/World.h"
 #include "ConstructoraDeBlueprints.h"
-
+#include "Guardador.h"
+#include "Kismet/GameplayStatics.h"
 
 
 void AMandoDeJugador_EnPartida::BeginPlay() {
@@ -18,6 +19,13 @@ void AMandoDeJugador_EnPartida::BeginPlay() {
     Super::BeginPlay();
     bShowMouseCursor = true;
     this->EnPartida = false;
+
+
+    // Obtener de la save que torres desbloqueó el jugador
+
+    UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
+    this->IDsTorresDesbloqueadas = Guardado->IDsTorresDesbloqueadas;
+
 
 }
 
@@ -120,7 +128,7 @@ void AMandoDeJugador_EnPartida::Pinchar() {
 
             // La casilla esta vacia, asumimos que el player quiere poner una torre aqui
 
-            int IDTorreElegida = this->ObtenerIDDeTorreElegida();
+            int IDTorreElegida = this->ObtenerIDDeTorreElegidaEnPartida();
             int PosicionTorreEnUI = this->SeleccionDelJugador;
  
             if (IDTorreElegida != -1) { // Si había selección en UI
@@ -194,14 +202,42 @@ void AMandoDeJugador_EnPartida::Pinchar() {
 
 }
 
-
-TArray<int> AMandoDeJugador_EnPartida::ObtenerCostesDeTorres(TArray<int> IDs) {
-
-    return ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->ObtenerCostesDeTorres(IDs);
-
+void AMandoDeJugador_EnPartida::ObtenerTodasLasImagenesYCostesDeTorre(TArray<UTexture2D*>& Imagenes, TArray<int>& Costes) const {
+    Imagenes = this->ObtenerImagenesDeTorres(this->IDsTorresDesbloqueadas);
+    Costes = this->ObtenerCostesDeTorres(this->IDsTorresDesbloqueadas);
 }
 
-TArray<float> AMandoDeJugador_EnPartida::ObtenerRecargasDeTorres(TArray<int> IDs) {
+
+
+TArray<UTexture2D*> AMandoDeJugador_EnPartida::ObtenerImagenesDeTorres(TArray<int> IDs) const {
+    
+
+
+    ConstructoraDeBlueprints* CdB = ConstructoraDeBlueprints::GetConstructoraDeBlueprints();
+    TArray<UTexture2D*> Texturas;
+
+    for (int ID : IDs) {
+        Texturas.Add(CdB->ObtenerImagenDeTorre(ID));
+    }
+
+    return Texturas;
+}
+
+
+
+TArray<int> AMandoDeJugador_EnPartida::ObtenerCostesDeTorres(TArray<int> IDs) const {
+
+    ConstructoraDeBlueprints* CdB = ConstructoraDeBlueprints::GetConstructoraDeBlueprints();
+    TArray<int> Costes;
+
+    for (int ID : IDs) {
+        Costes.Add(CdB->GetCosteDeTorre(ID));
+    }
+
+    return Costes;
+}
+
+TArray<float> AMandoDeJugador_EnPartida::ObtenerRecargasDeTorres(TArray<int> IDs) const {
 
     TArray<float> ListaRecargas;
 
@@ -213,7 +249,7 @@ TArray<float> AMandoDeJugador_EnPartida::ObtenerRecargasDeTorres(TArray<int> IDs
 
 }
 
-TArray<bool> AMandoDeJugador_EnPartida::ObtenerEmpiezaRecargadosTorres(TArray<int> IDs) {
+TArray<bool> AMandoDeJugador_EnPartida::ObtenerEmpiezaRecargadosTorres(TArray<int> IDs) const {
         
     TArray<bool> ListaRecargaEmpezada;
 
@@ -224,16 +260,80 @@ TArray<bool> AMandoDeJugador_EnPartida::ObtenerEmpiezaRecargadosTorres(TArray<in
 }	
 
 
-TArray<UTexture2D*> AMandoDeJugador_EnPartida::ObtenerImagenesDeTorres(TArray<int> IDs) {
+
+
+
+
+
+int AMandoDeJugador_EnPartida::SlotDeTorreDesbloqueadaEnPosDeSeleccion(int Slot) {
+
+    // Post: Busca si la torre número slot desbloqueada en la save está añadida ya en la seleccion de torres del jugador. Returns la posicion si true, -1 si no está
     
-    return ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->ObtenerImagenesDeTorres(IDs);
+    int ID = this->IDsTorresDesbloqueadas[Slot];
+
+    for (int Pos = 0; Pos != this->IDsDeTorresElegidas.Num(); Pos++) {
+        if (this->IDsDeTorresElegidas[Pos] == ID) {
+            return Pos;
+        }
+    }
+
+    return -1;
+}
+
+void AMandoDeJugador_EnPartida::ProcesarClickEnSeleccionInicialDeTorres(int Slot, int& PosAccion, bool& PermiteEmpezar) {
+
+    // Post: PosAccion: (0-5) index que se ha quitado, (-1) se ha insertado, (-2) no accion
+    //       PermiteEmpezar: Todas las torres seleccionadas desbloqueadas o al menos hay 6 elegidas
+
+    int PosSeleccion = this->SlotDeTorreDesbloqueadaEnPosDeSeleccion(Slot); // Comprobar si la torre está elegida
+
+    if (PosSeleccion == -1) {
+
+        // No está elegida, comprobar si se puede añadir (hay 6 huecos en el layout, ver si no hay 6 torres elegidas)
+
+
+        if (this->IDsDeTorresElegidas.Num() != 6) {
+            
+            // Hay hueco, insertar la torre al final de la lista 
+
+            PosAccion = -1;
+
+            this->IDsDeTorresElegidas.Add(this->IDsTorresDesbloqueadas[Slot]);
+
+            // Se permite empezar si hay 6 torres elegidas o todas las desbloqueadas están elegidas
+
+            PermiteEmpezar = this->IDsDeTorresElegidas.Num() == 6 || this->IDsDeTorresElegidas.Num() == this->IDsTorresDesbloqueadas.Num();
+
+        } else {
+
+            // No hay hueco, el usuario ya tiene 6 torres elegidas.
+
+             PosAccion = -2;
+
+            PermiteEmpezar = true;
+        }
+
+
+
+    } else {
+        // Está elegida, proceder a quitarla de la lista. Se informa a la UI también de la posición de la lista con PosSeleccion a quitar visualmente
+        
+        PosAccion = PosSeleccion;
+
+
+        this->IDsDeTorresElegidas.RemoveAt(PosSeleccion); // Usar borrado más lento shifteando las posiciones del array hacia adelante para que encaje visualmente con la UI
+
+        // Tras quitar una torre debe haber al menos un espacio libre, por lo que no se permite empezar
+        PermiteEmpezar = false;
+
+
+    }
+
 }
 
 
 
-void AMandoDeJugador_EnPartida::SetTorresElegidas(TArray<int> IDs) {
-    this->IDsDeTorresElegidas = IDs;
-}
+
 
 TArray<int> AMandoDeJugador_EnPartida::GetTorresElegidas() const {
 
@@ -374,7 +474,7 @@ bool AMandoDeJugador_EnPartida::TNTElegida() {
 
 }
 
-int AMandoDeJugador_EnPartida::ObtenerIDDeTorreElegida() {
+int AMandoDeJugador_EnPartida::ObtenerIDDeTorreElegidaEnPartida() {
     
     if (this->SeleccionDelJugador >= 0 && this->SeleccionDelJugador < 6) {
         return this->IDsDeTorresElegidas[this->SeleccionDelJugador];

@@ -34,6 +34,8 @@ void ARobot_Basico::BeginPlay() {
 }
 
 
+
+
 bool ARobot_Basico::TorreEnRango() {
 
     FVector Start =  this->SpawnProyectiles->GetComponentLocation();
@@ -64,31 +66,32 @@ void ARobot_Basico::PrepararAtaque() {
 
 
     float Espera = this->TiempoParaAnimacionDisparo;
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Basico::Atacar, Espera);
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, Espera, false);
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Basico::Atacar, true);
+    Super::ProgramarTimer(Delegate, Espera, false);
 
-    Timer = 0;
 }
 
 
-void ARobot_Basico::Atacar(float DeltaTime) {
+void ARobot_Basico::Atacar(bool FasePrepararTiro) {
 
-    Timer = Timer + DeltaTime;
 
-    if (Timer == this->TiempoParaAnimacionDisparo) {
+    if (FasePrepararTiro) {
+        
+        // Estado 0: Animar carga de disparo
 
         RealizarAnimacion(3); // Animar el robot para que realize el disparo
-        float Espera = this->TiempoPorDisparo - Timer;
-
-        FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Basico::Atacar, Espera);
-        GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, Espera, false);
+        
+        float Espera = this->TiempoPorDisparo - this->TiempoParaAnimacionDisparo;
+        FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Basico::Atacar, false);
+        Super::ProgramarTimer(Delegate, Espera, false);
 
     } else {
+        // Estado 1: Crear el proyectil
         this->Disparar();
         this->PrepararAtaque();
 
     }
-
+ 
 
 }
 

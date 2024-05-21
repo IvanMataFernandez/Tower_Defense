@@ -43,8 +43,10 @@ ATorre_Disparador::ATorre_Disparador() {
 void ATorre_Disparador::PrepararIdle() {
   
     Super::ClearTimer();
-    float Espera = 1.5f; // Esperar 1,5 segundos tras no ver enemigo para apagar torre.
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_Disparador::Idle, Espera, false);               
+
+    float Espera = 1.5f;  // Esperar 1,5 segundos tras no ver enemigo para apagar torre.
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Idle);    
+    Super::ProgramarTimer(Delegate, Espera, false);
 
 }
 
@@ -88,55 +90,59 @@ void ATorre_Disparador::RepetirCicloAtaque() {
 
     Super::ClearTimer();
     float Espera = this->TiempoParaAnimacionEnTiro;
-    this->TirosRestantes = this->CadenciaDeDisparo; 
-    this->TocaAnimar = true;
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, Espera);
-    GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, Espera, false);
-    Timer = 0.f;
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, true, 0);    
+    Super::ProgramarTimer(Delegate, Espera, false);
+    
 }
 
 
 
-void ATorre_Disparador::Atacar(float DeltaTime) {
-
-    Timer = Timer + DeltaTime;
+void ATorre_Disparador::Atacar(bool FasePrepararTiro, int NumDisparo) {
 
 
-    if (this->TocaAnimar) {
 
-        RealizarAnimacion((this->CadenciaDeDisparo-this->TirosRestantes)+3); // Animar el disparo
-        this->TocaAnimar = false;
+    if (FasePrepararTiro) {
         
+        // Estado 0: Animar carga de disparo
+
+        Super::RealizarAnimacion(NumDisparo+3); // Animar el disparo
+        
+
         // Settear la llmamada para disparar
 
         float Espera = this->TiempoEntreTiros - this->TiempoParaAnimacionEnTiro;
+        FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, false, NumDisparo);    
+        Super::ProgramarTimer(Delegate, Espera, false);
 
-        FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, Espera);
-        GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, Espera, false);   
 
     } else {
-        // Si quedan tiros todavía, se debe disparar
 
-        float Espera;
+        // Estado 1: Crear el proyectil
 
         this->Disparar();
+        
+        float Espera;
+       
+        // Si quedan tiros todavía, se debe repetir el ciclo de ataque de nuevo al estado 0
 
-        if (this->TirosRestantes != 0) {
-            Espera = this->TiempoParaAnimacionEnTiro;
-            this->TocaAnimar = true;
-                    
-            // Settear la llmamada al método de vuelta
-            FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, Espera);
-            GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, Espera, false);
+        if (NumDisparo != this->CadenciaDeDisparo - 1) {
+
+            // Quedan tiros: settear la llmamada al método de vuelta
+
+            Espera = this->TiempoParaAnimacionEnTiro;    
+            FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, true, NumDisparo+1);    
+            Super::ProgramarTimer(Delegate, Espera, false);
+
 
         } else {
         
-            // Si no quedaban tiros, esperar cooldown final para empezar el siguiente ciclo
-
+            // No quedan tiros: esperar cooldown final para empezar el siguiente ciclo
 
             Espera = this->CooldownFinal;
+            FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::RepetirCicloAtaque);    
+            Super::ProgramarTimer(Delegate, Espera, false);
 
-            GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &ATorre_Disparador::RepetirCicloAtaque,Espera, false);               
+
         }
 
 
@@ -153,5 +159,5 @@ void ATorre_Disparador::Disparar() {
     FActorSpawnParameters SpawnParams;
     SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn; // Forzar al proyectil a que aparezca (por si justo se pone la torre encima de un robot)
     AProyectil* Proyectil = AActor::GetWorld()->SpawnActor<AProyectil>(this->ClaseBlueprintProyectil, this->SpawnProyectiles->GetComponentLocation(), SpawnProyectiles->GetComponentRotation(),SpawnParams);
-    this->TirosRestantes--;
+
 }
