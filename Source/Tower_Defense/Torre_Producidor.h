@@ -7,7 +7,6 @@
 #include "Torre_Producidor.generated.h"
 class UStaticMeshComponent;
 class AMandoDeJugador_EnPartida;
-class AMandoDeIA;
 
 /**
  * 
@@ -52,7 +51,6 @@ private:
 	bool PrimeraProduccion;
 
 	AMandoDeJugador_EnPartida* MandoDeJugador;
-	AMandoDeIA* MandoDeIA;
 
 // Métodos
 

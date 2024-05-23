@@ -26,7 +26,6 @@ void ATorre_Disparador::BeginPlay() {
     Super::BeginPlay();
 
 
-    this->EnRango();
 
 } 
 
@@ -40,18 +39,22 @@ ATorre_Disparador::ATorre_Disparador() {
     this->SpawnProyectiles->SetupAttachment(CuerpoBase);
 }
 
-void ATorre_Disparador::PrepararIdle() {
+
+int ATorre_Disparador::ObtenerCadenciaDeDisparo() {return this->CadenciaDeDisparo;}
+
+
+void ATorre_Disparador::PrepararDesapuntar() {
   
     Super::ClearTimer();
 
     float Espera = 1.5f;  // Esperar 1,5 segundos tras no ver enemigo para apagar torre.
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Idle);    
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Desapuntar);    
     Super::ProgramarTimer(Delegate, Espera, false);
 
 }
 
-void ATorre_Disparador::Idle() {
-    RealizarAnimacion(1); // Desapuntar
+void ATorre_Disparador::Desapuntar() {
+    Super::RealizarAnimacion(1); // Desapuntar
 
 }
 
@@ -76,16 +79,72 @@ bool ATorre_Disparador::EnRango() {
 }
 
 
-void ATorre_Disparador::InicializacionAtaque() {
+
+
+
+/*
+
+
+
+
+If toca pasar a estado disparo:
+
+    Apuntar (recarga)
+
+    While true
+
+        While quedan tiros
+            Animar Tiro
+            Disparar
+            
+        Espera fin ciclo (recarga)
+
+
+If Toca a idle
+    Desapuntar
+
+
+*/
+
+void ATorre_Disparador::Apuntar() {
     
 
-    // Inicializar estado de ataque, settear timer para que tras cooldown inicial se empiece a disparar
+    Super::RealizarAnimacion(2); // Apuntar
+    Super::ProgramarTimerFinDeTareaIA(this->TiempoParaApuntar);
 
-    RealizarAnimacion(2); // Apuntar
-    this->RepetirCicloAtaque();
+}
+
+void ATorre_Disparador::AnimarDisparo(int DisparosRestantes) {
+    
+    // Pre: Disparos restantes indica cuantos disparos quedan por hacer en el ciclo (incluye el disparo que se va a animar ahora)
+
+    Super::RealizarAnimacion((this->CadenciaDeDisparo-DisparosRestantes)+3); // Animar el disparo
+    Super::ProgramarTimerFinDeTareaIA(this->TiempoAnimarDisparo);
+
+
 }
 
 
+void ATorre_Disparador::Disparar() {
+
+    // Hacer aparecer el proyectil en el spawnpoint de proyectiles. El proyectil en sí se mueve con su lógica en su código
+
+    FActorSpawnParameters SpawnParams;
+    SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn; // Forzar al proyectil a que aparezca (por si justo se pone la torre encima de un robot)
+    AProyectil* Proyectil = AActor::GetWorld()->SpawnActor<AProyectil>(this->ClaseBlueprintProyectil, this->SpawnProyectiles->GetComponentLocation(), SpawnProyectiles->GetComponentRotation(),SpawnParams);
+
+
+    Super::ProgramarTimerFinDeTareaIA(this->TiempoDisparo);
+
+}
+
+void ATorre_Disparador::EsperaFinDeCicloDeAtaque() {
+    
+    Super::ProgramarTimerFinDeTareaIA(this->TiempoDeCiclo - this->CadenciaDeDisparo * (this->TiempoAnimarDisparo + this->TiempoDisparo));
+
+}
+
+/*
 void ATorre_Disparador::RepetirCicloAtaque() {
 
     Super::ClearTimer();
@@ -151,13 +210,5 @@ void ATorre_Disparador::Atacar(bool FasePrepararTiro, int NumDisparo) {
 
 
 }
+*/
 
-void ATorre_Disparador::Disparar() {
-
-    // Hacer aparecer el proyectil en el spawnpoint de proyectiles. El proyectil en sí se mueve con su lógica en su código
-
-    FActorSpawnParameters SpawnParams;
-    SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn; // Forzar al proyectil a que aparezca (por si justo se pone la torre encima de un robot)
-    AProyectil* Proyectil = AActor::GetWorld()->SpawnActor<AProyectil>(this->ClaseBlueprintProyectil, this->SpawnProyectiles->GetComponentLocation(), SpawnProyectiles->GetComponentRotation(),SpawnParams);
-
-}

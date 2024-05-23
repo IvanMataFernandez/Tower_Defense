@@ -21,21 +21,28 @@ public:
 	virtual void BeginPlay() override;
 private:
 
-	UComponenteVida* Vida;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float TiempoParaAbrirCerrarPuntoExpuesto;	
 
 
+
 public:
-	virtual void InicializarMover() override;
-	virtual void InicializarAtaque() override;
-	virtual void InicializarMoverVertical() override;
-	virtual void QuitarIA() override;
+	void Ocultar();
+	void Desocultar();
 
 private:
-	void TrasCerrarPuntoExpuesto();
-	void TrasAbrirPuntoExpuesto();
+
+	void FinalizarOcultacion();
+
+//public:
+//	virtual void InicializarMover() override;
+//	virtual void InicializarAtaque() override;
+//	virtual void InicializarMoverVertical() override;
+//	virtual void QuitarIA() override;
+
+//private:
+//	void TrasCerrarPuntoExpuesto();
+//	void TrasAbrirPuntoExpuesto();
 	
 
 };

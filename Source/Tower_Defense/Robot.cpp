@@ -31,13 +31,27 @@ ARobot::ARobot() {
 void ARobot::BeginPlay() {
     Super::BeginPlay();
     this->Velocidad = this->VelocidadBase + (FMath::FRand() - 0.5) * 2 * this->DesviacionMaxVelocidad;
+    this->DistanciaRecorridaVertical = 0;
 }
+
+
+
+void ARobot::SetOleada(int Ole) {
+    this->Oleada = Ole;
+}
+
+
+int ARobot::GetOleada() {
+    return this->Oleada;
+}
+
+
 
 void ARobot::QuitarIA() {
     Super::QuitarIA();
 
     // En los robots, al quitar IA se debe quitar la animacion de moverse tmb
-    RealizarAnimacion(2); 
+    Super::RealizarAnimacion(2); 
 
 }
 
@@ -49,9 +63,9 @@ bool ARobot::HaMovidoEnVerticalDistanciaX(float Distancia) {
 void ARobot::InicializarMoverVertical() {
     Super::ClearTimer();
     this->DistanciaRecorridaVertical = 0.f;
-    this->Velocidad = 750;
+    this->VelocidadActual = 750;
 
-    RealizarAnimacion(1); // Animar el robot para que se mueva (loop)
+    Super::RealizarAnimacion(1); // Animar el robot para que se mueva (loop)
  
 
     float DeltaTiempo =  UGameplayStatics::GetWorldDeltaSeconds(this) * 1.3f;
@@ -60,22 +74,17 @@ void ARobot::InicializarMoverVertical() {
 
 }
 
-void ARobot::MoverVertical(float DeltaTime) {
-/*
-    FVector Pos = this->GetActorLocation();
-    Pos.Y = Pos.Y - this->Velocidad * DeltaTime; */
-    FVector Pos = FVector(-this->Velocidad * DeltaTime, 0 ,0);
-    this->AddActorWorldOffset(Pos);
-    this->DistanciaRecorridaVertical = this->DistanciaRecorridaVertical + this->Velocidad * DeltaTime;
 
-}
 
 
 void ARobot::InicializarMover() {
 
     Super::ClearTimer();
+    Super::RealizarAnimacion(1); // Animar el robot para que se mueva (loop)
 
-    RealizarAnimacion(1); // Animar el robot para que se mueva (loop)
+    this->VelocidadActual = this->Velocidad;
+
+
 
 
     float DeltaTiempo =  UGameplayStatics::GetWorldDeltaSeconds(this) * 1.3f;
@@ -86,21 +95,30 @@ void ARobot::InicializarMover() {
 }
 
 void ARobot::Mover(float DeltaTime) {
-/*
-    FVector Pos = this->GetActorLocation();
-    Pos.Y = Pos.Y - this->Velocidad * DeltaTime; */
-    FVector Pos = FVector(0, - this->Velocidad * DeltaTime,0);
+
+    FVector Pos = FVector(0, - this->VelocidadActual * DeltaTime,0);
     this->AddActorWorldOffset(Pos);
 
 }
 
-void ARobot::Parar() {
-    this->Velocidad = 0;
+void ARobot::MoverVertical(float DeltaTime) {
+
+    FVector Pos = FVector(-this->VelocidadActual * DeltaTime, 0 ,0);
+    this->AddActorWorldOffset(Pos);
+    this->DistanciaRecorridaVertical = this->DistanciaRecorridaVertical + this->VelocidadActual * DeltaTime;
+
 }
 
-void ARobot::SetVelocidad(float Vel) {
-    this->Velocidad = Vel;
+
+void ARobot::Parar() {
+    
+
+    this->VelocidadActual = 0;
+    Super::ClearTimer();
+    Super::RealizarAnimacion(2); 
+
 }
+
 
 void ARobot::Matar() {
 
@@ -117,4 +135,8 @@ void ARobot::Matar() {
 
     this->RealizarAnimacion(2);
     Super::Matar();
+}
+
+void ARobot::SetVelocidad(float Vel) {
+    this->VelocidadActual = Vel;
 }

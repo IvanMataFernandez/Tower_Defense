@@ -5,7 +5,7 @@
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonReader.h"
 #include "ZonaSpawnRobot.h"
-#include "Musica_EnPartida.h"
+//#include "Musica_EnPartida.h"
 #include "ConstructoraDeBlueprints.h"
 #include "Math/UnrealMathUtility.h"
 #include "Kismet/GameplayStatics.h"
@@ -232,12 +232,18 @@ void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMa
     // Restar el peso del robot de los robots vivos restantes
     this->PesoRobotsVivo = PesoRobotsVivo - PesoDeRobot;
 
+    // Restar el peso del robot del threshold para el spawn de la siguiente oleada si fue spawneado en esta misma oleada
+
+    if (RobotMatado->GetOleada() == this->OleadaActual) {
+        this->PesoPorEliminarHastaSiguienteOleada = this->PesoPorEliminarHastaSiguienteOleada -  PesoDeRobot;
+    }
+
 
     if (this->OleadaActual != this->OleadasTotales-1) { // Determinar si es la ultima oleada o no
 
         // Si no lo es, determinar si hemos hitteado el threshold para spawnear la siguiente oleada antes (no se pueden adelantar las oleadas gordas)
 
-        if (!this->SeAproximaOrdaGrande && this->PesoTargetParaSiguienteOleada >= this->PesoRobotsVivo) {
+        if (!this->SeAproximaOrdaGrande && this->PesoPorEliminarHastaSiguienteOleada <= 0) {
 
             // Se quiere Adelantar la oleada, para ello mirar si la oleada anterior todavía está spawneando (solo puede ocurrir si el jugador tiene un montón de DPS)
 
@@ -501,10 +507,16 @@ void AGameMode_EnPartida::CargarDatosOleada() {
 
     
 
+    // Spawnear la siguiente oleada si muere la mitad del peso de esta redondeado hacia abajo
 
 
-    this->PesoTargetParaSiguienteOleada = this->PesoRobotsVivo / 3 + this->PesoRestante / 2; // Spawnear siguiente orda antes si solo queda la mitad del peso de esta orda + 
-                                                                                             // el tercio de los robots que ya habían presentes previa a esta
+    this->PesoPorEliminarHastaSiguienteOleada = this->PesoRestante / 2;
+                                                                                                
+
+
+
+    UE_LOG(LogTemp, Warning, TEXT("Robots matados requeridos -> %d"), PesoPorEliminarHastaSiguienteOleada);
+
 
     // Refrescar listas auxiliares
 
@@ -520,7 +532,6 @@ void AGameMode_EnPartida::CargarDatosOleada() {
     for (TSharedPtr< FJsonValue>& Probabilidad : ListaProbabilidades) {
             ProbabilidadAcumulada = ProbabilidadAcumulada + Probabilidad->AsNumber(); 
             this->ProbabilidadesRobotAcumuladas.Add(ProbabilidadAcumulada);
-            UE_LOG(LogTemp, Warning, TEXT("Chance -> %f"), ProbabilidadAcumulada);
 
     }
 
@@ -685,9 +696,7 @@ void AGameMode_EnPartida::GenerarRobot() {
             // No cabe, se elimina el bot de la lista de spawneables porque no lo vamos a poder permitir de nuevo para el resto de la oleada actual
 
          
-         
-            // TODO: Debug esto por si acaso, pero debería ir. Hace que cuando se quita una probabilidad, se añade a las demas en proporcion de la probabilidad
-            //       de cada uno
+
 
             float ProbabilidadAEliminar;
 
@@ -699,7 +708,6 @@ void AGameMode_EnPartida::GenerarRobot() {
 
             if (ProbabilidadAEliminar <= 0.999f) {
 
-                UE_LOG(LogTemp, Warning, TEXT("Nuevas chances:"));
 
 
 
@@ -733,7 +741,6 @@ void AGameMode_EnPartida::GenerarRobot() {
                 
                     ProbabilidadBasePrevia = this->ProbabilidadesRobotAcumuladas[i];
                             
-                    UE_LOG(LogTemp, Warning, TEXT("Chance -> %f"), this->ProbabilidadesRobotAcumuladas[i]);
 
 
                 }
@@ -859,10 +866,10 @@ void AGameMode_EnPartida::SpawnearRobot(int Pos) {
 
     }
 
-    // Spawnear el bot con id "ID" en la fila "FilaElegida"
+    // Spawnear el bot con id "ID" en la fila "FilaElegida" y decirle que apareció en la oleada actual
 
-    this->ZonaSpawn->SpawnearRobot(ID ,FilaElegida); 
-
+    ARobot* RobotGenerado = this->ZonaSpawn->SpawnearRobot(ID ,FilaElegida); 
+    RobotGenerado->SetOleada(this->OleadaActual);
 
 }
 

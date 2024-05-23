@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Services/BTService_BlackboardBase.h"
-#include "BTService_RobotBombRad_VerTorres.generated.h"
+#include "BTService_RobotBombRad.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TOWER_DEFENSE_API UBTService_RobotBombRad_VerTorres : public UBTService_BlackboardBase
+class TOWER_DEFENSE_API UBTService_RobotBombRad : public UBTService_BlackboardBase
 {
 	GENERATED_BODY()
 	

@@ -4,23 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_TorreProd_FinProduccion.generated.h"
+#include "BTTask_RobotBombRad.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TOWER_DEFENSE_API UBTTask_TorreProd_FinProduccion : public UBTTaskNode
+class TOWER_DEFENSE_API UBTTask_RobotBombRad : public UBTTaskNode
 {
 	GENERATED_BODY()
-
+	
 public:	
-	UBTTask_TorreProd_FinProduccion();
+	UBTTask_RobotBombRad();
 
 protected:
 
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent &BT, uint8 *NodeMemory) override;
-
 
 
 };

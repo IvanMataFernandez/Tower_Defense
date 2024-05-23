@@ -19,9 +19,37 @@
 
 void ARobot_Ocultador::BeginPlay() {
     Super::BeginPlay();
-    this->Vida = FindComponentByClass<UComponenteVidaConEstados>();
 
 }
+
+
+void ARobot_Ocultador::Ocultar() {
+
+    Super::RealizarAnimacion(5);
+
+    // Esperar a que el robot se oculte para flaggearlo como invencible
+    float Espera = this->TiempoParaAbrirCerrarPuntoExpuesto;
+    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Ocultador::FinalizarOcultacion);    
+    Super::ProgramarTimer(Delegate, Espera, false);
+
+}
+
+void ARobot_Ocultador::FinalizarOcultacion() {
+
+    Super::SetVulnerable(false);
+    Super::ProgramarTimerFinDeTareaIA(0);
+}
+
+
+void ARobot_Ocultador::Desocultar() {
+
+    Super::SetVulnerable(true);
+    Super::RealizarAnimacion(4);
+	Super::ProgramarTimerFinDeTareaIA(this->TiempoParaAbrirCerrarPuntoExpuesto); 
+
+}
+
+/*
 
 void ARobot_Ocultador::InicializarAtaque() {
 
@@ -79,3 +107,6 @@ void ARobot_Ocultador::QuitarIA() {
 
 
 }
+
+
+*/

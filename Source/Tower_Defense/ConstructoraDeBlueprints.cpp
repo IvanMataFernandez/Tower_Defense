@@ -69,18 +69,22 @@ UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase, bool Torre) const {
             case Robots::Medio:
             case Robots::Duro:
             case Robots::Bomba:
-            case Robots::Ocultador:
 
                 RutaBT = TEXT("/Game/Blueprints/IA/Robots/RobotBasico/BT_RobotBasico"); 
 
                 break;
             
             case Robots::BombaRadar:
-                RutaBT = TEXT("/Game/Blueprints/IA/Robots/RobotBombaRadar/BT_RobotBombaRadar");  // TEXT("/Game/Blueprints/IA/Robots/RobotBasico/BT_RobotBasico"); 
+                RutaBT = TEXT("/Game/Blueprints/IA/Robots/RobotBombaRadar/BT_RobotBombaRadar");  
+                break;
+
+
+            case Robots::Ocultador:
+                RutaBT = TEXT("/Game/Blueprints/IA/Robots/RobotOcultador/BT_RobotOcultador");  
                 break;
 
             case Robots::Preview:    
-                RutaBT = TEXT("/Game/Blueprints/IA/Robots/Preview/BT_Preview");  // TEXT("/Game/Blueprints/IA/Robots/RobotBasico/BT_RobotBasico"); 
+                RutaBT = TEXT("/Game/Blueprints/IA/Robots/Preview/BT_Preview");  
                 
 
         }      
@@ -100,10 +104,11 @@ UBehaviorTree* ConstructoraDeBlueprints::GetBT(uint8 Clase, bool Torre) const {
 float ConstructoraDeBlueprints::GetTiempoDeRecargaDeTorre(uint8 Clase) const {
         switch (Clase) {
             case Torres::Canon:
-            case Torres::CanonDoble:
             case Torres::PistolaLaser:
             case Torres::PanelSolar:
+            case Torres::CanonDoble:
             case Torres::PanelSolarDoble:
+
                 return 5.f;
                 
 
@@ -122,37 +127,34 @@ float ConstructoraDeBlueprints::GetTiempoDeRecargaDeTorre(uint8 Clase) const {
 
 
 bool ConstructoraDeBlueprints::GetEmpiezaRecargadaTorre(uint8 Clase) const {
-    switch (Clase) {
-        case Torres::PanelSolar:
-            return true;
-        default:
-            return false;    
-    }
+
+
+    return Clase >= 8 && Clase <= 10;
 }
 
 int ConstructoraDeBlueprints::GetCosteDeTorre(uint8 Clase) const {
         switch (Clase) {
             case Torres::Canon:
-                return 25;
+                return 50;
             case Torres::CanonDoble:
-                return 55;
+                return 100;
             case Torres::PistolaLaser:
-                return 75;
+                return 110;
                 
 
 
             case Torres::PanelSolar:
             case Torres::Escudo:
 
-                return 10;
+                return 20;
             case Torres::PanelSolarDoble:
-                return 25;
+                return 35;
             
             case Torres::Mina:
-                return 5;
+                return 10;
 
             case Torres::Bomba:
-                return 50;
+                return 70;
 
         }
 

@@ -4,22 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_Robot_Matarse.generated.h"
+#include "BTTask_TorreMina.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TOWER_DEFENSE_API UBTTask_Robot_Matarse : public UBTTaskNode
+class TOWER_DEFENSE_API UBTTask_TorreMina : public UBTTaskNode
 {
 	GENERATED_BODY()
 	
+
 public:	
-	UBTTask_Robot_Matarse();
+	UBTTask_TorreMina();
 
 protected:
 
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent &BT, uint8 *NodeMemory) override;
 
+
+
+private:
+
+	UPROPERTY(EditAnywhere)
+	int IdInstruccion;
 
 };

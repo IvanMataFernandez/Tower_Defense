@@ -36,28 +36,40 @@ private:
 	int RangoEnCasillas;
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	int CadenciaDeDisparo;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
-	float CooldownFinal;
+	float TiempoDeCiclo;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
-	float TiempoEntreTiros;
+	float TiempoParaApuntar;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
-	float TiempoParaAnimacionEnTiro;
+	float TiempoAnimarDisparo;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Datos")
+	float TiempoDisparo;
+
+
 
 
 
 // Métodos
 
 public:
-	void PrepararIdle();
-	bool EnRango();
-	void InicializacionAtaque();
 
+	int ObtenerCadenciaDeDisparo();
+
+	bool EnRango();
+
+	void Apuntar();
+	void AnimarDisparo(int DisparosRestantes);
+	void Disparar();
+	void EsperaFinDeCicloDeAtaque();
+
+	void PrepararDesapuntar();
 
 private:
-	void Disparar();
-	void Atacar(bool FasePrepararTiro, int NumDisparo);
-	void RepetirCicloAtaque();
-	void Idle();
+	void Desapuntar();
 
 
 };

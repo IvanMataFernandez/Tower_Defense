@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_Entidad_QuitarIA.generated.h"
+#include "BTTask_Entidad.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TOWER_DEFENSE_API UBTTask_Entidad_QuitarIA : public UBTTaskNode
+class TOWER_DEFENSE_API UBTTask_Entidad : public UBTTaskNode
 {
 	GENERATED_BODY()
 
 public:	
-	UBTTask_Entidad_QuitarIA();
+	UBTTask_Entidad();
 
 protected:
 

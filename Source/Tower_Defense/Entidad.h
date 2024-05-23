@@ -9,7 +9,7 @@ class UBoxComponent;
 class UStaticMeshComponent;
 class USceneComponent;
 class UAudioComponent;
-
+class AMandoDeIA;
 
 
 
@@ -74,11 +74,12 @@ private:
 
 	static float VolumenEfectos;
 
-
+	AMandoDeIA* MandoDeIA;
 
 // Métodos:
 
 protected:
+
 
 
 	virtual void AutoDestruir();
@@ -91,12 +92,16 @@ protected:
 
 	void ClearTimer();
 	void Invisibilizar();
+	void SetVulnerable(bool Vulnerable);
 	void VisibilizarATorres();
 	void DesactivarHitbox();
 	void Destruir();
 	uint8 ObtenerID();
 
 	void ProgramarTimer(FTimerDelegate Delegate, float TiempoDeEspera, bool EnBucle);
+
+	void ProgramarTimerFinDeTareaIA(float TiempoEspera); 
+
 
 
 

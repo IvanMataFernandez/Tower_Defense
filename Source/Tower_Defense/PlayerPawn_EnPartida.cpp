@@ -203,8 +203,6 @@ void APlayerPawn_EnPartida::RotarCamEnPitchA(float Pitch, float Duracion) {
 
     GetWorld()->GetTimerManager().SetTimer(this->TimerRotacion, this, &APlayerPawn_EnPartida::RotarCam, this->DeltaTiempo, true);
 	this->RotTarget = FRotator(Pitch,Rot.Yaw,Rot.Roll);
-    UE_LOG(LogTemp, Warning, TEXT("Speed/s: %f"), (VelPitch / this->DeltaTiempo));
-
 
 }
 

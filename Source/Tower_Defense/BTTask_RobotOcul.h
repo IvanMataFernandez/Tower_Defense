@@ -4,24 +4,28 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_Robot_MoverVertical.generated.h"
+#include "BTTask_RobotOcul.generated.h"
 
-/**
- * 
- */
+
+
+
 UCLASS()
-class TOWER_DEFENSE_API UBTTask_Robot_MoverVertical : public UBTTaskNode
+class TOWER_DEFENSE_API UBTTask_RobotOcul : public UBTTaskNode
 {
 	GENERATED_BODY()
-
+	
 public:	
-	UBTTask_Robot_MoverVertical();
+	UBTTask_RobotOcul();
 
 protected:
 
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent &BT, uint8 *NodeMemory) override;
 
 
+private:
+
+	UPROPERTY(EditAnywhere)
+	int IdInstruccion;
 
 
 };

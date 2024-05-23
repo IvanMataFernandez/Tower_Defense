@@ -4,25 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_TorreDisp_Idle.generated.h"
+#include "BTTask_TorreUsoUnico.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TOWER_DEFENSE_API UBTTask_TorreDisp_Idle : public UBTTaskNode
+class TOWER_DEFENSE_API UBTTask_TorreUsoUnico : public UBTTaskNode
 {
 	GENERATED_BODY()
-	
 
 public:	
-	UBTTask_TorreDisp_Idle();
+	UBTTask_TorreUsoUnico();
 
 protected:
 
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent &BT, uint8 *NodeMemory) override;
-
-
 
 
 

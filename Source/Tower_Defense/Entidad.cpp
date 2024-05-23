@@ -39,6 +39,18 @@ void AEntidad::ProgramarTimer(FTimerDelegate Delegate, float TiempoDeEspera, boo
 }
 
 
+void AEntidad::ProgramarTimerFinDeTareaIA(float TiempoEspera) {
+
+	if (TiempoEspera > 0.01f) {
+		FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this->MandoDeIA, &AMandoDeIA::AcabarTareaActual);    
+		this->ProgramarTimer(Delegate, TiempoEspera, false);
+	
+	} else {
+		this->MandoDeIA->AcabarTareaActual();
+	}
+	
+
+}
 
 
 uint8 AEntidad::ObtenerID() {
@@ -128,7 +140,6 @@ void AEntidad::PausarEntidad() {
 	if (IA && IA->TieneIA()) {
 		IA->ActivarIA(false);
 		GetWorld()->GetTimerManager().ClearTimer(TimerFrame);
-		UE_LOG(LogTemp, Display, TEXT("DESACTIVA"));
 	}
 
 	// Detener animaciones
@@ -182,35 +193,40 @@ void AEntidad::BeginPlay() {
 
 		// Asignar IA ya que no contiene NoIA
 
-		AMandoDeIA* Mando = GetWorld()->SpawnActor<AMandoDeIA>();
-
+		this->MandoDeIA = GetWorld()->SpawnActor<AMandoDeIA>();
 		if (this->GetActorRotation().Yaw >= -85.f) {
 			// Si está faceando al lado correcto al spawnear, darle la IA que le corresponde
-			Mando->SettearIA(this->ID, Cast<ATorre>(this) != nullptr); // Decirle que clase es para settear el Behavior Tree adecuado
+			this->MandoDeIA->SettearIA(this->ID, Cast<ATorre>(this) != nullptr); // Decirle que clase es para settear el Behavior Tree adecuado
 
 		} else {
 
 			// Si esta rotado 270 grados de lo normal, es un robot en la pantalla de preview y requiere cargar una IA distinta
-			Mando->SettearIA(255, Cast<ATorre>(this) != nullptr); // Decirle que clase es para settear el Behavior Tree adecuado
+			this->MandoDeIA->SettearIA(255, Cast<ATorre>(this) != nullptr); // Decirle que clase es para settear el Behavior Tree adecuado
 
 		}
 
-		Mando->Possess(this);
+		this->MandoDeIA->Possess(this);
 
 	} else {
 
 		// Si no tienen IA, no deberían contabilizar vida. Entidades sin IA se usan como decoración
 
-		UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>();
-
-		if (ComponenteVida) {
-			ComponenteVida->Invulnerabilizar();
-		} 
+		this->SetVulnerable(false);
 	}
 
 
 
 
+}
+
+
+void AEntidad::SetVulnerable(bool Vulnerable) {
+
+	UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>();
+
+	if (ComponenteVida) {
+		ComponenteVida->SetVulnerable(Vulnerable);
+	} 	
 }
 
 

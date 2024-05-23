@@ -3,7 +3,6 @@
 
 #include "Torre_Mina.h"
 #include "MandoDeIA.h"
-#include "ComponenteVida.h"
 #include "Components/BoxComponent.h"
 
 
@@ -42,14 +41,8 @@ void ATorre_Mina::Prepararse() {
 
 	// Esperar tiempodepreparacion para marcar la tarea de preparar como completada en su BT. La siguiente tarea será pasar al estado Preparado
 
-	AMandoDeIA* MandoDeIA = Cast<AMandoDeIA> (this->GetController());
 
-	float Espera = this->TiempoDePreparacion;
-	FTimerDelegate Delegate = FTimerDelegate::CreateUObject(MandoDeIA, &AMandoDeIA::AcabarTareaActual);    
-	Super::ProgramarTimer(Delegate, Espera, false);
-
-
-
+	Super::ProgramarTimerFinDeTareaIA(this->TiempoDePreparacion); 
 
 }
 
@@ -61,8 +54,7 @@ void ATorre_Mina::Preparado() {
 	Super::Invisibilizar();
 	Super::DesactivarHitbox();
 	
-    UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>();
-	ComponenteVida->Invulnerabilizar();
+ 	Super::SetVulnerable(false);
 
 	// Activar el trigger para cuando un bot pase por encima detone
 

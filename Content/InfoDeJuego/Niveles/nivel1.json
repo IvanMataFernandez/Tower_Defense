@@ -20,16 +20,16 @@
             "oleadaGrande": false,
             "peso": 1,
             "probabilidades": [1.0],
-            "tiempoSiguienteOleada": 20
+            "tiempoSiguienteOleada": 30
             
         },
 
         {
             "id": 2,
             "oleadaGrande": false,
-            "peso": 2,
+            "peso": 1,
             "probabilidades": [1.0],
-            "tiempoSiguienteOleada": 20
+            "tiempoSiguienteOleada": 30
             
         },
 
@@ -63,7 +63,7 @@
         {
             "id": 6,
             "oleadaGrande": false,
-            "peso": 5,
+            "peso": 4,
             "probabilidades": [1.0],
             "tiempoSiguienteOleada": 20
             
@@ -81,7 +81,7 @@
         {
             "id": 8,
             "oleadaGrande": false,
-            "peso": 7,
+            "peso": 5,
             "probabilidades": [1.0],
             "tiempoSiguienteOleada": 20
             
@@ -89,8 +89,17 @@
 
         {
             "id": 9,
+            "oleadaGrande": false,
+            "peso": 6,
+            "probabilidades": [1.0],
+            "tiempoSiguienteOleada": 40
+            
+        },
+
+        {
+            "id": 10,
             "oleadaGrande": true,
-            "peso": 15,
+            "peso": 8,
             "probabilidades": [1.0],
             "tiempoSiguienteOleada": 20
             

@@ -27,9 +27,12 @@ public:
 
 private:
 //  UPROPERTY()
+	float VelocidadActual;
 	float Velocidad;
 
 	float DistanciaRecorridaVertical;
+	int Oleada;
+
 
 	UPROPERTY(EditAnywhere, Category = "Datos", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float VelocidadBase;
@@ -45,8 +48,7 @@ private:
 
 // Métodos
 
-protected:
-	void Parar();
+
 
 
 public:
@@ -59,11 +61,15 @@ public:
 	virtual void InicializarMoverVertical();
 	virtual void InicializarMover();
 
+	void SetOleada(int Oleada);
+	int GetOleada();
+
 
 	void MoverVertical(float DeltaTime);
 	bool HaMovidoEnVerticalDistanciaX(float Distancia);
 	void Mover(float DeltaTime);
 	void SetVelocidad(float Vel);
+	void Parar();
 
 
 

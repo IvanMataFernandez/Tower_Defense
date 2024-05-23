@@ -90,12 +90,12 @@ void AMandoDeJugador_EnPartida::QuitarUltimaHUDAnadida()  {
 }
 
 void AMandoDeJugador_EnPartida::QuitarHUD(int Pos)  {
-    if (Pos >= 0 && Pos < this->HUDs.Num()) {
-        this->HUDs[Pos]->RemoveFromParent();
-        this->HUDs.RemoveAt(Pos);
-    } else {
-        UE_LOG(LogTemp, Error, TEXT("Se habria producido crash"));
-    }
+
+    // Pre: Pos en array
+
+    this->HUDs[Pos]->RemoveFromParent();
+    this->HUDs.RemoveAt(Pos);
+
 
 
 
@@ -367,7 +367,7 @@ void AMandoDeJugador_EnPartida::InicializarVariablesDePartida() {
 
  
 	this->SeleccionDelJugador = -1;
-	this->Energia = 20;
+	this->Energia = 40;
     this->EnPartida = true;
 
 
@@ -388,8 +388,6 @@ void AMandoDeJugador_EnPartida::ElegirTorre(int PosTorre, bool& SeleccionCorrect
     }
 
     
-    UE_LOG(LogTemp, Warning, TEXT("Coste: %d"), this->CosteDeTorres[PosTorre]);
-    UE_LOG(LogTemp, Warning, TEXT("Momento actual: %f | Momento de recarga: %f"), GetWorld()->GetTimeSeconds(), this->MomentoEnQueTorreRecarga[PosTorre]);
 
 
 

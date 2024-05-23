@@ -30,7 +30,7 @@
             "id": 2,
             "oleadaGrande": false,
             "peso": 2,
-            "probabilidades": [0.0, 1.0, 0.0],
+            "probabilidades": [1.0, 0.0, 0.0],
             "tiempoSiguienteOleada": 20
             
         },      
@@ -38,8 +38,8 @@
         {
             "id": 2,
             "oleadaGrande": false,
-            "peso": 3,
-            "probabilidades": [0.7, 0.3, 0.0],
+            "peso": 2,
+            "probabilidades": [1.0, 0.0, 0.0],
             "tiempoSiguienteOleada": 20
             
         },      

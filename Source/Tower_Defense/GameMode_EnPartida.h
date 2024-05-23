@@ -32,7 +32,7 @@ private:
 	int NivelActual;
 
 	int PesoRobotsVivo;
-	int PesoTargetParaSiguienteOleada;
+	int PesoPorEliminarHastaSiguienteOleada;
 
 	bool SeAproximaOrdaGrande;
 	bool SeQuiereSpawnearLaSiguienteOleada;

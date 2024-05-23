@@ -4,23 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_TorreUsoUnico_Ejecutar.generated.h"
+#include "BTTask_Robot.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TOWER_DEFENSE_API UBTTask_TorreUsoUnico_Ejecutar : public UBTTaskNode
+class TOWER_DEFENSE_API UBTTask_Robot : public UBTTaskNode
 {
 	GENERATED_BODY()
-
+	
 public:	
-	UBTTask_TorreUsoUnico_Ejecutar();
+	UBTTask_Robot();
 
 protected:
 
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent &BT, uint8 *NodeMemory) override;
 
+private:
+
+	UPROPERTY(EditAnywhere)
+	int IdInstruccion;
 
 
 };

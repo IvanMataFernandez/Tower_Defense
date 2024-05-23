@@ -26,10 +26,10 @@ private:
 
 
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
-	float TiempoPorDisparo;
+	float TiempoDeDisparo;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
-	float TiempoParaAnimacionDisparo;
+	float TiempoDeAnimacionDisparo;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float RangoEnCasillas;
@@ -52,17 +52,12 @@ protected:
 
 
 public:
-	virtual void InicializarAtaque();
 	bool TorreEnRango();
 
-
-protected:
-	void PrepararAtaque();
-
-
-private:
-
-	void Atacar(bool FasePrepararTiro);
+	void AnimarDisparo();
 	void Disparar();
+
+
+
 
 };

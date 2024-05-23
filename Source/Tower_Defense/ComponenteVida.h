@@ -42,7 +42,6 @@ protected:
 
 public:
 	bool EsVulnerable();
-	void Invulnerabilizar();
-	void Vulnerabilizar();
+	void SetVulnerable(bool Vulnerable);
 
 };

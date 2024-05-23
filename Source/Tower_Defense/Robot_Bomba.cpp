@@ -4,7 +4,6 @@
 #include "Robot_Bomba.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "ComponenteVida.h"
 
 
 /*
@@ -38,11 +37,8 @@ void ARobot_Bomba::EmpezarDetonar() {
 
     // Desactivar el robot para que no haga nada mientras detona
 
-    Super::QuitarIA(); // Desactivar la IA y sus timers
-    UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>(); // Hacer al robot invulnerable durante la explosión para que no pueda detonar dos veces seguidas
-    ComponenteVida->Invulnerabilizar();
-
-    Super::Parar(); // set Velocidad = 0;
+    Super::QuitarIA(); // Desactivar la IA y sus timers asociados
+    Super::SetVulnerable(false); // Hacer al robot invulnerable durante la explosión para que no pueda detonar dos veces seguidas
     
     RealizarAnimacion(2); // Quitar el loop de animacion de movimiento de ruedas
     RealizarAnimacion(4);

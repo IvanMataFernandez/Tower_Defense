@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "ZonaSpawnRobot.generated.h"
 class UBoxComponent;
+class ARobot;
 
 UCLASS()
 class TOWER_DEFENSE_API AZonaSpawnRobot : public AActor
@@ -45,12 +46,14 @@ private:
 
 // Métodos
 
+protected:
+
+	UFUNCTION(BlueprintNativeEvent)
+	ARobot* MaterealizarRobot(int ID, FVector Posicion);
+
 public:
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void MaterealizarRobot(int ID, FVector Posicion);
-
-	void SpawnearRobot(int ID ,int Fila); 
+	ARobot* SpawnearRobot(int ID ,int Fila); 
 
 
 	void RefrescarNuevaOleada();

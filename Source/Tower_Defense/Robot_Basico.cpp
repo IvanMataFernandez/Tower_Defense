@@ -46,14 +46,52 @@ bool ARobot_Basico::TorreEnRango() {
   //  DrawDebugLine(GetWorld(), Start, End, FColor::Green, true);
 
 
-
     return GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_GameTraceChannel6); // 5 vision torre, 6 vision robot
 
 }
 
 
+/*
+
+    If en rango
+
+        Parar
+
+        While true
+            Animar disparo
+            (espera)
+            Disparar
+            (espera)
 
 
+
+    If no en rango
+
+        Mover
+
+
+
+*/
+
+
+void ARobot_Basico::AnimarDisparo() {
+    
+        Super::RealizarAnimacion(3); // Animar el robot para que realize el disparo
+
+        Super::ProgramarTimerFinDeTareaIA(this->TiempoDeAnimacionDisparo);
+
+}
+
+void ARobot_Basico::Disparar() {
+        FActorSpawnParameters SpawnParams;
+        SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn; // Forzar al proyectil a que aparezca (por si justo se le pone una torre encima)
+        AProyectil* Proyectil = AActor::GetWorld()->SpawnActor<AProyectil>(this->ClaseBlueprintProyectil, this->SpawnProyectiles->GetComponentLocation(), SpawnProyectiles->GetComponentRotation(),SpawnParams);
+
+        Super::ProgramarTimerFinDeTareaIA(this->TiempoDeDisparo);
+
+}
+
+/*
 
 void ARobot_Basico::InicializarAtaque() {
 
@@ -95,9 +133,5 @@ void ARobot_Basico::Atacar(bool FasePrepararTiro) {
 
 }
 
-void ARobot_Basico::Disparar() {
-        FActorSpawnParameters SpawnParams;
-        SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn; // Forzar al proyectil a que aparezca (por si justo se le pone una torre encima)
 
-        AProyectil* Proyectil = AActor::GetWorld()->SpawnActor<AProyectil>(this->ClaseBlueprintProyectil, this->SpawnProyectiles->GetComponentLocation(), SpawnProyectiles->GetComponentRotation(),SpawnParams);
-}
+*/

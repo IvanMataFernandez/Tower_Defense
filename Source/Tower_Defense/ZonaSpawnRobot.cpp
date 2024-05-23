@@ -4,7 +4,7 @@
 #include "ZonaSpawnRobot.h"
 #include "Components/BoxComponent.h"
 #include "Math/UnrealMathUtility.h"
-
+#include "Robot.h"
 
 
 
@@ -35,30 +35,37 @@ void AZonaSpawnRobot::BeginPlay()
 	this->Localizacion = AActor::GetActorLocation();   
 
 	for (int Fila = 0; Fila != 5; Fila++) {
-		this->EspacioOcupadoPorFila.Add(FMath::FRand() * 400.f);
+		this->EspacioOcupadoPorFila.Add(FMath::FRand() * 150.f);
 	}
 
 
 }
 
-void AZonaSpawnRobot::SpawnearRobot(int ID ,int Fila) {
+ARobot* AZonaSpawnRobot::SpawnearRobot(int ID ,int Fila) {
 
+	// Crea un robot del id adecuado en la fila indicada y devuelve el puntero a dicho robot creado
 	
 	FVector Pos = FVector(this->Localizacion.X + this->PosicionesDeSpawn[Fila], this->Localizacion.Y + this->EspacioOcupadoPorFila[Fila] , this->Localizacion.Z - this->TamanoBox.Z );
-	this->MaterealizarRobot(ID, Pos);
+	ARobot* Robot = this->MaterealizarRobot(ID, Pos);
 	
-	this->EspacioOcupadoPorFila[Fila] = this->EspacioOcupadoPorFila[Fila] + 400.f + FMath::FRand() * 400.f;
+	this->EspacioOcupadoPorFila[Fila] = this->EspacioOcupadoPorFila[Fila] + 320.f + FMath::FRand() * 150.f;
 
+	return Robot;
 }
 
 
 void AZonaSpawnRobot::RefrescarNuevaOleada() {
 
 	for (int Fila = 0; Fila != this->EspacioOcupadoPorFila.Num(); Fila++) {
-		this->EspacioOcupadoPorFila[Fila] = FMath::FRand() * 400.f;
+		this->EspacioOcupadoPorFila[Fila] = FMath::FRand() * 150.f;
 
 	}
 
+}
+
+
+ARobot* AZonaSpawnRobot::MaterealizarRobot_Implementation(int ID, FVector Posicion) {
+	return nullptr;
 }
 
 
