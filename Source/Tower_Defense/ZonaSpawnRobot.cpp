@@ -35,7 +35,7 @@ void AZonaSpawnRobot::BeginPlay()
 	this->Localizacion = AActor::GetActorLocation();   
 
 	for (int Fila = 0; Fila != 5; Fila++) {
-		this->EspacioOcupadoPorFila.Add(FMath::FRand() * 150.f);
+		this->EspacioOcupadoPorFila.Add(FMath::FRand() * 300.f);
 	}
 
 
@@ -48,7 +48,7 @@ ARobot* AZonaSpawnRobot::SpawnearRobot(int ID ,int Fila) {
 	FVector Pos = FVector(this->Localizacion.X + this->PosicionesDeSpawn[Fila], this->Localizacion.Y + this->EspacioOcupadoPorFila[Fila] , this->Localizacion.Z - this->TamanoBox.Z );
 	ARobot* Robot = this->MaterealizarRobot(ID, Pos);
 	
-	this->EspacioOcupadoPorFila[Fila] = this->EspacioOcupadoPorFila[Fila] + 320.f + FMath::FRand() * 150.f;
+	this->EspacioOcupadoPorFila[Fila] = this->EspacioOcupadoPorFila[Fila] + 260.f + FMath::FRand() * 300.f;
 
 	return Robot;
 }
@@ -57,7 +57,7 @@ ARobot* AZonaSpawnRobot::SpawnearRobot(int ID ,int Fila) {
 void AZonaSpawnRobot::RefrescarNuevaOleada() {
 
 	for (int Fila = 0; Fila != this->EspacioOcupadoPorFila.Num(); Fila++) {
-		this->EspacioOcupadoPorFila[Fila] = FMath::FRand() * 150.f;
+		this->EspacioOcupadoPorFila[Fila] = FMath::FRand() * 300.f;
 
 	}
 

@@ -138,5 +138,5 @@ void ARobot::Matar() {
 }
 
 void ARobot::SetVelocidad(float Vel) {
-    this->VelocidadActual = Vel;
+    this->Velocidad = Vel;
 }
