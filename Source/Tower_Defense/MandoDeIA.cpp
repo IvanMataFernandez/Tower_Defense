@@ -5,27 +5,27 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "ConstructoraDeBlueprints.h"
 #include "BehaviorTree/BTTaskNode.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
+
+// La clase que maneja la IA de Entidades. A toda entidad se le da esta clase como IA.
 
 
 void AMandoDeIA::SettearIA(uint8 Clase, bool Torre) {
 
 
-
+    // Al principio de crear la entidad, se le requiere cargar su Behavior Tree adecuado. Obtenerlo basado en el ID de la Entidad y si es una Torre o Robot
+    
 
     this->BT =  ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetBT(Clase, Torre);
 
 
     if (BT) {
-     //   UE_LOG(LogTemp, Warning, TEXT("Cargando Behavior Tree para ID: %d"), Clase);
 
+        // Si tiene un BT asociado, runnearlo ya. (No todas las entidades requieren BT, las torres protectoras solo son muros que se quedan quietos y ya)
         this->RunBehaviorTree(BT);
  
-    } else {
-        UE_LOG(LogTemp, Warning, TEXT("No AI loaded for ID: %d"), Clase );
-    }
-
-
+    } 
 
 
 
@@ -36,12 +36,14 @@ bool AMandoDeIA::TieneIA() {
 }
 
 void AMandoDeIA::ActivarIA(bool Activar) {
-    UBehaviorTreeComponent* BehaviorTreeComponent = this->FindComponentByClass<UBehaviorTreeComponent>();
+
+    // Post: Activar / Desactivar la IA (sin eliminarla completamente), segun el bool indicado
 
     if (Activar) {
         this->RunBehaviorTree(BT);
 
     } else {
+        UBehaviorTreeComponent* BehaviorTreeComponent = this->FindComponentByClass<UBehaviorTreeComponent>();
         BehaviorTreeComponent->StopTree();
 
     }
@@ -50,8 +52,24 @@ void AMandoDeIA::ActivarIA(bool Activar) {
 }
 
 void AMandoDeIA::AcabarTareaActual() {
+
+    // Marcar la tarea actual del BT como completada, para que salte a la siguiente de la secuencia
+
     UBehaviorTreeComponent* BehaviorTreeComponent = this->FindComponentByClass<UBehaviorTreeComponent>();
     Cast<UBTTaskNode>(BehaviorTreeComponent->GetActiveNode())->FinishLatentTask(*BehaviorTreeComponent, EBTNodeResult::Succeeded);
 }
 
 
+void AMandoDeIA::SettearBoolEnBlackboard(FName Key, bool Valor) {
+
+    // Settear un valor booleano en su blackboard según la clave indicada
+
+    this->FindComponentByClass<UBehaviorTreeComponent>()->GetBlackboardComponent()->SetValueAsBool(Key, Valor);
+}
+
+bool AMandoDeIA::GetBoolDeBlackboard(FName Key) {
+
+    // Obtener un valor booleano en su blackboard según la clave indicada
+
+    return this->FindComponentByClass<UBehaviorTreeComponent>()->GetBlackboardComponent()->GetValueAsBool(Key);
+}

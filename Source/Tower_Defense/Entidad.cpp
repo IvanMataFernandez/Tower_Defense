@@ -13,6 +13,10 @@
 #include "Kismet/GameplayStatics.h"
 
 
+
+// Una entidad es todo Robot o Torre. Una entidad no se instancia por ella misma.
+
+
 float AEntidad::VolumenEfectos = 1.0f;
 
 
@@ -35,11 +39,21 @@ AEntidad::AEntidad()
 
 
 void AEntidad::ProgramarTimer(FTimerDelegate Delegate, float TiempoDeEspera, bool EnBucle) {
+	// Programa un timer usando el Delegate dado  (incluye el método y sus parametros), así como el tiempo de espera para ejecutarlo y si debe
+	// ser ejecutado en bucle.
+
+	// Cada entidad solo tiene un timer simultaneo, y cancela el anterior si un nuevo timer es programado sobre ella
+
+	// Los timers sirven para bufferear instrucciones como acabar de ejecutar una tarea de su BT, o esperar a procesar el cálculo del daño de una detonación
+
     GetWorld()->GetTimerManager().SetTimer(TimerFrame, Delegate, TiempoDeEspera, EnBucle);
 }
 
 
 void AEntidad::ProgramarTimerFinDeTareaIA(float TiempoEspera) {
+
+	// La tarea de programar el fin de una tarea de su BT es tan común que existe este método para ahorrar pasaos en la llamada al método de arriba.
+	// Si el tiempo de espera es menor a 0.01s, entonces se ejecuta directamente la finalización de la tarea de su BT en vez de encolarlo con su timer.
 
 	if (TiempoEspera > 0.01f) {
 		FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this->MandoDeIA, &AMandoDeIA::AcabarTareaActual);    
@@ -54,7 +68,7 @@ void AEntidad::ProgramarTimerFinDeTareaIA(float TiempoEspera) {
 
 
 uint8 AEntidad::ObtenerID() {
-	return this->ID;
+	return this->ID; // Cada tipo de instancia de entidad en blueprint (torre y robot), tiene un ID propio.
 }
 
 void AEntidad::SetVolumenEfectosDeEntidades(float Vol, UObject* Contexto) {
@@ -80,7 +94,7 @@ void AEntidad::SetVolumenEfectosDeEntidades(float Vol, UObject* Contexto) {
 
 void AEntidad::Invisibilizar() {
 
-	// Settear Trace Responses de Visto por Robot y Torre a ignore, para que las entidades no puedan targettearlo
+	// Settear Trace Responses de Visto por Robot y Torre a ignore, para que las entidades no puedan targettearlo. Esto no impide que no pueda absorber proyectiles
 
 	this->Hitbox->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel5, ECollisionResponse::ECR_Ignore);
 	this->Hitbox->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel6, ECollisionResponse::ECR_Ignore);
@@ -89,27 +103,53 @@ void AEntidad::Invisibilizar() {
 
 
 void AEntidad::DesactivarHitbox() {
-	this->Hitbox->SetCollisionEnabled(ECollisionEnabled::NoCollision); // Quitar hitbox para que los enemigos ignoren a esta entidad y los proyectiles la sobrepasen
+
+ 	// Quitar hitbox para que los enemigos ignoren a esta entidad (no la puedan ver) y los proyectiles la sobrepasen. 
+
+	this->Hitbox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 }
 
-void AEntidad::Matar() {
-	// Se llama a este método cuando vida = 0
-	// Quitar BT de la clase porque se va a morir
 
-	this->QuitarIA();
-	this->DesactivarHitbox();
+void AEntidad::ProcesarFinDeVida() {
+
+	/*
+		Cuando una entidad debe ser eliminada (expceto si es una torre que se quita con TNT), sigue el siguiente recorrido para eliminar los datos
+		correspondientes en el siguiente orden:
+
+		ProcesarFinDeVida() [clase hija] -> ProcesarFinDeVida() [clase padre] -> Matar() [clase hija] -> Matar() [clase padre]
+	
+	
+	*/
+
+	// Tras acabar de procesar los pasos iniciales de que una entidad debe morir, pasar a los pasos de eliminarla del nivel.
+	// La clase entidad no requiere realizar pasos adiciones aquí
+	this->Matar();
+	
+	
+	}
+
+
+void AEntidad::Matar() {
+	// Se llama a este método cuando vida = 0. Es la última llamada de la cadena del procesamiento de la eliminación de una entidad
+
+
+	this->QuitarIA(); // Desactivar la IA si no se había hecho ya antes
+	this->DesactivarHitbox(); // Quitar la hitbox de la entidad
+
+
 	// Comprobar si la entidad tenia componente de vida y es vulnerable, si lo es, entonces animar su muerte
 	// Si no cumple la condicion, la unidad se habria automatado y no tiene sentido animar esa muerte (ej, matarse tras haber realizado una explosion)
 
 	UComponenteVida* ComponenteVida = FindComponentByClass<UComponenteVida>();
 
 	if (ComponenteVida && ComponenteVida->EsVulnerable()) {
-		this->RealizarAnimacion(0);
-		GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &AEntidad::Destruir,this->TiempoDeAnimacionDeMuerte, false);    
+		this->RealizarAnimacion(0); // realizar animación de muerte (por blueprints)
+		GetWorld()->GetTimerManager().SetTimer(TimerFrame, this, &AEntidad::Destruir,this->TiempoDeAnimacionDeMuerte, false); // Esperar para que la animación acabe para quitar la entidad del nivel
 
 	} else {
-		this->AutoDestruir(); // Es esencialmente Destroy(), pero con un timer de espera potencialmente distinto segun la clase antes de quitarse
+		this->AutoDestruir(); // Sirve para ocultar temporalmente la entidad fuera de la pantalla (para que suenen sus SFXs) hasta que se elimine
+		                      // definitivamente
 	}
 
 
@@ -118,6 +158,9 @@ void AEntidad::Matar() {
 }
 
 void AEntidad::QuitarIA() {
+
+	// Elimina la IA de la entidad
+
 	AMandoDeIA* IA = Cast<AMandoDeIA>(this->GetController());
 
 	if (IA) {
@@ -151,6 +194,9 @@ void AEntidad::PausarEntidad() {
 
 void AEntidad::DespausarEntidad() {
 
+
+	// Despausar IA
+
 	AMandoDeIA* IA = Cast<AMandoDeIA>(this->GetController());
 
 	if (IA) {
@@ -168,7 +214,7 @@ void AEntidad::Destruir() {
 void AEntidad::AutoDestruir() {
 	
 
-	/* Reimplementado en aquellas entidades que se pueden autodestruirm cada hija pone el tiempo a esperar antes de que se autodestruya, junto con la llamada a Destruir()*/
+	/* Reimplementado en aquellas entidades que se pueden autodestruir cada hija pone el tiempo a esperar antes de que se autodestruya, junto con la llamada a Destruir()*/
 
 	this->SetActorLocation(FVector(0,0,-99999)); // Mover el actor para hacer pensar que se ha destruido (se destruirá después, para dar tiempo a audio a que se acabe de reproducir)
 
@@ -194,14 +240,15 @@ void AEntidad::BeginPlay() {
 		// Asignar IA ya que no contiene NoIA
 
 		this->MandoDeIA = GetWorld()->SpawnActor<AMandoDeIA>();
+
 		if (this->GetActorRotation().Yaw >= -85.f) {
-			// Si está faceando al lado correcto al spawnear, darle la IA que le corresponde
-			this->MandoDeIA->SettearIA(this->ID, Cast<ATorre>(this) != nullptr); // Decirle que clase es para settear el Behavior Tree adecuado
+			// Si está faceando hacia la derecha al spawnear, darle la IA que le corresponde al robot
+			this->MandoDeIA->SettearIA(this->ID, Cast<ATorre>(this) != nullptr); // Decirle que clase blueprint es (ID) para settear el Behavior Tree adecuado
 
 		} else {
 
-			// Si esta rotado 270 grados de lo normal, es un robot en la pantalla de preview y requiere cargar una IA distinta
-			this->MandoDeIA->SettearIA(255, Cast<ATorre>(this) != nullptr); // Decirle que clase es para settear el Behavior Tree adecuado
+			// Si mirando hacia abajo, es un robot en la pantalla de preview y requiere cargar una IA distinta
+			this->MandoDeIA->SettearIA(255, Cast<ATorre>(this) != nullptr); // El ID 255 carga la IA especial de moverse hacia abajo en vez de lado.
 
 		}
 
@@ -209,7 +256,7 @@ void AEntidad::BeginPlay() {
 
 	} else {
 
-		// Si no tienen IA, no deberían contabilizar vida. Entidades sin IA se usan como decoración
+		// Si no tienen IA, no deberían contabilizar vida. Entidades sin IA se usan como decoración (en el menú principal)
 
 		this->SetVulnerable(false);
 	}
@@ -233,25 +280,13 @@ void AEntidad::SetVulnerable(bool Vulnerable) {
 
 void AEntidad::ClearTimer() {
 
-
-
-           
-
+	// Cancelar el timer activo (si hay) de la entidad
     GetWorld()->GetTimerManager().ClearTimer(this->TimerFrame);
             
 
 }
 
 
-
-/*
-// PARA OBTENER COMPONENTES C++ AÑADIDOS EN BLUEPRINT (LOS ACTORCOMPONENT NON SCENECOMPONENT)
-
-UHealthComponent* HealthComponent = FindComponentByClass<UHealthComponent>();
-if (HealthComponent)
-{
-    // Has encontrado el componente, puedes hacer lo que necesites con él
-    // Por ejemplo, puedes cambiar la malla asignada al componente de la siguiente manera:
-    HealthComponent->Hello();
-} 
-*/
+AMandoDeIA* AEntidad::GetMandoDeIA() {
+	return this->MandoDeIA;
+}

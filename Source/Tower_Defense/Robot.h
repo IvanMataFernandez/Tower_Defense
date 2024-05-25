@@ -8,6 +8,8 @@
 class USceneComponent;
 class UStaticMeshComponent;
 class AProyectil;
+class UPrimitiveComponent;
+
 /**
  * 
  */
@@ -26,9 +28,14 @@ public:
 // Atributos
 
 private:
-//  UPROPERTY()
+
+	ARobot* LideradoPor;
+	ARobot* LideraA;
+
+
 	float VelocidadActual;
-	float Velocidad;
+	float VelocidadDeInstancia;
+	float VelocidadDeCola;
 
 	float DistanciaRecorridaVertical;
 	int Oleada;
@@ -53,13 +60,14 @@ private:
 
 public:
 
+	virtual void ProcesarFinDeVida() override;
 
-	virtual void Matar() override;
 	virtual void QuitarIA() override;
 
 
-	virtual void InicializarMoverVertical();
+	void InicializarMoverVertical();
 	virtual void InicializarMover();
+	virtual void Parar();
 
 	void SetOleada(int Oleada);
 	int GetOleada();
@@ -69,10 +77,25 @@ public:
 	bool HaMovidoEnVerticalDistanciaX(float Distancia);
 	void Mover(float DeltaTime);
 	void SetVelocidad(float Vel);
-	void Parar();
 
 
+protected:
 
+	virtual void Matar() override;
+
+	ARobot* GetLideraA();
+	virtual void ActualizarIAPorEncolar(ARobot* NuevoLider);
+
+
+private:
+
+    UFUNCTION()
+    void EnChoque(UPrimitiveComponent* ComponenteNuestro, AActor* OtroActor, UPrimitiveComponent* OtroComponente, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Resultado
+);
+
+	void SetVelocidadDeCola(float Vel);
+
+	void DeshacerEnlaceDeCola(bool Lider);
 
 
 };

@@ -5,11 +5,13 @@
 #include "Components/BoxComponent.h"
 
 
+// El robot bomba radar implementa esta clase
+
 /*
 
     IDs de animaciones:
-   -2: Mostrar estado 2 vida
-   -1: Mostrar estado 1 vida 
+   -2: Mostrar estado 2 vida (dañado)
+   -1: Mostrar estado 1 vida  (muy dañado)
     0: Morir
     1: Moverse
     2: Parar de moverse
@@ -22,9 +24,12 @@
 
 void ARobot_BombaRadar::BeginPlay() {
     Super::BeginPlay();
-    RealizarAnimacion(5);
+    Super::RealizarAnimacion(5); // Animar la rotación de helices tan pronto como spawnea en el nivel
 
 }
+
+
+// Métodos de IA:
 
 bool ARobot_BombaRadar::SuficientesTorresEnRangoDeExplosion() {
 

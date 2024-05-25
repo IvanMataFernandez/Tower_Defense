@@ -14,7 +14,7 @@
 
     IDs de animaciones:
 
-    0: Morir (unused)
+    0: Morir (solo activable si muere de verdad y no "muere" porque se ha activado y hecho su uso único)
     1: Activar Detonación
 
 
@@ -34,19 +34,16 @@ ATorre_UsoUnico::ATorre_UsoUnico() {
 void ATorre_UsoUnico::InicializacionFuncion() {
 
 
+    // Programar el timer de para que aplique el daño de explosion a los X segundos
 
     float Espera =  this->TiempoParaExplosion;
     FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_UsoUnico::HacerFuncion);    
     Super::ProgramarTimer(Delegate, Espera, false);
 
-    RealizarAnimacion(1); // Animar detonación
+    Super::RealizarAnimacion(1); // Animar detonación
 
 }
 
-void ATorre_UsoUnico::HacerFuncion() {
-    this->Activar();
-
-}
 
 
 void ATorre_UsoUnico::Activar() {
@@ -76,15 +73,17 @@ void ATorre_UsoUnico::Activar() {
     }
 
 
-
-
-    Super::Matar(); // La torre desaparece tras hacer su función
+    Super::ProcesarFinDeVida(); // La torre desaparece tras hacer su función
 
 }
 
 
 
 void ATorre_UsoUnico::AutoDestruir() {
+
+
+    // Ocultar la entidad offscreen para que suene el SFX. PRogramar timer para que se destruya del motor de juego tras que finalice su SFX.
+
     Super::AutoDestruir();
 
     float Espera =  this->TiempoDeExplosion;
@@ -92,4 +91,13 @@ void ATorre_UsoUnico::AutoDestruir() {
     Super::ProgramarTimer(Delegate, Espera, false);
 
 }
+
+
+// Métodos de IA:
+
+void ATorre_UsoUnico::HacerFuncion() {
+    this->Activar();
+
+}
+
 

@@ -6,6 +6,10 @@
 
 
 
+// El mando de jugador usado en el menú principal. Lo único que hace es cambiar de interfaz si se le da la orden de hacerlo
+// (generalmente tras pinchar en un botón de una interfaz)
+
+
 void AMandoDeJugador_EnMenu::BeginPlay() {
 
     Super::BeginPlay();
@@ -18,6 +22,8 @@ void AMandoDeJugador_EnMenu::BeginPlay() {
 
 UUserWidget* AMandoDeJugador_EnMenu::CambiarAInterfaz(int ID) {
 
+
+    // Cargar la interfaz adecuada según el ID indicado, se quita la anterior
 
     TSubclassOf<class UUserWidget> ClaseUI = nullptr;
 
@@ -36,10 +42,11 @@ UUserWidget* AMandoDeJugador_EnMenu::CambiarAInterfaz(int ID) {
             ClaseUI = ClaseHUDPopUpJuegoCompleto;
     }
 
-    if (this->HUD) {
+    if (this->HUD) { // Quitar la interfaz anterior
         this->HUD->RemoveFromViewport();
     }
 
+    // Cargar la nueva interfaz
 
     this->HUD = CreateWidget(this, ClaseUI);
     this->HUD->AddToViewport();

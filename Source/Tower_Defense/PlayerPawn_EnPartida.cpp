@@ -11,6 +11,10 @@
 
 
 
+// La clase que es "el jugador en sí". Se trata de un juego de tower defense por lo que no se necesita un personaje muy complejo ni nada, el jugador
+// en sí se limita a una camara que se puede mover por el nivel.
+
+
 /*
 
 		En preview:
@@ -64,9 +68,11 @@ void APlayerPawn_EnPartida::Tick(float DeltaTime)
 
 }
 
-// Called to bind functionality to input
 void APlayerPawn_EnPartida::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+
+	// Vincular la instrucción de click izquierdo del ratón a "Pinchar()"
+
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAction(TEXT("Pinchar"), IE_Pressed, this, &APlayerPawn_EnPartida::Pinchar);
 
@@ -77,11 +83,16 @@ void APlayerPawn_EnPartida::SetupPlayerInputComponent(UInputComponent* PlayerInp
 }
 
 void APlayerPawn_EnPartida::Pinchar() {
+
+	// Si se pincha con click izquierdo del ratón, informar al player controller de ello ya que es el mando el que maneja y controla los clicks en casillas y demás
+
 	Cast<AMandoDeJugador_EnPartida>(UGameplayStatics::GetPlayerController(this, 0))->Pinchar();
 
 }
 
 void APlayerPawn_EnPartida::MoverCamASeleccion() {
+
+	// Mueve la camara desde el punto por defecto al ángulo en el que se ven los robots en preview del nivel
 
 	this->DeltaTiempo = UGameplayStatics::GetWorldDeltaSeconds(this);
 	
@@ -119,6 +130,9 @@ void APlayerPawn_EnPartida::MoverCamASeleccion() {
 }
 void APlayerPawn_EnPartida::MoverCamAJugar() {
 
+
+	// Mueve la camara desde el punto de selección de torres al angulo usado durante la partida en sí.
+
 	FVector Loc = this->GetActorLocation();
 
 	FTimerHandle Timer1;
@@ -127,7 +141,7 @@ void APlayerPawn_EnPartida::MoverCamAJugar() {
 	FTimerHandle LlamadaAGameMode;
 
 
-	// Moverse Primero hacia arriba
+	// Moverse Primero hacia arriba y rotarla
 
     FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &APlayerPawn_EnPartida::MoverCamA, -683.5f, 2156.f, 3147.73331f, 1.0f);
     GetWorld()->GetTimerManager().SetTimer(Timer2, Delegate, 0.01f, false);   
@@ -153,6 +167,10 @@ void APlayerPawn_EnPartida::MoverCamAJugar() {
 }
 
 void APlayerPawn_EnPartida::MoverCamAIzquierda() {
+
+	// Mueve la camara desde la posición donde se ve la partida en sí hasta el ángulo en el que se ve a un robot colarse en la mina del jugador, dándole la derrota
+
+
 	FVector Loc = this->GetActorLocation();
 
 	FTimerHandle Timer1;
@@ -172,6 +190,8 @@ void APlayerPawn_EnPartida::MoverCamAIzquierda() {
 
 }
 
+
+// Métodos reusados para programar los movimientos de camara constantes durante X tiempo. Incluye traslación y rotación
 
 void APlayerPawn_EnPartida::MoverCamA(float X, float Y, float Z, float Duracion) {
 	

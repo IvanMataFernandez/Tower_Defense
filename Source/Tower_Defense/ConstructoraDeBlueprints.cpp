@@ -8,9 +8,28 @@
 #include "Torre.h"
 
 
-// MAE que se encarga de coger los paths de los blueprints y darselos a otras clases
+// MAE que se encarga de coger los paths de los blueprints y darselos a otras clases, también almacena variables estáticas de clases blueprint
+// (porque las clases blueprint no pueden tener atributos estáticos)
 
-// Si se cambia algun path de los blueprints, solo es necesario editarlo aquí
+/*
+    Los atributos estáticos en cuestión son:
+
+    Por cada tipo de torre blueprint (panel, cañón, cañón doble...)
+        - Su coste
+        - Su tiempo de recarga
+        - Si debería aparecer ya recargada o no al principio del nivel
+
+    Por cada robot:
+        - Su peso en oleada
+
+
+    Los paths de blueprint que maneja:
+
+        - Los BehaviorTrees que cada entidad debe usar
+        - Las texturas de los iconos de las torres (solo disponible para torres)
+
+*/
+
 
 ConstructoraDeBlueprints ConstructoraDeBlueprints::Objeto = ConstructoraDeBlueprints();
 ConstructoraDeBlueprints::ConstructoraDeBlueprints() {}

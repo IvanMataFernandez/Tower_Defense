@@ -9,6 +9,10 @@
 #include "Math/UnrealMathUtility.h"
 #include "MandoDeIA.h"
 
+
+
+// Las torres que son paneles solares implementan esta clase
+
 /*
 
     IDs de animaciones:
@@ -21,7 +25,6 @@
 */
 
 
-  //  this->Velocidad = this->VelocidadBase + (FMath::FRand() - 0.5) * 2 * this->DesviacionMaxVelocidad;
 
 
 ATorre_Producidor::ATorre_Producidor() {
@@ -34,6 +37,24 @@ void ATorre_Producidor::BeginPlay() {
     this->MandoDeJugador = Cast<AMandoDeJugador_EnPartida>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
     this->PrimeraProduccion = true;
 }
+
+
+void ATorre_Producidor::Click() {
+
+    // Procesar click en la torre o en su casilla
+
+    if (this->EnergiaDisponible) {
+        // Si está en el estado de producido, dar la energia al jugador
+        this->MandoDeJugador->ActualizarEnergiaPor(this->CantidadProducida);
+        
+        // Repetir ciclo        
+        Super::ClearTimer();
+        Super::ProgramarTimerFinDeTareaIA(0.f);
+    }
+}
+
+
+// Métodos de IA:
 
 void ATorre_Producidor::PrepararParaProduccion() {
 
@@ -70,15 +91,4 @@ void ATorre_Producidor::FinProduccion() {
 
 }
 
-void ATorre_Producidor::Click() {
-
-    if (this->EnergiaDisponible) {
-        // DAR MONEY!
-        this->MandoDeJugador->ActualizarEnergiaPor(this->CantidadProducida);
-        
-        // Repetir ciclo        
-        Super::ClearTimer();
-        Super::ProgramarTimerFinDeTareaIA(0.f);
-    }
-}
 

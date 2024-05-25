@@ -22,7 +22,7 @@ UBTTask_RobotBombRad::UBTTask_RobotBombRad() {
  EBTNodeResult::Type UBTTask_RobotBombRad::ExecuteTask(UBehaviorTreeComponent &BT, uint8 *NodeMemory) {
 
     Super::ExecuteTask(BT,NodeMemory);
-    Cast<ARobot>(BT.GetAIOwner()->GetPawn())->Matar();
+    Cast<ARobot>(BT.GetAIOwner()->GetPawn())->ProcesarFinDeVida();
     return EBTNodeResult::InProgress;
 
 

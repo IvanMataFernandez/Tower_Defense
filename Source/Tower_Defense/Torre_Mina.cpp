@@ -6,6 +6,8 @@
 #include "Components/BoxComponent.h"
 
 
+// La torre mina implementa esta clase
+
 /*
 
 
@@ -37,6 +39,21 @@ void ATorre_Mina::BeginPlay()
 }
 
 
+
+void ATorre_Mina::EnContacto(UPrimitiveComponent* ComponenteNuestro, AActor* OtroActor, UPrimitiveComponent* OtroComponente, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Resultado) {
+ 	
+	
+	// Un bot ha pasado por encima, completar la tarea actual. El siguiente paso es detonar que está ya implementado en Torre_UsoUnico
+	
+	this->ZonaTrigger->SetCollisionEnabled(ECollisionEnabled::NoCollision); // Quitar la hitbox de deteccion de bots encima para que no intente detonar otra vez
+
+	Cast<AMandoDeIA> (this->GetController())->AcabarTareaActual();
+
+}
+
+
+// Métodos de IA:
+
 void ATorre_Mina::Prepararse() {
 
 	// Esperar tiempodepreparacion para marcar la tarea de preparar como completada en su BT. La siguiente tarea será pasar al estado Preparado
@@ -64,13 +81,3 @@ void ATorre_Mina::Preparado() {
 }
 
 
-void ATorre_Mina::EnContacto(UPrimitiveComponent* ComponenteNuestro, AActor* OtroActor, UPrimitiveComponent* OtroComponente, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Resultado) {
- 	
-	
-	// Un bot ha pasado por encima, completar la tarea actual. El siguiente paso es detonar que está ya implementado en Torre_UsoUnico
-	
-	this->ZonaTrigger->SetCollisionEnabled(ECollisionEnabled::NoCollision); // Quitar la hitbox de deteccion de bots encima para que no intente detonar otra vez
-
-	Cast<AMandoDeIA> (this->GetController())->AcabarTareaActual();
-
-}

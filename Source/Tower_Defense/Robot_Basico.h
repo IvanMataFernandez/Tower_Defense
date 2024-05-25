@@ -35,6 +35,9 @@ private:
 	float RangoEnCasillas;
 
 
+	float DistanciaAObjetivo;
+
+
 protected:
 	
 // Componentes
@@ -52,11 +55,18 @@ protected:
 
 
 public:
+
+	virtual void InicializarMover() override;
+	virtual void Parar() override;
+
 	bool TorreEnRango();
 
 	void AnimarDisparo();
 	void Disparar();
 
+
+protected:
+	virtual void ActualizarIAPorEncolar(ARobot* NuevoLider) override;
 
 
 

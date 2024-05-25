@@ -20,7 +20,7 @@ class TOWER_DEFENSE_API ATorre : public AEntidad
 
 public:
 
-	virtual void Matar() override;
+	virtual void ProcesarFinDeVida() override;
 
 
 

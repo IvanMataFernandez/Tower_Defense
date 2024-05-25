@@ -4,6 +4,8 @@
 #include "Torre_Muro.h"
 
 
+// La torre escudo implementa esta clase
+
 /*
 
     IDs de animaciones:
@@ -17,13 +19,13 @@
 
 void ATorre_Muro::BeginPlay() {
     Super::BeginPlay();
-    this->RealizarAnimacion(1);
+    this->RealizarAnimacion(1); // Rotar los escudos
 }
 
 
 void ATorre_Muro::Matar() {
     
-    this->RealizarAnimacion(2);
+    this->RealizarAnimacion(2); // Parar los escudos
     Super::Matar();
 
 }

@@ -4,15 +4,16 @@
 #include "ComponenteVida.h"
 #include "Entidad.h"
 
+
+// Componente que maneja la vida de las entidades.
+
 // Sets default values for this component's properties
 UComponenteVida::UComponenteVida()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
+
 	PrimaryComponentTick.bCanEverTick = false; 
 	this->Vulnerable = true;
 
-	// ...
 }
 
 
@@ -20,28 +21,36 @@ UComponenteVida::UComponenteVida()
 void UComponenteVida::BeginPlay()
 {
 	Super::BeginPlay();
-	this->Vida = this->VidaMaxima;
-	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UComponenteVida::AplicarDano); //Bindear evento de daño al método de abajo
+	this->Vida = this->VidaMaxima; // Poner la vida de la entidad al 100%
+	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UComponenteVida::AplicarDano); // Bindear evento de daño al método de abajo
 
 
 }
 
 
-bool UComponenteVida::EsVulnerable() {
-	return this->Vulnerable;
-}
+bool UComponenteVida::EsVulnerable() {return this->Vulnerable;}
 
-void UComponenteVida::SetVulnerable(bool Vul) {
-	this->Vulnerable = Vul;
-}
+void UComponenteVida::SetVulnerable(bool Vul) {this->Vulnerable = Vul;}
 
 void UComponenteVida::AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador) {
 
+	// Aplicar daño absorbido, si la entidad está en un estado invulnerable (una mina que ya se ha descubierto, un robot ocultador con su escudo cerrado...)
+	// entonces no puede absorber daño y se salta la este método entero para omitir daño
+
 	if (this->Vulnerable) {
+
+		// Es vulnerable, aplicar el daño absorbido
 		this->Vida -= DanoBase;
 
 		if (this->Vida <= 0.f) {
-			Cast<AEntidad>(GetOwner())->Matar();
+
+			// Si baja por debajo de 0 de vida, entonces procesar el método que acaba con la vida de la entidad.
+
+			Cast<AEntidad>(GetOwner())->ProcesarFinDeVida();
+
+			// Hacer la entidad inmune a todo daño para que por sí hace una animación de muerte o está todavía un rato en la pantalla, que no vuelva a activar
+			// la lógica de empezar a matarla si la hitbox absorbe más daño.
+
 			this->SetVulnerable(false);
 		}
 	

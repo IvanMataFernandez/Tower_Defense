@@ -7,10 +7,12 @@
 #include "GameMode_EnPartida.h"
 #include "Kismet/GameplayStatics.h"
 
-// Sets default values
+
+// La zona que triggerea el game over si un robot la toca. Está a la izquierda del nivel
+
+
 AZonaTargetRobot::AZonaTargetRobot()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
 
@@ -30,12 +32,15 @@ void AZonaTargetRobot::BeginPlay()
 
 void AZonaTargetRobot::EnOverlap(UPrimitiveComponent* OverlapComp, AActor* OtroActor, UPrimitiveComponent* OtroComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 
-	// Puede ser posible que un proyectil triggeé este evento, para ello comprobar que en efecto un Robot ha entrado en la zona
+	// El evento que se triggea cuando algo choca contra la zona
+
+	// Puede ser posible que un proyectil triggeé este evento para eliminarse él, por ello comprobar que en efecto un Robot ha entrado en la zona para
+	// dar el game over
 
 	if (ARobot* Robot = Cast<ARobot>(OtroActor)) {
 
-		UE_LOG(LogTemp, Warning, TEXT("GAME OVER!")); 
-
+		// En efecto un robot está aquí, decirle al game over que ejecute la subrutina de derrota del jugador.
+		
 		Cast<AGameMode_EnPartida>(UGameplayStatics::GetGameMode(this))->CongelarMundoPorDerrota(Robot);
 
 	}

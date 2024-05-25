@@ -7,19 +7,24 @@
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
 
+
+
+// Una casilla es una posición en el nivel en el que se puede colocar una torre. Están en formación 5x9 (5 filas, 9 columnas).
+// Los robots se aproximan por la derecha y siempre viajan sobre una misma fila
+
+
+
 float ACasilla::VolumenEfectos = 1.0f;
 
 
 
 
-// Sets default values
 ACasilla::ACasilla()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
 
-	// Settear el mesh
+	// Settear componentes
 	this->Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	RootComponent = this->Mesh;
 	this->ComponenteDeAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("Componente De Audio"));
@@ -30,26 +35,29 @@ ACasilla::ACasilla()
 
 
 
-bool ACasilla::CasillaVacia() {
-  return !this->Torre;
+bool ACasilla::CasillaVacia() {return !this->Torre;}
 
-}
+
 
 
 void ACasilla::PonerTorre(ATorre* NuevaTorre) {
-	this->Torre = NuevaTorre;
-	NuevaTorre->SetOwner(this);
-	this->AnimarPonerTorre();
+
+	// Pre: Se ha instanciado NuevaTorre sobre esta casilla
+	// Post: Se vincula da Owner de la Torre a la Casilla y se settea el atributo de la Torre que aloja la casilla. Además, se crean efectos (sonido) por pantalla
+
+	this->Torre = NuevaTorre; // Settear relación Casilla -> Torre
+	NuevaTorre->SetOwner(this); // Settear relación Torre -> Casilla
+	this->AnimarPonerTorre(); // Llamar a BP para que haga los efectos visuales de colocar la torre (por ahora solo hace sonidos)
 
 }
 
 void ACasilla::DestruirTorre() {
 
-	// Se usa la TNT sobre la casilla.
+	// Se usa la TNT sobre la casilla, eliminando así la torre y bypasseando cualquier animación de muerte o detonación de la torre a quitar
 	
-	this->Torre->Destroy();
-	this->QuitarReferenciaTorre();
-	this->AnimarDestruirTorre();
+	this->Torre->Destroy(); // Destruir el actor (bypassea el método de matar, omitiendo así cualquier animación)
+	this->QuitarReferenciaTorre(); // Quitar la relacion Casilla -> Torre
+	this->AnimarDestruirTorre(); // Poner efectos visuales de una explosión en la casilla usando Blueprints
 
 
 }

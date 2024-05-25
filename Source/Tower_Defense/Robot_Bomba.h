@@ -48,6 +48,7 @@ private:
 public:
 
 	virtual void Matar() override; 
+	virtual void ProcesarFinDeVida() override;
 
 
 protected:

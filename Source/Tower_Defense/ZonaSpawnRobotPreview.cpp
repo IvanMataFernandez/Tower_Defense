@@ -5,7 +5,7 @@
 #include "Components/BoxComponent.h"
 
 
-
+// La zona invisible que hace spawnear los robots para la preview del nivel (durante la seleccion de torres)
 
 
 // Sets default values
@@ -29,7 +29,7 @@ void AZonaSpawnRobotPreview::BeginPlay()
 }
 
 void AZonaSpawnRobotPreview::SpawnearRobot(int ID) {
-	this->EventoSpawnearRobot(ID, this->ContadorSpawns);
+	this->EventoSpawnearRobot(ID, this->ContadorSpawns); // Va contando cuantos robots coloca y los va poniendo de tres en 3 por cada fila.
 	this->ContadorSpawns++;
 }
 

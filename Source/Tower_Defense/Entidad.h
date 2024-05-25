@@ -81,7 +81,7 @@ private:
 protected:
 
 
-
+	virtual void Matar();
 	virtual void AutoDestruir();
 
 
@@ -104,13 +104,13 @@ protected:
 
 
 
-
 public:
 
 	UFUNCTION(BlueprintCallable)
 	static void SetVolumenEfectosDeEntidades(float Vol, UObject* ContextoMundo);
 	
-	virtual void Matar();
+	virtual void ProcesarFinDeVida();
+
 	virtual void QuitarIA();
 
 
@@ -120,6 +120,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void RealizarAnimacion(int Animacion);
 
+	AMandoDeIA* GetMandoDeIA();
 
 
 };

@@ -29,9 +29,9 @@ public:
  	bool TieneIA();
 	void ActivarIA(bool Activar);
 
-
-public:
-
 	void AcabarTareaActual();
+	
+	void SettearBoolEnBlackboard(FName Key, bool Valor);
+	bool GetBoolDeBlackboard(FName Key);
 
 };

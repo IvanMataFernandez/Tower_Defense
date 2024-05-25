@@ -5,7 +5,6 @@
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonReader.h"
 #include "ZonaSpawnRobot.h"
-//#include "Musica_EnPartida.h"
 #include "ConstructoraDeBlueprints.h"
 #include "Math/UnrealMathUtility.h"
 #include "Kismet/GameplayStatics.h"
@@ -18,20 +17,14 @@
 #include "Torre.h"
 
 
-/*
 
 
 
 
-        el json level1 tiene la estructura de como deben indicarse los niveles
 
-
-        El juego comprueba si tras matar sufucientes bots para spawnear la siguiente oleada si la actual todavía esta spawneando
-        El juejo NO comprueba esto con los timers básicos de spawnear la siguiente (hacer que los timers tengan como mínimo de tiempo,
-        lo que tarden en spawnear el maximo numero de bots y 6 segundos extra si es una gran oleada)
-
-
-*/
+// El gamemode que se encarga de arbitrar la pantalla de selección de torres y el main loop del juego. Usa archivos .json para cargar
+// las oleadas de enemigos del nivel. Todos los niveles usan el mismo gamemode, solo que cargan un json distinto que dicta que enemigos
+// deberían aparecer
 
 
 
@@ -50,31 +43,38 @@ void AGameMode_EnPartida::BeginPlay()
 
     if (this->ZonaSpawn && this->ZonaSpawnPreview ) {
 
-      //  this->TocarMusica(3);  --> Por defecto AmbientSound empieza tocando la musica 3, la de pantalla de selección
+      //  this->TocarMusica(3);  --> Por defecto AmbientSound del nivel empieza tocando la musica 3, la de pantalla de selección. Esta instrucción es omitible
 
+
+        // Cargar el número del nivel actual 
 
         UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
         this->NivelActual = Guardado->Nivel;
 
 
-        // Cargar info del nivel actual
+        // Cargar info del nivel actual basado en el nivel en el que estamos
 
         if (this->CargarNivel(this->NivelActual)) {
 
             // Carga correcta del nivel
             // Esperar 0.5s para empezar a mover la camara
+
             FTimerHandle Espera;
             GetWorld()->GetTimerManager().SetTimer(Espera, this->Camara, &APlayerPawn_EnPartida::MoverCamASeleccion, 0.5f, false);   
-        } else {
-            // Si hay fallo, procesar la corrupción de datos
 
+
+            // Cuando la camara acabe de moverse, se ejecuta:  this->EmpezarSeleccionDeTorres();
+
+
+        } else {
+            
+            // Si hay fallo de carga de nivel (falta el json, no usa formato adecuado...), procesar el método de fallback de error de juego
             this->ProcesarCorrupcionDeDatos();
         }
     
     
 
 
-        // Cuando la camara acabe de moverse, se ejecuta:  this->EmpezarSeleccionDeTorres();
 
 
 
@@ -89,6 +89,25 @@ void AGameMode_EnPartida::BeginPlay()
 
 }
 
+void AGameMode_EnPartida::EmpezarSeleccionDeTorres() {
+
+
+    // La camara se ha movido ya hacia la derecha. Empezar a ejecutar la lógica de la selección de torres.
+
+
+    // Spawnear los bots de preview para ver contra quien nos enfrentamos en el nivel
+    this->SpawnearRobotsPreview();
+
+
+    // Esperar un par de segundos para que los bots se acerquen antes de dar la opcion al usuario de que elija sus torres. Cuando acabe la espera
+    // se abre la interfaz que permite seleccionar las torres (implementado en blueprints)
+    
+    FTimerHandle Espera;
+    GetWorld()->GetTimerManager().SetTimer(Espera, this, &AGameMode_EnPartida::CrearInterfazSeleccionDeTorres, 4.5f, false);               
+
+
+}
+
 
 void AGameMode_EnPartida::SpawnearRobotsPreview() {
 
@@ -97,7 +116,7 @@ void AGameMode_EnPartida::SpawnearRobotsPreview() {
     int RobotsTotalesPorTipo = FMath::RoundToInt(RobotsTotalesPorTipoF);
     TArray<int> RobotsASpawnear;
 
-    // Por cada tipo de robot, ver cuantos caben en la preview segun el peso maximo seleccionado
+    // Por cada tipo de robot, ver cuantos caben en la preview segun el peso maximo seleccionado. Almacenarlos en el Array de robots a spawnear
 
     for (int i = 0; i != IDsRobot.Num(); i++) {
         int ID = this->IDsRobot[i];
@@ -134,7 +153,7 @@ void AGameMode_EnPartida::SpawnearRobotsPreview() {
 
     }
 
-    // Finalmente, spawnear dichos robots
+    // Finalmente, spawnear dichos robots para que empiecen a moverse hacia nosotros y los podamos ver
 
     for (int ID: RobotsASpawnearShuffled) {
         this->ZonaSpawnPreview->SpawnearRobot(ID);
@@ -147,31 +166,29 @@ void AGameMode_EnPartida::SpawnearRobotsPreview() {
 void AGameMode_EnPartida::FinSeleccionTorres() {
 
 
+    // Se ha pinchado en el botón de confirmar selección de torres en la UI:
 
-    // Tras acabar de mover la cam, se llama a EmpezarJuego()
-    this->Camara->MoverCamAJugar();
+    this->Camara->MoverCamAJugar(); // Mover la camara de nuevo a la izquierda para poder jugar
 
 
   
+    // Tras acabar de mover la cam, se llama a CargarCuentaAtrasParaEmpezarJuego()
 
 }
 
-void AGameMode_EnPartida::EmpezarSeleccionDeTorres() {
+void AGameMode_EnPartida::CargarCuentaAtrasParaEmpezarJuego() {
 
+    this->EliminarRobotsPreview(); // Quitar los robots de la pantalla de preview para que no consuman recursos (no son visibles desde nuestra cam)
 
+    this->CrearInterfazDeCuentaAtras(); // Cargar la cuenta atrás para empezar el nivel (desde blueprints porque es otra UI)
+    // Hacer sonar cuenta atrás            
+    this->TocarMusica(4);
 
-    // Spawnear los bots de preview
-    this->SpawnearRobotsPreview();
-
-
-
-    // Esperar un par de segundos para que los bots se acerquen antes de dar la opcion al usuario de que elija sus torres
-    
-    FTimerHandle Espera;
-    GetWorld()->GetTimerManager().SetTimer(Espera, this, &AGameMode_EnPartida::CrearInterfazSeleccionDeTorres, 4.5f, false);               
-
+    // Al acabar la cuenta atrás se llama a EmpezarJuego()
 
 }
+
+
 
 void AGameMode_EnPartida::EliminarRobotsPreview() {
 
@@ -187,35 +204,28 @@ void AGameMode_EnPartida::EliminarRobotsPreview() {
 }
 
 
-void AGameMode_EnPartida::CargarCuentaAtrasParaEmpezarJuego() {
-
-    this->EliminarRobotsPreview();
-
-    this->CrearInterfazDeCuentaAtras();
-    // Hacer sonar cuenta atrás            
-    this->TocarMusica(4);
-
-}
-
-
 void AGameMode_EnPartida::EmpezarJuego() {
 
 
+    // Con esto se empieza a jugar el nivel
 
-    this->PesoRobotsVivo = 0;
+    // Cargar variables básicas para trackear el estado del juego
+
+    this->PesoRobotsVivo = 0; // Al principio no hay robots vivos (no han spawneado todavía)
     this->OleadaActual = -1; // Las oleadas van como un iterador, 0 based indexing. -1 quiere decir que no está apuntando a ninguna oleada
-    this->SeQuiereSpawnearLaSiguienteOleada = false;
-    this->VictoriaPosible = false;
+    this->SeQuiereSpawnearLaSiguienteOleada = false; // No spawnear la siguiente oleada si no se ha alcanzado el threshold de robots a matar de la oleada actual
+    this->VictoriaPosible = false; // No es la última oleada todavía
 
 
-    this->TocarMusica(0);
+    this->TocarMusica(0); // Tocar la música de la partida en sí
 
 
-    Cast<AMandoDeJugador_EnPartida>(GetWorld()->GetFirstPlayerController())->InicializarVariablesDePartida();
-    this->CrearInterfazDePartida();
+    // Inicializar el mando de juego, para que cargue los costes y tiempos de recarga de las torres elegidas, así como inicialice nuestra energía inicial para comprar torres
+    Cast<AMandoDeJugador_EnPartida>(GetWorld()->GetFirstPlayerController())->InicializarVariablesDePartida(); 
+    this->CrearInterfazDePartida(); // Crear la interfaz que nos permite seleccionar torres para colocarlas en el nivel (por blueprints)
 
 
-    this->EmpezarCargaDePrimeraOleada();
+    this->EmpezarCargaDePrimeraOleada(); // Bufferear la carga de la primera oleada del nivel
 
               
 
@@ -223,11 +233,410 @@ void AGameMode_EnPartida::EmpezarJuego() {
 }
 
 
+void AGameMode_EnPartida::EmpezarCargaDePrimeraOleada() {
+
+    // Bufferear la carga de la primera oleada y el efecto de sonido de cuando aparece el primer enemigo del nivel. LA info del tiempo de espera
+    // se cargó del json al cargar la información del nivel
+
+    GetWorld()->GetTimerManager().SetTimer(this->TimerParaOleadas, this, &AGameMode_EnPartida::CargarDatosOleada, this->HastaSiguienteOleada, false);      
+    FTimerHandle TimerSFX;         
+    GetWorld()->GetTimerManager().SetTimer(TimerSFX, this, &AGameMode_EnPartida::SonarSFXGlobal, this->HastaSiguienteOleada, false);  
+
+}
+
+void AGameMode_EnPartida::CargarDatosOleada() {
+
+
+    // Se ha esperado ya lo necesario, proceder a materealizar la oleada
+
+
+    this->OleadaActual++; // Nueva oleada
+
+
+    // Recopilar datos de oleada actual del array creado a partir del json
+
+    TSharedPtr<FJsonObject> DatosOleadaActual = this->OleadasJson[this->OleadaActual]->AsObject();
+
+
+    this->PesoRestante = DatosOleadaActual->GetIntegerField(TEXT("Peso")); // Obtener peso permitido para spawnear bots
+    this->HastaSiguienteOleada = DatosOleadaActual->GetNumberField(TEXT("tiempoSiguienteOleada")); // OBtener el timer de espera para cargar la siguiente oleada
+
+    
+
+
+
+    this->PesoPorEliminarHastaSiguienteOleada = this->PesoRestante / 2;   // Spawnear la siguiente oleada si muere la mitad del peso de esta redondeado hacia abajo
+
+                                                                                    
+
+    // Refrescar listas auxiliares para spawnear bots
+
+    this->PesosRobotActual = this->PesosRobot;
+    this->IDsRobotActual = this->IDsRobot;
+    this->ProbabilidadesRobotAcumuladas.Empty();
+
+    // Calcular las probabilidades acumuladas para crear probabilidades ponderadas de spawn segun tipo de robot
+
+    TArray<TSharedPtr<FJsonValue>> ListaProbabilidades =  DatosOleadaActual->GetArrayField(TEXT("probabilidades"));
+    float ProbabilidadAcumulada = 0.f;
+
+
+
+    for (TSharedPtr< FJsonValue>& Probabilidad : ListaProbabilidades) {
+            ProbabilidadAcumulada = ProbabilidadAcumulada + Probabilidad->AsNumber(); 
+            this->ProbabilidadesRobotAcumuladas.Add(ProbabilidadAcumulada);
+
+    }
+
+
+
+    // Bufferear Recopilar datos de siguiente oleada, ver si la siguiente oleada es una oleada grande
+
+    if (this->OleadaActual != this->OleadasTotales-1) {
+        this->SeAproximaOrdaGrande = this->GrandesOleadas.Contains(this->OleadaActual+1);
+    } else {
+        this->SeAproximaOrdaGrande = false;
+    }
+
+
+    // Comprobar que los datos procesados de la oleada actual del nivel han sido correctos y tienen sentido:
+
+    /*
+        - Debe haber un campo con la cantidad de peso a spawnear. Debe ser positivo
+        - Debe haber un campo en el que indica el tiempo a esperar hasta la siguiente oleada. Debe ser positivo o al menos 10s si se aproxima una gran oleada
+          (para asegurarse de que el juego contabilice correctamente la oleada en la que estamos)
+        - La lista de probabilidades de spawnear cada robot debe encajar en longitud con la de la cabecera del nivel en la que se indican que robots van a spawnear
+        - La suma de las probabilidades a spawnear de los robots debe sumar 1 (con un margen pequeño de error)
+    
+    
+    */
+
+   bool OleadaInvalida = this->PesoRestante <= 0  || (this->HastaSiguienteOleada <= 0.f || 
+                         this->SeAproximaOrdaGrande && this->HastaSiguienteOleada < 10.f) || ListaProbabilidades.Num() != this->IDsRobot.Num() || 
+                         (ProbabilidadAcumulada < 0.999f || ProbabilidadAcumulada > 1.001f);
+
+    if (OleadaInvalida) {
+        // Si la oleada es invalida, se procesa el metodo de corrupcion de datos y se redirige al menú principal
+        this->ProcesarCorrupcionDeDatos();
+    }
+
+    // Ya que los datos cargados son validos...  Ya se han cargado los datos de esta oleada, programar la siguiente
+
+    this->EmpezarCargaDeSiguienteOleada(); 
+
+
+
+    // Reiniciar el habilitador de spawn de filas
+
+    this->FilasHabilitadasParaSpawn.Empty();
+    this->FilasHabilitadasParaSpawn.Add(0);
+    this->FilasHabilitadasParaSpawn.Add(1);
+    this->FilasHabilitadasParaSpawn.Add(2);
+    this->FilasHabilitadasParaSpawn.Add(3);
+    this->FilasHabilitadasParaSpawn.Add(4);
+
+
+    // Reiniciar la zona de spawn para que los bots vuelvan a spawnear delante
+
+    this->ZonaSpawn->RefrescarNuevaOleada();
+
+
+    // Ya tenemos los datos de la oleada y son validos, empezar a handlear logica de spawnear enemigos con dicha información
+
+
+    if (this->GrandesOleadas.Contains(this->OleadaActual)) {
+ 
+        // Se aproxima FLAG de robots (oleada grande), esperar unos 6 segundos para mostrar por UI y hacer avisos sonoros antes de empezar a spawnear nada
+
+        this->ComunicarAvisoDeOleadaGrande();
+
+        GetWorld()->GetTimerManager().SetTimer(this->TimerParaSpawnRobot, this, &AGameMode_EnPartida::GenerarOleadaGrande, 6.f, false);   
+
+
+        // Cambiar la música también para informar de la orda, la última orda tiene música distinta a las demás
+        if (this->OleadaActual != this->OleadasTotales-1) {
+            // No ultima orda
+             this->TocarMusica(1);
+        }  else {
+            // Ultima orda
+            this->TocarMusica(2);
+        }          
+
+
+
+    } else {
+
+        // Si no es una orda, spawnear la oleada normal ya (no se requieren avisos previos)
+
+        this->GenerarOleada();
+
+    }
+
+
+}
+
+
+void AGameMode_EnPartida::EmpezarCargaDeSiguienteOleada() {
+
+    // Si no estamos en la última oleada, programar la carga de la siguiente
+
+    if (this->OleadaActual != this->OleadasTotales-1) { 
+        GetWorld()->GetTimerManager().SetTimer(this->TimerParaOleadas, this, &AGameMode_EnPartida::CargarDatosOleada, this->HastaSiguienteOleada, false);               
+    }
+}
+
+
+
+void AGameMode_EnPartida::GenerarOleada() {
+
+    // Se quiere spawnear una oleada normal
+
+
+    this->ComunicarAvanceOleadaUI(); // Triggear avance en progress bar (por blueprints)
+    this->GenerarRobot(); // Empezar los spawns de robots
+}
+
+
+void AGameMode_EnPartida::GenerarOleadaGrande() {
+
+
+    // Se quiere spawnear una oleada grande
+
+    this->ComunicarAvanceOleadaUI(); // Triggear avance en progress bar
+
+    // Spawnear lider de oleada (tiene coste de peso 1)
+    this->SpawnearRobot(-1); 
+    
+     // Hacer el spawn del resto de la oleada
+     this->GenerarRobot();
+
+
+    // Determinar si esta gran oleada es la ultima, se debe tomar la decision tras spawnear el primer bot para que no sea posible que el juego
+    // avance la oleada, no spawnee todavía y se mate el ultimo bot del nivel, haciendo pensar al juego que has ganado
+
+    if (this->OleadaActual == this->OleadasTotales-1) {
+        this->VictoriaPosible = true;
+    }
+
+
+}
+
+
+void AGameMode_EnPartida::GenerarRobot() {
+
+    // Toca spawnear un enemigo, elige QUE bot spawnear
+
+    float Random = FMath::FRand();
+    int Pos = 0;
+    bool Sel = false;
+    bool Val = false;
+
+    while (!Sel) {
+
+        // Encontrar donde cae el random para ver que tipo de robot spawnear
+
+        Pos = 0;
+        while (Random >= this->ProbabilidadesRobotAcumuladas[Pos]) {
+            Pos++;
+        }
+
+        // Pos es el bot elegido, ver si cabe en la oleada
+
+        if (this->PesosRobotActual[Pos] <= this->PesoRestante) {
+
+            // Cabe, se elige Pos como el bot a spawnear
+
+            Sel = true;
+            Val = true;
+
+        } else if (this->PesosRobotActual.Num() != 1) { // Queremos eliminar el bot de la lista si no lo podemos permitir, pero si solo queda 1 en la lista eso es que no podemos spawnear mas
+
+            // No cabe, se elimina el bot de la lista de spawneables porque no lo vamos a poder permitir de nuevo para el resto de la oleada actual
+
+        
+            // Los siguientes pasos mapean la array de probabilidades para adaptar las probabilidades proporcionalmente sin incluir el robot
+            // que no nos podemos permitir
+
+            float ProbabilidadAEliminar;
+
+            if (Pos == 0) {
+                ProbabilidadAEliminar = this->ProbabilidadesRobotAcumuladas[0];
+            } else {
+                ProbabilidadAEliminar = this->ProbabilidadesRobotAcumuladas[Pos] - this->ProbabilidadesRobotAcumuladas[Pos-1];
+            }
+
+            if (ProbabilidadAEliminar <= 0.999f) {
+
+                this->PesosRobotActual.RemoveAt(Pos);
+                this->ProbabilidadesRobotAcumuladas.RemoveAt(Pos);
+                this->IDsRobotActual.RemoveAt(Pos);
+
+
+                for (int i = Pos; i != ProbabilidadesRobotAcumuladas.Num(); i++ ) {
+                    ProbabilidadesRobotAcumuladas[i] = ProbabilidadesRobotAcumuladas[i] - ProbabilidadAEliminar;
+                }
+
+                TArray<float> ReferenciasProbabilidadesAcumuladas; // TArray para poder sacar las probabilidades sin acumular, ya que el otro se va a ir actualizando
+                                                                   // y se van a mezclar los datos
+
+
+                ReferenciasProbabilidadesAcumuladas = ProbabilidadesRobotAcumuladas;
+                float ProbabilidadBase;
+                float ProbabilidadBasePrevia = 0.f;
+
+                for (int i = 0; i != ProbabilidadesRobotAcumuladas.Num(); i++) {
+
+                    if (i == 0) {
+                        ProbabilidadBase = ReferenciasProbabilidadesAcumuladas[i];
+                    } else {
+                        ProbabilidadBase = ReferenciasProbabilidadesAcumuladas[i] - ReferenciasProbabilidadesAcumuladas[i-1];
+
+                    }
+
+                    this->ProbabilidadesRobotAcumuladas[i] = ProbabilidadBasePrevia + ProbabilidadBase + (ProbabilidadBase/(1.f - ProbabilidadAEliminar)) * ProbabilidadAEliminar;
+                
+                    ProbabilidadBasePrevia = this->ProbabilidadesRobotAcumuladas[i];
+                            
+
+
+                }
+
+
+
+
+            
+            } else {
+                // NO SE PUEDE ELEGIR, el resto de bots tienen chance 0% de spawnear en esta wave
+                Sel = true;
+                Val = false;        
+            }
+
+
+
+
+
+        } else {
+            // NO SE PUEDE ELEGIR, todos los robots disponibles en el nivel cuestan más que el budget de oleada actual
+            Sel = true;
+            Val = false;
+        }
+
+
+
+
+    }
+
+    if (Val) { 
+        // SPAWN si se puedo elegir bot
+
+
+        this->SpawnearRobot(Pos);
+
+
+        if (this->PesoRestante != 0) {
+            // Si queda budget, llamar a esta funcion de nuevo para hacer aparecer el siguiente robot
+            this->GenerarRobot();
+
+        } else if (this->SeQuiereSpawnearLaSiguienteOleada) {
+            
+            // Si no queda budget pero se habia triggeado el flag de querer spawnear la siguiente oleada YA, como justo hemos acabdo de spawnear esta, crear la siguiente.
+
+            this->SeQuiereSpawnearLaSiguienteOleada = false;
+
+            // Cancelar la programacion de la siguiente oleada para hacerlo YA en su lugar
+
+            GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
+            this->CargarDatosOleada();
+
+        }
+    
+    } else {
+        // Si no se pudo spawnear bot porque no tenemos suficente budget, settear el budget a cero para indicar que no hay más spawns
+        this->PesoRestante = 0;
+    }
+ 
+
+
+
+
+
+}
+
+
+void AGameMode_EnPartida::SpawnearRobot(int Pos) {
+    
+
+    // Pos indica la posicion del id de robot en el array de robots disponibles del nivel.
+    // Por ejemplo, si se permite basico (id = 0) y bomba (id = 8), el array de disponibilidad es [0,8]
+    // Si se desea spawnear basico, se usa pos 0, y para bomba pos 1, ya que esos indexan el array de disponibilidad
+
+    int ID;
+    int PesoRobot;
+    
+    
+    if (Pos >= 0) {
+
+        // Obtener del array de disponibilidad el identificador del bot a spawnear y su peso
+
+        ID = this->IDsRobotActual[Pos];
+        PesoRobot = this->PesosRobotActual[Pos];
+
+    } else {
+
+        // El bot lider de oleada no se pone en el array de disponibilidad, se da por sentado que siempre esta disponible pero solo uno por cada oleada grande
+        // Por ello, ocupa la pos "-1" del array de disponibilidad
+
+        ID = 1;
+        PesoRobot = ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetPesoDeRobot(ID);
+
+    }
+
+    this->PesoRobotsVivo = this->PesoRobotsVivo + PesoRobot; // Contabilizar el peso de robot en el counter de robots vivos
+    this->PesoRestante = this->PesoRestante - PesoRobot; // Restar al budget de oleada
+
+
+    // Ya se ha computado el coste del robot, ahora elegir en que fila va a aparecer. Se intenta repartir el mismo numero de robots por cada fila
+    // de manera que si al menos una fila va un spawn por detrás, entonces se elige esa para hacerlo aparecer sobre el resto
+
+
+    // Elegir entre las filas posibles que van un spawn por detrás
+    int IdxFilaDisponibleParaSpawn = FMath::RandRange(0, this->FilasHabilitadasParaSpawn.Num()-1);
+    int FilaElegida = this->FilasHabilitadasParaSpawn[IdxFilaDisponibleParaSpawn];
+
+    
+    // Quitar dicho valor de fila del array de disponibilidades, para ello se pasa el último elemento del array a la posición del elemento a quitar
+    // y se quita el último elemento de la lista. Esto es más eficiente que la forma tradicional de hacerlo (Para hacer coste O(1) ) pero puede
+    // alterar el orden de los elementos de la lista (no importa, porque solo nos interesa saber que filas QUEDAN disponibles, NO en que orden)
+    
+    this->FilasHabilitadasParaSpawn[IdxFilaDisponibleParaSpawn] = this->FilasHabilitadasParaSpawn[this->FilasHabilitadasParaSpawn.Num()-1];
+    this->FilasHabilitadasParaSpawn.Pop();
+
+
+    
+    // Si no quedan mas filas donde spawnear, estan todas empatadas por números de robot, volver a refrescar el array de filas disponibles
+    if (this->FilasHabilitadasParaSpawn.IsEmpty()) {
+        this->FilasHabilitadasParaSpawn.Add(0);
+        this->FilasHabilitadasParaSpawn.Add(1);
+        this->FilasHabilitadasParaSpawn.Add(2);
+        this->FilasHabilitadasParaSpawn.Add(3);
+        this->FilasHabilitadasParaSpawn.Add(4);
+
+    }
+
+    // Spawnear el bot con id "ID" en la fila "FilaElegida" y decirle que apareció en la oleada actual
+
+    ARobot* RobotGenerado = this->ZonaSpawn->SpawnearRobot(ID ,FilaElegida); 
+    RobotGenerado->SetOleada(this->OleadaActual);
+
+}
+
 
 
 
 void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMatado) {
 
+
+    // Este método se llama cada vez que muere un robot.
 
     // Restar el peso del robot de los robots vivos restantes
     this->PesoRobotsVivo = PesoRobotsVivo - PesoDeRobot;
@@ -238,6 +647,7 @@ void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMa
         this->PesoPorEliminarHastaSiguienteOleada = this->PesoPorEliminarHastaSiguienteOleada -  PesoDeRobot;
     }
 
+    // Determinar wincon / avanzar más rápido en el nivel:
 
     if (this->OleadaActual != this->OleadasTotales-1) { // Determinar si es la ultima oleada o no
 
@@ -245,8 +655,7 @@ void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMa
 
         if (!this->SeAproximaOrdaGrande && this->PesoPorEliminarHastaSiguienteOleada <= 0) {
 
-            // Se quiere Adelantar la oleada, para ello mirar si la oleada anterior todavía está spawneando (solo puede ocurrir si el jugador tiene un montón de DPS)
-
+            // Se quiere Adelantar la oleada, para ello mirar si la oleada anterior todavía está spawneando (no debería ser el caso, pero por medida de seguridad)
 
             if (GetWorld()->GetTimerManager().IsTimerActive(this->TimerParaSpawnRobot)) {
 
@@ -257,6 +666,7 @@ void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMa
             } else {
 
                 // Hay via libre, cancelar el timer del spawn de la siguiente oleada para hacerlo AHORA MISMO
+
                 GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
                 this->CargarDatosOleada();
             }
@@ -288,19 +698,6 @@ void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMa
 
 }
 
-void AGameMode_EnPartida::ProcesarCorrupcionDeDatos() {
-
-    // Hay datos corrompidos, poner el nivel actual a "-1" para indicar corrupción de datos y volver al menú principal
-    UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
-    Guardado->Nivel = -1;
-    
-    // Guardar la save con el nivel en -1
-    UGameplayStatics::SaveGameToSlot(Guardado, TEXT("save"), 0);
-
-    // Cargar este nivel de nuevo para que se carge la información del nuevo nivel al que apunta la save ahora
-    UGameplayStatics::OpenLevel(GetWorld(), TEXT("NivelMenu"));
-}
-
 
 void AGameMode_EnPartida::JugadorGana(ARobot* UltimoRobotMatado) {
 
@@ -316,11 +713,11 @@ void AGameMode_EnPartida::JugadorGana(ARobot* UltimoRobotMatado) {
 
     // Comunicar a la UI de lo ocurrido y de lo que debería mostrar
 
-    int Desbloqueo = this->ConseguirDesbloqueo(this->NivelActual);
+    int Desbloqueo = this->ConseguirDesbloqueo(this->NivelActual); // Ver que torre desbloqueamos
 
     if (Desbloqueo != -3) {
         // Si no hay fallo en parseo de datos, comunicar al juego de lo que debería mostrar por pantalla (la torre desbloqueada o algun indicador de nivel superado)
-        this->ComunicarVictoria(Desbloqueo, PosicionEnPantalla.X, PosicionEnPantalla.Y);
+        this->ComunicarVictoria(Desbloqueo, PosicionEnPantalla.X, PosicionEnPantalla.Y); // Implementado en blueprints porque requiere uso de UI
 
     } else {
 
@@ -350,6 +747,7 @@ void AGameMode_EnPartida::JugadorGana(ARobot* UltimoRobotMatado) {
 }
 
 int AGameMode_EnPartida::ConseguirDesbloqueo(int Nivel) {
+    
     // Leyendo el nivel que se acaba de superar (valor entre 1 y la cantidad de niveles existentes), se devuelve el id de la torre desbloqueada (valor >= 0)
     // Se puede devolver -1 si no se desbloquea torre, -2 si se completó el último nivel y -3 si hay fallo en el parseo del json
 
@@ -419,9 +817,27 @@ int AGameMode_EnPartida::ConseguirDesbloqueo(int Nivel) {
 
 
 
+void AGameMode_EnPartida::ProcesarCorrupcionDeDatos() {
+
+    // Hay datos corrompidos, poner el nivel actual a "-1" para indicar corrupción de datos y volver al menú principal
+    UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
+    Guardado->Nivel = -1;
+    
+    // Guardar la save con el nivel en -1
+    UGameplayStatics::SaveGameToSlot(Guardado, TEXT("save"), 0);
+
+    // Cargar este nivel de nuevo para que se carge la información del nuevo nivel al que apunta la save ahora (nivel -1 = error en juego)
+    UGameplayStatics::OpenLevel(GetWorld(), TEXT("NivelMenu"));
+}
+
+
+
+
+
+
 void AGameMode_EnPartida::ProcesarClickEnRecompensa() {
 
-    // Cuando se hace click en la recompensa, se cambia a musica de victoria y se quita la interfaz de EnPartida (esto ultimo en blueprint)
+    // Cuando se hace click en la recompensa desde el droppeable en UI, se cambia a musica de victoria y se quita la interfaz de EnPartida (esto ultimo en blueprint)
 
     this->TocarMusica(7);
 
@@ -429,6 +845,8 @@ void AGameMode_EnPartida::ProcesarClickEnRecompensa() {
 
 
 void AGameMode_EnPartida::AvanzarNivel(int TorreDesbloqueo) {
+
+    // Cuando se pincha en siguiente nivel en la UI de victoria, venimos aquí:
 
     // Pre: Torre desbloqueo contiene la torre a desbloquear para añadir a la save por completar el nivel. 
     // -1 indica que no hubo desbloqueo
@@ -462,7 +880,7 @@ void AGameMode_EnPartida::AvanzarNivel(int TorreDesbloqueo) {
         // Guardar los cambios
         UGameplayStatics::SaveGameToSlot(Guardado, TEXT("save"), 0);
 
-        // Redirigir al menú principal (verá que no existe un nivel que cargar y tratará el caso)
+        // Redirigir al menú principal (verá que no existe un nivel que cargar y tratará el caso (mostrando un pop-up de felicitaciones por completar el juego))
         UGameplayStatics::OpenLevel(GetWorld(), TEXT("NivelMenu"));
 
 
@@ -474,406 +892,17 @@ void AGameMode_EnPartida::AvanzarNivel(int TorreDesbloqueo) {
 }
 
 
-void AGameMode_EnPartida::EmpezarCargaDePrimeraOleada() {
 
-    GetWorld()->GetTimerManager().SetTimer(this->TimerParaOleadas, this, &AGameMode_EnPartida::CargarDatosOleada, this->HastaSiguienteOleada, false);      
-    FTimerHandle TimerSFX;         
-    GetWorld()->GetTimerManager().SetTimer(TimerSFX, this, &AGameMode_EnPartida::SonarSFXGlobal, this->HastaSiguienteOleada, false);  
 
-}
 
 
 
-void AGameMode_EnPartida::EmpezarCargaDeSiguienteOleada() {
 
-    if (this->OleadaActual != this->OleadasTotales-1) { 
-        GetWorld()->GetTimerManager().SetTimer(this->TimerParaOleadas, this, &AGameMode_EnPartida::CargarDatosOleada, this->HastaSiguienteOleada, false);               
-    }
-}
 
-void AGameMode_EnPartida::CargarDatosOleada() {
-
-
-    this->OleadaActual++; // Nueva oleada
-
-
-    // Recopilar datos de oleada actual
-
-    TSharedPtr<FJsonObject> DatosOleadaActual = this->OleadasJson[this->OleadaActual]->AsObject();
-
-
-    this->PesoRestante = DatosOleadaActual->GetIntegerField(TEXT("Peso"));
-    this->HastaSiguienteOleada = DatosOleadaActual->GetNumberField(TEXT("tiempoSiguienteOleada"));
-
-    
-
-    // Spawnear la siguiente oleada si muere la mitad del peso de esta redondeado hacia abajo
-
-
-    this->PesoPorEliminarHastaSiguienteOleada = this->PesoRestante / 2;
-                                                                                                
-
-
-
-    UE_LOG(LogTemp, Warning, TEXT("Robots matados requeridos -> %d"), PesoPorEliminarHastaSiguienteOleada);
-
-
-    // Refrescar listas auxiliares
-
-    this->PesosRobotActual = this->PesosRobot;
-    this->IDsRobotActual = this->IDsRobot;
-    this->ProbabilidadesRobotAcumuladas.Empty();
-
-    TArray<TSharedPtr<FJsonValue>> ListaProbabilidades =  DatosOleadaActual->GetArrayField(TEXT("probabilidades"));
-    float ProbabilidadAcumulada = 0.f;
-
-
-
-    for (TSharedPtr< FJsonValue>& Probabilidad : ListaProbabilidades) {
-            ProbabilidadAcumulada = ProbabilidadAcumulada + Probabilidad->AsNumber(); 
-            this->ProbabilidadesRobotAcumuladas.Add(ProbabilidadAcumulada);
-
-    }
-
-
-
-
-
-
-    // Recopilar datos de siguiente oleada
-
-    if (this->OleadaActual != this->OleadasTotales-1) {
-        this->SeAproximaOrdaGrande = this->GrandesOleadas.Contains(this->OleadaActual+1);
-    } else {
-        this->SeAproximaOrdaGrande = false;
-    }
-
-
-    // Comprobar que los datos procesados de la oleada actual del nivel son correctos y tienen sentido:
-
-    /*
-        - Debe haber un campo con la cantidad de peso a spawnear. Debe ser positivo
-        - Debe haber un campo en el que indica el tiempo a esperar hasta la siguiente oleada. Debe ser positivo o al menos 10s si se aproxima una gran oleada
-          (para asegurarse de que el juego contabilice correctamente la oleada en la que estamos)
-        - La lista de probabilidades de spawnear cada robot debe encajar en longitud con la de la cabecera del nivel en la que se indican que robots van a spawnear
-        - La suma de las probabilidades a spawnear de los robots debe sumar 1 (con un margen pequeño de error)
-    
-    
-    */
-
-   bool OleadaInvalida = this->PesoRestante <= 0  || (this->HastaSiguienteOleada <= 0.f || 
-                         this->SeAproximaOrdaGrande && this->HastaSiguienteOleada < 10.f) || ListaProbabilidades.Num() != this->IDsRobot.Num() || 
-                         (ProbabilidadAcumulada < 0.999f || ProbabilidadAcumulada > 1.001f);
-
-    if (OleadaInvalida) {
-        // Si la oleada es invalida, se procesa el metodo de corrupcion de datos y se redirige al menú principal
-        this->ProcesarCorrupcionDeDatos();
-    }
-
-    // Ya que los datos cargados son validos...  Ya se han cargado los datos de esta oleada, programar la siguiente
-
-    this->EmpezarCargaDeSiguienteOleada(); 
-
-
-
-    // Reiniciar el habilitador de spawn de filas
-
-    this->FilasHabilitadasParaSpawn.Empty();
-    this->FilasHabilitadasParaSpawn.Add(0);
-    this->FilasHabilitadasParaSpawn.Add(1);
-    this->FilasHabilitadasParaSpawn.Add(2);
-    this->FilasHabilitadasParaSpawn.Add(3);
-    this->FilasHabilitadasParaSpawn.Add(4);
-
-
-    // Reiniciar la zona de spawn para que los bots vuelvan a spawnear delante
-
-    this->ZonaSpawn->RefrescarNuevaOleada();
-
-
-    // Ya tenemos los datos de la oleada y son validos, empezar a handlear logica de spawnear enemigos con dicha información
-
-
-    if (this->GrandesOleadas.Contains(this->OleadaActual)) {
- 
-        // Se aproxima FLAG de robots (oleada grande), esperar unos 6 segundos para mostrar por UI y hacer avisos sonoros
-
-        this->ComunicarAvisoDeOleadaGrande();
-
-
- 
-        GetWorld()->GetTimerManager().SetTimer(this->TimerParaSpawnRobot, this, &AGameMode_EnPartida::GenerarOleadaGrande, 6.f, false);   
-
-
-        // Cambiar la música también para informar de la orda, la última orda tiene música distinta a las demás
-        if (this->OleadaActual != this->OleadasTotales-1) {
-            // No ultima orda
-             this->TocarMusica(1);
-        }  else {
-            // Ultima orda
-            this->TocarMusica(2);
-        }          
-
-
-
-    } else {
-
-        // Si no es una orda, spawnear la oleada normal ya (no se requieren avisos previos)
-
-        this->GenerarOleada();
-
-    }
-
-
-}
-
-void AGameMode_EnPartida::GenerarOleada() {
-
-    // Se quiere spawnear una oleada normal
-
-
-    this->ComunicarAvanceOleadaUI(); // Triggear avance en progress bar
-    this->GenerarRobot(); // Empezar los spawns de robots
-}
-
-
-
-void AGameMode_EnPartida::GenerarOleadaGrande() {
-
-
-    // Se quiere spawnear una oleada grande
-
-    this->ComunicarAvanceOleadaUI(); // Triggear avance en progress bar
-
-    // Spawnear lider de oleada (tiene coste de peso 1)
-    this->SpawnearRobot(-1); 
-    
-     // Hacer el spawn del resto de la oleada
-     this->GenerarRobot();
-
-
-    // Determinar si esta gran oleada es la ultima, se debe tomar la decision tras spawnear el primer bot para que no sea posible que el juego
-    // avance la oleada, no spawnee todavía y se mate el ultimo bot del nivel, haciendo pensar al juego que has ganado
-
-    if (this->OleadaActual == this->OleadasTotales-1) {
-        this->VictoriaPosible = true;
-    }
-
-
-}
-
-
-void AGameMode_EnPartida::GenerarRobot() {
-
-    // Toca spawnear un enemigo, elige QUE bot spawnear
-
-    float Random = FMath::FRand();
-    int Pos = 0;
-    bool Sel = false;
-    bool Val = false;
-
-    while (!Sel) {
-
-        // Encontrar donde cae el random
-
-
-        Pos = 0;
-        while (Random >= this->ProbabilidadesRobotAcumuladas[Pos]) {
-            Pos++;
-        }
-
-        // Pos es el bot elegido, ver si cabe en la oleada
-
-        if (this->PesosRobotActual[Pos] <= this->PesoRestante) {
-
-            // Cabe, se elige Pos como el bot a spawnear
-
-            Sel = true;
-            Val = true;
-
-        } else if (this->PesosRobotActual.Num() != 1) { // Queremos eliminar el bot de la lista si no lo podemos permitir, pero si solo queda 1 en la lista eso es que no podemos spawnear mas
-
-            // No cabe, se elimina el bot de la lista de spawneables porque no lo vamos a poder permitir de nuevo para el resto de la oleada actual
-
-         
-
-
-            float ProbabilidadAEliminar;
-
-            if (Pos == 0) {
-                ProbabilidadAEliminar = this->ProbabilidadesRobotAcumuladas[0];
-            } else {
-                ProbabilidadAEliminar = this->ProbabilidadesRobotAcumuladas[Pos] - this->ProbabilidadesRobotAcumuladas[Pos-1];
-            }
-
-            if (ProbabilidadAEliminar <= 0.999f) {
-
-
-
-
-                this->PesosRobotActual.RemoveAt(Pos);
-                this->ProbabilidadesRobotAcumuladas.RemoveAt(Pos);
-                this->IDsRobotActual.RemoveAt(Pos);
-
-
-                for (int i = Pos; i != ProbabilidadesRobotAcumuladas.Num(); i++ ) {
-                    ProbabilidadesRobotAcumuladas[i] = ProbabilidadesRobotAcumuladas[i] - ProbabilidadAEliminar;
-                }
-
-                TArray<float> ReferenciasProbabilidadesAcumuladas; // TArray para poder sacar las probabilidades sin acumular, ya que el otro se va a ir actualizando
-                                                                   // y se van a mezclar los datos
-
-
-                ReferenciasProbabilidadesAcumuladas = ProbabilidadesRobotAcumuladas;
-                float ProbabilidadBase;
-                float ProbabilidadBasePrevia = 0.f;
-
-                for (int i = 0; i != ProbabilidadesRobotAcumuladas.Num(); i++) {
-
-                    if (i == 0) {
-                        ProbabilidadBase = ReferenciasProbabilidadesAcumuladas[i];
-                    } else {
-                        ProbabilidadBase = ReferenciasProbabilidadesAcumuladas[i] - ReferenciasProbabilidadesAcumuladas[i-1];
-
-                    }
-
-                    this->ProbabilidadesRobotAcumuladas[i] = ProbabilidadBasePrevia + ProbabilidadBase + (ProbabilidadBase/(1.f - ProbabilidadAEliminar)) * ProbabilidadAEliminar;
-                
-                    ProbabilidadBasePrevia = this->ProbabilidadesRobotAcumuladas[i];
-                            
-
-
-                }
-
-
-
-
-            
-            } else {
-                // NO SE PUEDE ELEGIR, el resto de bots tienen chance 0% de spawnear en esta wave
-                Sel = true;
-                Val = false;        
-            }
-
-
-
-
-
-        } else {
-            // NO SE PUEDE ELEGIR, todos los robots cuestan más que el budget de oleada actual
-            Sel = true;
-            Val = false;
-        }
-
-
-
-
-    }
-
-    if (Val) { 
-        // SPAWN si se puedo elegir bot
-
-
-        this->SpawnearRobot(Pos);
-
-
-
-        if (this->PesoRestante != 0) {
-            // Si queda budget, llamar a esta funcion de nuevo 
-            this->GenerarRobot();
-
-        } else if (this->SeQuiereSpawnearLaSiguienteOleada) {
-            // Si no queda budget pero se habia triggeado el flag de querer spawnear la siguiente oleada YA, como justo hemos acabdo de spawnear esta, crear la siguiente.
-
-            this->SeQuiereSpawnearLaSiguienteOleada = false;
-
-            // Cancelar la programacion de la siguiente oleada para hacerlo YA en su lugar
-
-            GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
-            this->CargarDatosOleada();
-
-        }
-    
-    } else {
-        // Si no se pudo spawnear bot porque no tenemos suficente budget, settear el budget a cero para indicar que no hay más spawns
-        this->PesoRestante = 0;
-    }
- 
-
-
-
-
-
-}
-
-void AGameMode_EnPartida::SpawnearRobot(int Pos) {
-    
-
-    // Pos indica la posicion del id de robot en el array de robots disponibles del nivel.
-    // Por ejemplo, si se permite basico (id = 0) y bomba (id = 8), el array de disponibilidad es [0,8]
-    // Si se desea spawnear basico, se usa pos 0, y para bomba pos 1, ya que esos indexan el array de disponibilidad
-
-    int ID;
-    int PesoRobot;
-    
-    
-    if (Pos >= 0) {
-
-        // Obtener del array de disponibilidad el identificador del bot a spawnear
-
-        ID = this->IDsRobotActual[Pos];
-        PesoRobot = this->PesosRobotActual[Pos];
-
-    } else {
-
-        // El bot lider de oleada no se pone en el array de disponibilidad, se da por sentado que siempre esta disponible pero solo uno por cada oleada grande
-        // Por ello, ocupa la pos "-1" del array de disponibilidad
-
-        ID = 1;
-        PesoRobot = ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetPesoDeRobot(ID);
-
-    }
-
-    this->PesoRobotsVivo = this->PesoRobotsVivo + PesoRobot; // Contabilizar el peso de robot en el counter
-    this->PesoRestante = this->PesoRestante - PesoRobot; // Restar al budget de oleada
-
-
-    // Ya se ha computado el coste del robot, ahora elegir en que linea va a aparecer. Se intenta repartir el mismo numero de robots por cada fila
-    // de manera que si al menos una fila va un spawn por detrás, entonces se elige esa para hacerlo aparecer sobre el resto
-
-
-    // Elegir entre las filas posibles que van un spawn por detrás
-    int IdxFilaDisponibleParaSpawn = FMath::RandRange(0, this->FilasHabilitadasParaSpawn.Num()-1);
-    int FilaElegida = this->FilasHabilitadasParaSpawn[IdxFilaDisponibleParaSpawn];
-
-    
-    // Quitar dicho valor de fila del array de disponibilidades, para ello se pasa el último elemento del array a la posición del elemento a quitar
-    // y se quita el último elemento de la lista. Esto es más eficiente que la forma tradicional de hacerlo (Para hacer coste O(1) ) pero puede
-    // alterar el orden de los elementos de la lista (no importa, porque solo nos interesa saber que filas QUEDAN disponibles, NO en que orden)
-    
-    this->FilasHabilitadasParaSpawn[IdxFilaDisponibleParaSpawn] = this->FilasHabilitadasParaSpawn[this->FilasHabilitadasParaSpawn.Num()-1];
-    this->FilasHabilitadasParaSpawn.Pop();
-
-
-    
-    // Si no quedan mas filas donde spawnear, estan todas empatadas por números de robot, volver a refrescar el array de filas disponibles
-    if (this->FilasHabilitadasParaSpawn.IsEmpty()) {
-        this->FilasHabilitadasParaSpawn.Add(0);
-        this->FilasHabilitadasParaSpawn.Add(1);
-        this->FilasHabilitadasParaSpawn.Add(2);
-        this->FilasHabilitadasParaSpawn.Add(3);
-        this->FilasHabilitadasParaSpawn.Add(4);
-
-    }
-
-    // Spawnear el bot con id "ID" en la fila "FilaElegida" y decirle que apareció en la oleada actual
-
-    ARobot* RobotGenerado = this->ZonaSpawn->SpawnearRobot(ID ,FilaElegida); 
-    RobotGenerado->SetOleada(this->OleadaActual);
-
-}
 
 TArray<int> AGameMode_EnPartida::EncontrarGrandesOleadas() {
+
+    // Encontrar en el array de oleadas que posiciones incluyen un "flag" (oleada grande)
 
     TArray<int> GransOleadas;
     int Num = 0;
@@ -894,6 +923,8 @@ TArray<int> AGameMode_EnPartida::EncontrarGrandesOleadas() {
 
 
 void AGameMode_EnPartida::CongelarMundoPorDerrota(ARobot* Causante) {
+
+    // Este método se llama cuando un robot hace overlap con la parte izquierda del nivel, tras colarse entre las defensas del jugador
 
 
     this->CausanteDerrota = Causante;
@@ -950,6 +981,7 @@ void AGameMode_EnPartida::CongelarMundoPorDerrota(ARobot* Causante) {
 }
 void AGameMode_EnPartida::FocusearCausanteDerrota() {
     
+    // Tras mover la cam a la izquierda:
 
     // Descongelar al robot causante de la derrota, manteniendo el resto del tablero congelado
 
@@ -964,10 +996,12 @@ void AGameMode_EnPartida::FocusearCausanteDerrota() {
 }
 
 void AGameMode_EnPartida::FinalizarAnimacionDerrota() {
+
+    // Finalmente cuando el robot ya haya entrado visualmente en la mina del jugador, despawnearlo
     this->CausanteDerrota->Destroy();
     
     this->CrearInterfazDeDerrota(); // Llamado por blueprint
-    this->TocarMusica(6);
+    this->TocarMusica(6); // Hacer sonar música de derrota
 
 
 
@@ -977,7 +1011,8 @@ void AGameMode_EnPartida::FinalizarAnimacionDerrota() {
 
 bool AGameMode_EnPartida::CargarNivel(int Nivel) {
 
-    // Post: Si el nivel se ha cargado correctamente o no
+    // Post: Si el nivel se ha cargado correctamente o no, en caso correcto, carga en los atributos de la clase los datos relevantes del nivel, como la info
+    //       de oleadas y el tiempo a esperar para hacer aparecer el primer bot en el nivel
 
     // Cargar JSON
 
@@ -1034,7 +1069,7 @@ bool AGameMode_EnPartida::CargarNivel(int Nivel) {
            bool NivelInvalido = this->HastaSiguienteOleada <= 0.f || ListaIDsRobots.Num() == 0 || this->GrandesOleadas.Num() < 1 || 
                                 this->GrandesOleadas[this->GrandesOleadas.Num()-1] != this->OleadasTotales-1 || this->GrandesOleadas.Num() > 4;
 
-            return !NivelInvalido;
+           return !NivelInvalido;
 
       
 

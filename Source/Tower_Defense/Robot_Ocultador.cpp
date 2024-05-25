@@ -4,10 +4,13 @@
 #include "Robot_Ocultador.h"
 #include "ComponenteVidaConEstados.h"
 
+
+// El robot ocultador implementa esta clase
+
 /*
 
     IDs de animaciones:
-   -1: Mostrar estado 1 vida 
+   -1: Mostrar estado 1 vida (dañado)
     0: Morir
     1: Moverse
     2: Parar de moverse
@@ -23,7 +26,12 @@ void ARobot_Ocultador::BeginPlay() {
 }
 
 
+
+// Métodos de IA:
+
 void ARobot_Ocultador::Ocultar() {
+
+    // Realiza la animación de ocultar y se settea como invencible tras acabar dicha animación
 
     Super::RealizarAnimacion(5);
 
@@ -43,70 +51,11 @@ void ARobot_Ocultador::FinalizarOcultacion() {
 
 void ARobot_Ocultador::Desocultar() {
 
+    // Realiza la animación de desocultar y el momento en el que empieza a hacerla se settea como vulnerable
+
     Super::SetVulnerable(true);
     Super::RealizarAnimacion(4);
 	Super::ProgramarTimerFinDeTareaIA(this->TiempoParaAbrirCerrarPuntoExpuesto); 
 
 }
 
-/*
-
-void ARobot_Ocultador::InicializarAtaque() {
-
-    // Reimplementar Inicializar ataque para poder syncear bien las animaciones y vulnerabilizar el robot
-
-    Super::ClearTimer();
-    Super::RealizarAnimacion(2);
-    Super::RealizarAnimacion(4);
-    this->Vida->Vulnerabilizar();
-
-
-    float Espera = this->TiempoParaAbrirCerrarPuntoExpuesto;
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Ocultador::TrasAbrirPuntoExpuesto);    
-    Super::ProgramarTimer(Delegate, Espera, false);
-
-}
-
-void ARobot_Ocultador::TrasAbrirPuntoExpuesto() {
-    Super::PrepararAtaque();
-}
-
-void ARobot_Ocultador::InicializarMover() {
-
-    Super::ClearTimer();
-    Super::RealizarAnimacion(5); 
-
-
-    float Espera = this->TiempoParaAbrirCerrarPuntoExpuesto;
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot_Ocultador::TrasCerrarPuntoExpuesto);    
-    Super::ProgramarTimer(Delegate, Espera, false);
-    
-  
-}
-
-void ARobot_Ocultador::TrasCerrarPuntoExpuesto() {
-    this->Vida->Invulnerabilizar();
-    Super::InicializarMover();
-}
-
-
-
-void ARobot_Ocultador::InicializarMoverVertical() {
-
-    RealizarAnimacion(5); 
-    Super::InicializarMoverVertical();
-
-}
-
-void ARobot_Ocultador::QuitarIA() {
-    
-    Super::ClearTimer();
-    RealizarAnimacion(4); 
-
-    Super::QuitarIA();
-
-
-}
-
-
-*/

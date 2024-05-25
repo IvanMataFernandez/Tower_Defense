@@ -9,6 +9,9 @@
 
 #include "DrawDebugHelpers.h"
 
+
+// Toda torre que dispara proyectiles hereda de esta clase
+
 /*
 
     IDs de animaciones:
@@ -42,6 +45,9 @@ ATorre_Disparador::ATorre_Disparador() {
 
 int ATorre_Disparador::ObtenerCadenciaDeDisparo() {return this->CadenciaDeDisparo;}
 
+
+
+// Métodos de IA:
 
 void ATorre_Disparador::PrepararDesapuntar() {
   
@@ -81,31 +87,6 @@ bool ATorre_Disparador::EnRango() {
 
 
 
-
-/*
-
-
-
-
-If toca pasar a estado disparo:
-
-    Apuntar (recarga)
-
-    While true
-
-        While quedan tiros
-            Animar Tiro
-            Disparar
-            
-        Espera fin ciclo (recarga)
-
-
-If Toca a idle
-    Desapuntar
-
-
-*/
-
 void ATorre_Disparador::Apuntar() {
     
 
@@ -143,72 +124,3 @@ void ATorre_Disparador::EsperaFinDeCicloDeAtaque() {
     Super::ProgramarTimerFinDeTareaIA(this->TiempoDeCiclo - this->CadenciaDeDisparo * (this->TiempoAnimarDisparo + this->TiempoDisparo));
 
 }
-
-/*
-void ATorre_Disparador::RepetirCicloAtaque() {
-
-    Super::ClearTimer();
-    float Espera = this->TiempoParaAnimacionEnTiro;
-    FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, true, 0);    
-    Super::ProgramarTimer(Delegate, Espera, false);
-    
-}
-
-
-
-void ATorre_Disparador::Atacar(bool FasePrepararTiro, int NumDisparo) {
-
-
-
-    if (FasePrepararTiro) {
-        
-        // Estado 0: Animar carga de disparo
-
-        Super::RealizarAnimacion(NumDisparo+3); // Animar el disparo
-        
-
-        // Settear la llmamada para disparar
-
-        float Espera = this->TiempoEntreTiros - this->TiempoParaAnimacionEnTiro;
-        FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, false, NumDisparo);    
-        Super::ProgramarTimer(Delegate, Espera, false);
-
-
-    } else {
-
-        // Estado 1: Crear el proyectil
-
-        this->Disparar();
-        
-        float Espera;
-       
-        // Si quedan tiros todavía, se debe repetir el ciclo de ataque de nuevo al estado 0
-
-        if (NumDisparo != this->CadenciaDeDisparo - 1) {
-
-            // Quedan tiros: settear la llmamada al método de vuelta
-
-            Espera = this->TiempoParaAnimacionEnTiro;    
-            FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::Atacar, true, NumDisparo+1);    
-            Super::ProgramarTimer(Delegate, Espera, false);
-
-
-        } else {
-        
-            // No quedan tiros: esperar cooldown final para empezar el siguiente ciclo
-
-            Espera = this->CooldownFinal;
-            FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ATorre_Disparador::RepetirCicloAtaque);    
-            Super::ProgramarTimer(Delegate, Espera, false);
-
-
-        }
-
-
-
-    } 
-
-
-}
-*/
-

@@ -71,6 +71,7 @@ protected:
 
 public:
 
+	void SetVelocidadDeCaida(float DistVert, float DistHor);
 	void Pausar();
 
 
