@@ -6,6 +6,7 @@
 #include "Torre.h"
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/BoxComponent.h"
 
 
 
@@ -26,9 +27,14 @@ ACasilla::ACasilla()
 
 	// Settear componentes
 	this->Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	RootComponent = this->Mesh;
 	this->ComponenteDeAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("Componente De Audio"));
+	this->CampoAntiRobot = CreateDefaultSubobject<UBoxComponent>(TEXT("CampoAntiRobot"));
+
+	RootComponent = this->Mesh;
 	this->ComponenteDeAudio->SetupAttachment(this->Mesh);
+	this->CampoAntiRobot->SetupAttachment(this->Mesh);
+
+
 
 }
 
@@ -94,5 +100,21 @@ void ACasilla::SetVolumenEfectosDeCasillas(float Vol, UObject* ContextoMundo) {
 
         Cast<ACasilla>(Casilla)->ComponenteDeAudio->SetVolumeMultiplier(ACasilla::VolumenEfectos);
     }
+
+}
+
+
+bool ACasilla::RobotPisandoFinalDeCasilla() {
+	
+
+	// Buscar si hay una hitbox de robot overlappeando el campo antirobot
+
+    TArray<FOverlapResult> Resultado;
+    FComponentQueryParams QueryParams;
+
+    this->CampoAntiRobot->ComponentOverlapMulti(Resultado, GetWorld(), AActor::GetActorLocation(), AActor::GetActorRotation(), ECollisionChannel::ECC_GameTraceChannel5, QueryParams);
+
+	return Resultado.Num() > 0;
+
 
 }

@@ -32,6 +32,6 @@ public:
 	void AcabarTareaActual();
 	
 	void SettearBoolEnBlackboard(FName Key, bool Valor);
-	bool GetBoolDeBlackboard(FName Key);
+//	bool GetBoolDeBlackboard(FName Key);
 
 };

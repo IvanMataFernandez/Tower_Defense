@@ -39,7 +39,8 @@ private:
 	TArray<float> EspacioOcupadoPorFila;
 
 	FVector Localizacion;
-	FVector TamanoBox;
+	FVector Radio;
+	float TamanoCasillaX;
 
 
 

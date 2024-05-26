@@ -8,6 +8,7 @@
 
 class ATorre;
 class UAudioComponent;
+class UBoxComponent;
 
 UCLASS()
 class TOWER_DEFENSE_API ACasilla : public AActor
@@ -21,19 +22,27 @@ public:
 
 
 
+// Componentes
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = "true"))
+	UBoxComponent* CampoAntiRobot; // Solo permite colocar torre aquí si no hay robots pisando esta zona, excepto para instant kills
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta= (AllowPrivateAccess = "true"))
+	UStaticMeshComponent* Mesh;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  meta= (AllowPrivateAccess = "true"))
+	UAudioComponent* ComponenteDeAudio;
+
 
 // Atributos
 
 private:
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta= (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* Mesh;
+
 
 	ATorre* Torre; 
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  meta= (AllowPrivateAccess = "true"))
-	UAudioComponent* ComponenteDeAudio;
-
 
 	static float VolumenEfectos;
 
@@ -54,6 +63,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	static void SetVolumenEfectosDeCasillas(float Vol, UObject* ContextoMundo);
+
+
+	bool RobotPisandoFinalDeCasilla();
+
 
 protected:
 	UFUNCTION(BlueprintImplementableEvent)

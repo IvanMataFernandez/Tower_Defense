@@ -67,6 +67,7 @@ void ARobot::DeshacerEnlaceDeCola(bool Lider) {
             // Si lidera a alguien, ahora esta instancia es el lider global y la cola entera se settea a su speed original
 
             this->SetVelocidadDeCola(this->VelocidadDeInstancia);
+
         } else {
 
             // Si no lidera a nadie, se anula la velocidad de cola y se aplica la velocidadDeInstancia en su lugar en desplazamientos
@@ -79,9 +80,6 @@ void ARobot::DeshacerEnlaceDeCola(bool Lider) {
 
         }
 
-        // Liberar al bot del de delante porque se ha muerto
-
-        Super::GetMandoDeIA()->SettearBoolEnBlackboard(TEXT("SiguiendoARobot"), false);
 
     } else {
 
@@ -115,29 +113,39 @@ void ARobot::EnChoque(UPrimitiveComponent* ComponenteNuestro, AActor* OtroActor,
 
     ARobot* OtroRobot = Cast<ARobot>(OtroActor);
 
-    // TODO: Quitar el check de ver que la IA se ha cargado en version final, por ahora fallsave para que no casque el juego si hay dos robots spawneados juntos overlappeados (no deberia ocurrir en juego final)
 
 
     // Comprobar que se ha chocado contra otro robot y no otra cosa
 
-    if (OtroRobot && Super::GetMandoDeIA() && OtroRobot->GetMandoDeIA()) {
+    if (OtroRobot) {
        
+
+        // TODO: Quitar el check de ver que la IA se ha cargado en version final, por ahora fallsave para que no casque el juego si hay dos robots spawneados juntos overlappeados (no deberia ocurrir en juego final)
+
+
+        if (!Super::GetMandoDeIA()) {
+            UE_LOG(LogTemp, Warning, TEXT("ERROR YO NO IA"));
+            return;
+        } else if (!OtroRobot->GetMandoDeIA()) {
+            UE_LOG(LogTemp, Warning, TEXT("error OTRO NO IA"));
+            return;
+        }
+
+
+
+
+
         // Se chocó contra otro robot, ver si voy delante o detrás
 
         if (this->GetActorLocation().Y < OtroActor->GetActorLocation().Y) {
            
             // Esta instancia está delante, lidera a otra y settea su velocidad a la de la cola.
 
+
             if (!this->LideraA) {
                 this->LideraA = OtroRobot;
 
-                if (this->LideradoPor) {
-                    OtroRobot->SetVelocidadDeCola(this->VelocidadDeCola);
-
-                } else {
-                    this->SetVelocidadDeCola(this->VelocidadDeInstancia);
-                }
-
+                this->DarInfoDeColaASubordinado(this->LideraA);
 
 
             }
@@ -147,11 +155,11 @@ void ARobot::EnChoque(UPrimitiveComponent* ComponenteNuestro, AActor* OtroActor,
             // Esta instancia está detrás
 
             if (!this->LideradoPor) {
+
                 this->LideradoPor = OtroRobot;
 
                 // Esclavizar el robot al de delante
 
-                this->ActualizarIAPorEncolar(this->LideradoPor);
 
             }
 
@@ -163,11 +171,18 @@ void ARobot::EnChoque(UPrimitiveComponent* ComponenteNuestro, AActor* OtroActor,
 
 }
 
-void ARobot::ActualizarIAPorEncolar(ARobot* NuevoLider) {
+void ARobot::DarInfoDeColaASubordinado(ARobot* Subordinado) {
 
-    // Actualiza el flag de BT para que pase a la rama en la que espera ordenes de otra entidad en vez de tomarlas ella misma
 
-    Super::GetMandoDeIA()->SettearBoolEnBlackboard(TEXT("SiguiendoARobot"), true);
+
+    if (this->EsLider()) {
+        this->SetVelocidadDeCola(this->VelocidadDeInstancia);
+
+
+    } else {
+        Subordinado->SetVelocidadDeCola(this->VelocidadDeCola);
+
+    }
 
 }
 
@@ -187,6 +202,7 @@ void ARobot::SetVelocidadDeCola(float Vel) {
     }
 
 }
+
 
 void ARobot::QuitarIA() {
     Super::QuitarIA();
@@ -325,3 +341,6 @@ void ARobot::MoverVertical(float DeltaTime) {
 
 }
 
+bool ARobot::EsLider() {
+    return this->LideradoPor == nullptr;
+}

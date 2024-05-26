@@ -208,6 +208,11 @@ int ConstructoraDeBlueprints::GetPesoDeRobot(uint8 Clase) const {
 
 }
 
+bool ConstructoraDeBlueprints::TorrePermiteOverlappearRobot(int ID) const {
+    return ID == 12; // Solo instant kills se pueden poner justo en el camino de un robot. La unica instant kill en este juego es la bomba (ID = 12)
+}
+
+
 UTexture2D* ConstructoraDeBlueprints::ObtenerImagenDeTorre(int ID) const {
     
 

@@ -265,7 +265,7 @@ void AGameMode_EnPartida::CargarDatosOleada() {
 
 
 
-    this->PesoPorEliminarHastaSiguienteOleada = this->PesoRestante / 2;   // Spawnear la siguiente oleada si muere la mitad del peso de esta redondeado hacia abajo
+    this->PesoPorEliminarHastaSiguienteOleada = 1 + this->PesoRestante / 2;   // Spawnear la siguiente oleada si muere la mitad del peso de esta + 1
 
                                                                                     
 
@@ -336,9 +336,7 @@ void AGameMode_EnPartida::CargarDatosOleada() {
     this->FilasHabilitadasParaSpawn.Add(4);
 
 
-    // Reiniciar la zona de spawn para que los bots vuelvan a spawnear delante
 
-    this->ZonaSpawn->RefrescarNuevaOleada();
 
 
     // Ya tenemos los datos de la oleada y son validos, empezar a handlear logica de spawnear enemigos con dicha información
@@ -393,6 +391,11 @@ void AGameMode_EnPartida::GenerarOleada() {
 
 
     this->ComunicarAvanceOleadaUI(); // Triggear avance en progress bar (por blueprints)
+    
+    // Reiniciar la zona de spawn para que los bots vuelvan a spawnear delante
+
+    this->ZonaSpawn->RefrescarNuevaOleada();
+
     this->GenerarRobot(); // Empezar los spawns de robots
 }
 
@@ -402,11 +405,20 @@ void AGameMode_EnPartida::GenerarOleadaGrande() {
 
     // Se quiere spawnear una oleada grande
 
+
+
+
     this->ComunicarAvanceOleadaUI(); // Triggear avance en progress bar
+
+
+    // Reiniciar la zona de spawn para que los bots vuelvan a spawnear delante
+
+    this->ZonaSpawn->RefrescarNuevaOleada();
+
 
     // Spawnear lider de oleada (tiene coste de peso 1)
     this->SpawnearRobot(-1); 
-    
+
      // Hacer el spawn del resto de la oleada
      this->GenerarRobot();
 
@@ -985,7 +997,7 @@ void AGameMode_EnPartida::FocusearCausanteDerrota() {
 
     // Descongelar al robot causante de la derrota, manteniendo el resto del tablero congelado
 
-    this->CausanteDerrota->SetVelocidad(300.f);
+    this->CausanteDerrota->SetVelocidad(600.f);
     this->CausanteDerrota->DespausarEntidad();
 
     FTimerHandle TimerParaUI;

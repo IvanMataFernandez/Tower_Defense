@@ -178,16 +178,19 @@ void AEntidad::PausarEntidad() {
 
 	// Pausar IA
 
+
 	AMandoDeIA* IA = Cast<AMandoDeIA>(this->GetController());
 
 	if (IA && IA->TieneIA()) {
 		IA->ActivarIA(false);
-		GetWorld()->GetTimerManager().ClearTimer(TimerFrame);
 	}
 
 	// Detener animaciones
 
 	this->DestruirAnimaciones();
+	
+	// Parar timer global de la clase
+	this->ClearTimer();
 
 }
 
@@ -289,4 +292,8 @@ void AEntidad::ClearTimer() {
 
 AMandoDeIA* AEntidad::GetMandoDeIA() {
 	return this->MandoDeIA;
+}
+
+FVector AEntidad::ObtenerRadioHitbox() {
+	return this->Hitbox->GetScaledBoxExtent();
 }

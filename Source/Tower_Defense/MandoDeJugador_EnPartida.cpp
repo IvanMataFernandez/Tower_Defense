@@ -143,16 +143,33 @@ void AMandoDeJugador_EnPartida::Pinchar() {
 
             // La casilla esta vacia, asumimos que el player quiere poner una torre aqui
 
+
+            ConstructoraDeBlueprints* CdB = ConstructoraDeBlueprints::GetConstructoraDeBlueprints();
+
             int IDTorreElegida = this->ObtenerIDDeTorreElegidaEnPartida(); // this->SeleccionDelJugador indica que slot está marcado,
                                                                            // obtener el ID de la torre que aloja el slot
             int PosicionTorreEnUI = this->SeleccionDelJugador;
  
-            if (IDTorreElegida != -1) { // Si había selección en UI
+            /* Comprobar si la torre es colacable, para ello:
+                - Debe haber una torre seleccionada (aparece marcado en verde en UI)
+                - La torre a colocar en cuestión debe ser una instant kill (bomba)
+                  o no deben haber robots pisando la segunda mitad (trozo izquierdo) de la casilla
+
+                Si este paso falla, no se hace nada más
+
+            */
+
+            if (IDTorreElegida != -1 && (CdB->TorrePermiteOverlappearRobot(IDTorreElegida) || !Casilla->RobotPisandoFinalDeCasilla())) { 
+
+                // Se permite colocar la torre seleccionada
+
                 Casilla->SpawnearTorre(IDTorreElegida); // Entonces poner la torre elegida en la casilla
                 
                 this->UsarSeleccionElegida(); // Desmarcar la torre elegida en el mando
                 this->NotificarAInterfazColoqueTorre(PosicionTorreEnUI); // Y notificar esto mismo a la interfaz para que lo haga visualmente
             }
+
+        
 
         } else if (this->TNTElegida()) {  // Si la TNT está elegida..
 

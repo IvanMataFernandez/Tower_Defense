@@ -73,6 +73,8 @@ public:
 	int GetOleada();
 
 
+
+
 	void MoverVertical(float DeltaTime);
 	bool HaMovidoEnVerticalDistanciaX(float Distancia);
 	void Mover(float DeltaTime);
@@ -84,7 +86,9 @@ protected:
 	virtual void Matar() override;
 
 	ARobot* GetLideraA();
-	virtual void ActualizarIAPorEncolar(ARobot* NuevoLider);
+	bool EsLider();	
+	
+	virtual void DarInfoDeColaASubordinado(ARobot* Subordinado);
 
 
 private:

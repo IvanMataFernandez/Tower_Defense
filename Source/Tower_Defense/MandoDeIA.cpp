@@ -60,16 +60,18 @@ void AMandoDeIA::AcabarTareaActual() {
 }
 
 
+
 void AMandoDeIA::SettearBoolEnBlackboard(FName Key, bool Valor) {
 
     // Settear un valor booleano en su blackboard según la clave indicada
 
     this->FindComponentByClass<UBehaviorTreeComponent>()->GetBlackboardComponent()->SetValueAsBool(Key, Valor);
 }
-
+/*
 bool AMandoDeIA::GetBoolDeBlackboard(FName Key) {
 
     // Obtener un valor booleano en su blackboard según la clave indicada
 
     return this->FindComponentByClass<UBehaviorTreeComponent>()->GetBlackboardComponent()->GetValueAsBool(Key);
 }
+*/

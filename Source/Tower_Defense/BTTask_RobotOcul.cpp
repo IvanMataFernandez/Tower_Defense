@@ -30,7 +30,7 @@ UBTTask_RobotOcul::UBTTask_RobotOcul() {
             case 0:
                   Robot->Ocultar();
 
-                  return EBTNodeResult::InProgress;
+                  return EBTNodeResult::Succeeded;
 
 
             case 1:

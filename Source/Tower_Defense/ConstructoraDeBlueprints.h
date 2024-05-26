@@ -85,5 +85,7 @@ public:
 
 	UTexture2D* ObtenerImagenDeTorre(int ID) const;
 
+	bool TorrePermiteOverlappearRobot(int ID) const;
+
 
 };

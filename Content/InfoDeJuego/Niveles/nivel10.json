@@ -71,7 +71,7 @@
         {
             "id": 6,
             "oleadaGrande": false,
-            "peso": 4,
+            "peso": 5,
             "probabilidades": [0.5, 0.18, 0.2, 0.12, 0.0, 0.0],
             "tiempoSiguienteOleada": 20
             
@@ -80,7 +80,7 @@
         {
             "id": 7,
             "oleadaGrande": false,
-            "peso": 5,
+            "peso": 6,
             "probabilidades": [0.5, 0.18, 0.2, 0.12, 0.0, 0.0],
             "tiempoSiguienteOleada": 20
             
@@ -99,7 +99,7 @@
         {
             "id": 9,
             "oleadaGrande": false,
-            "peso": 7,
+            "peso": 8,
             "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.0, 0.2],
             "tiempoSiguienteOleada": 20
             
@@ -108,7 +108,7 @@
         {
             "id": 10,
             "oleadaGrande": false,
-            "peso": 7,
+            "peso": 8,
             "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.0, 0.2],
             "tiempoSiguienteOleada": 20
             
@@ -117,7 +117,7 @@
         {
             "id": 11,
             "oleadaGrande": false,
-            "peso": 8,
+            "peso": 10,
             "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.0, 0.2],
             "tiempoSiguienteOleada": 20
             
@@ -126,7 +126,7 @@
         {
             "id": 12,
             "oleadaGrande": false,
-            "peso": 8,
+            "peso": 10,
             "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.0, 0.2],
             "tiempoSiguienteOleada": 20
             
@@ -136,7 +136,7 @@
         {
             "id": 13,
             "oleadaGrande": false,
-            "peso": 9,
+            "peso": 11,
             "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.0, 0.2],
             "tiempoSiguienteOleada": 20
             
@@ -154,7 +154,7 @@
         {
             "id": 14,
             "oleadaGrande": false,
-            "peso": 11,
+            "peso": 14,
             "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             
@@ -163,7 +163,7 @@
         {
             "id": 15,
             "oleadaGrande": false,
-            "peso": 11,
+            "peso": 15,
             "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             
@@ -172,7 +172,7 @@
         {
             "id": 16,
             "oleadaGrande": false,
-            "peso": 12,
+            "peso": 17,
             "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             
@@ -181,7 +181,7 @@
         {
             "id": 17,
             "oleadaGrande": false,
-            "peso": 12,
+            "peso": 17,
             "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             
@@ -190,7 +190,7 @@
         {
             "id": 18,
             "oleadaGrande": false,
-            "peso": 13,
+            "peso": 18,
             "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             
@@ -199,7 +199,7 @@
         {
             "id": 19,
             "oleadaGrande": false,
-            "peso": 13,
+            "peso": 19,
             "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             
@@ -208,7 +208,7 @@
         {
             "id": 20,
             "oleadaGrande": true,
-            "peso": 20,
+            "peso": 35,
             "probabilidades": [0.4, 0.1, 0.25, 0.05, 0.05, 0.15],
             "tiempoSiguienteOleada": 20
             

@@ -122,5 +122,6 @@ public:
 
 	AMandoDeIA* GetMandoDeIA();
 
+	FVector ObtenerRadioHitbox();
 
 };

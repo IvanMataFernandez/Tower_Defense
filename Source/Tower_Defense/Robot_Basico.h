@@ -64,9 +64,10 @@ public:
 	void AnimarDisparo();
 	void Disparar();
 
-
 protected:
-	virtual void ActualizarIAPorEncolar(ARobot* NuevoLider) override;
+
+	virtual void DarInfoDeColaASubordinado(ARobot* Subordinado) override;
+
 
 
 

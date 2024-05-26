@@ -30,9 +30,6 @@ public:
 	void Ocultar();
 	void Desocultar();
 
-private:
-
-	void FinalizarOcultacion();
 
 //public:
 //	virtual void InicializarMover() override;
