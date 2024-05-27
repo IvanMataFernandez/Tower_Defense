@@ -326,14 +326,7 @@ void AGameMode_EnPartida::CargarDatosOleada() {
 
 
 
-    // Reiniciar el habilitador de spawn de filas
 
-    this->FilasHabilitadasParaSpawn.Empty();
-    this->FilasHabilitadasParaSpawn.Add(0);
-    this->FilasHabilitadasParaSpawn.Add(1);
-    this->FilasHabilitadasParaSpawn.Add(2);
-    this->FilasHabilitadasParaSpawn.Add(3);
-    this->FilasHabilitadasParaSpawn.Add(4);
 
 
 
@@ -607,38 +600,14 @@ void AGameMode_EnPartida::SpawnearRobot(int Pos) {
     this->PesoRestante = this->PesoRestante - PesoRobot; // Restar al budget de oleada
 
 
-    // Ya se ha computado el coste del robot, ahora elegir en que fila va a aparecer. Se intenta repartir el mismo numero de robots por cada fila
-    // de manera que si al menos una fila va un spawn por detrás, entonces se elige esa para hacerlo aparecer sobre el resto
 
 
-    // Elegir entre las filas posibles que van un spawn por detrás
-    int IdxFilaDisponibleParaSpawn = FMath::RandRange(0, this->FilasHabilitadasParaSpawn.Num()-1);
-    int FilaElegida = this->FilasHabilitadasParaSpawn[IdxFilaDisponibleParaSpawn];
+  
 
-    
-    // Quitar dicho valor de fila del array de disponibilidades, para ello se pasa el último elemento del array a la posición del elemento a quitar
-    // y se quita el último elemento de la lista. Esto es más eficiente que la forma tradicional de hacerlo (Para hacer coste O(1) ) pero puede
-    // alterar el orden de los elementos de la lista (no importa, porque solo nos interesa saber que filas QUEDAN disponibles, NO en que orden)
-    
-    this->FilasHabilitadasParaSpawn[IdxFilaDisponibleParaSpawn] = this->FilasHabilitadasParaSpawn[this->FilasHabilitadasParaSpawn.Num()-1];
-    this->FilasHabilitadasParaSpawn.Pop();
+    // Spawnear el bot con el ID indicado. La zona de spawn decide en que fila hacerlo aparecer y le settea al Robot spawneado el valor de la oleada actual
 
+    this->ZonaSpawn->SpawnearRobot(ID, this->OleadaActual); 
 
-    
-    // Si no quedan mas filas donde spawnear, estan todas empatadas por números de robot, volver a refrescar el array de filas disponibles
-    if (this->FilasHabilitadasParaSpawn.IsEmpty()) {
-        this->FilasHabilitadasParaSpawn.Add(0);
-        this->FilasHabilitadasParaSpawn.Add(1);
-        this->FilasHabilitadasParaSpawn.Add(2);
-        this->FilasHabilitadasParaSpawn.Add(3);
-        this->FilasHabilitadasParaSpawn.Add(4);
-
-    }
-
-    // Spawnear el bot con id "ID" en la fila "FilaElegida" y decirle que apareció en la oleada actual
-
-    ARobot* RobotGenerado = this->ZonaSpawn->SpawnearRobot(ID ,FilaElegida); 
-    RobotGenerado->SetOleada(this->OleadaActual);
 
 }
 

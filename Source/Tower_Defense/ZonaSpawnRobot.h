@@ -38,10 +38,12 @@ private:
 	TArray<float> PosicionesDeSpawn;
 	TArray<float> EspacioOcupadoPorFila;
 
+	TArray<int> FilasHabilitadasParaSpawn;
+
+
 	FVector Localizacion;
 	FVector Radio;
 	float TamanoCasillaX;
-
 
 
 
@@ -54,7 +56,7 @@ protected:
 
 public:
 
-	ARobot* SpawnearRobot(int ID ,int Fila); 
+	void SpawnearRobot(int ID, int Oleada); 
 
 
 	void RefrescarNuevaOleada();
