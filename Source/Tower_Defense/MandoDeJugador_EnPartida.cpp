@@ -240,71 +240,55 @@ void AMandoDeJugador_EnPartida::Pinchar() {
 void AMandoDeJugador_EnPartida::ObtenerTodasLasImagenesYCostesDeTorre(TArray<UTexture2D*>& Imagenes, TArray<int>& Costes) const {
 
     // Devuelve en dos listas las imagenes de slots de las torres desbloquadas, así como sus costes
+   
+    Imagenes.Empty();
+    Costes.Empty();
 
-    Imagenes = this->ObtenerImagenesDeTorres(this->IDsTorresDesbloqueadas);
-    Costes = this->ObtenerCostesDeTorres(this->IDsTorresDesbloqueadas);
+    for (int ID : this->IDsTorresDesbloqueadas) {
+        Imagenes.Add(this->ObtenerImagenDeTorre(ID));
+    }
+
+    for (int ID : this->IDsTorresDesbloqueadas) {
+        Costes.Add(this->ObtenerCosteDeTorre(ID));
+    }
+
 }
 
 
 
-TArray<UTexture2D*> AMandoDeJugador_EnPartida::ObtenerImagenesDeTorres(TArray<int> IDs) const {
+UTexture2D* AMandoDeJugador_EnPartida::ObtenerImagenDeTorre(int ID) const {
     
 
-    // Devuelve la lista de imagenes de slots de los IDs de torres pedidas
 
     ConstructoraDeBlueprints* CdB = ConstructoraDeBlueprints::GetConstructoraDeBlueprints();
-    TArray<UTexture2D*> Texturas;
-
-    for (int ID : IDs) {
-        Texturas.Add(CdB->ObtenerImagenDeTorre(ID));
-    }
-
-    return Texturas;
+    return CdB->ObtenerImagenDeTorre(ID);
 }
 
 
 
-TArray<int> AMandoDeJugador_EnPartida::ObtenerCostesDeTorres(TArray<int> IDs) const {
+int AMandoDeJugador_EnPartida::ObtenerCosteDeTorre(int ID) const {
 
-    // Devuelve la lista de costes de los IDs de torres pedidas
 
 
     ConstructoraDeBlueprints* CdB = ConstructoraDeBlueprints::GetConstructoraDeBlueprints();
-    TArray<int> Costes;
-
-    for (int ID : IDs) {
-        Costes.Add(CdB->GetCosteDeTorre(ID));
-    }
-
-    return Costes;
+    return CdB->GetCosteDeTorre(ID);
 }
 
-TArray<float> AMandoDeJugador_EnPartida::ObtenerRecargasDeTorres(TArray<int> IDs) const {
-
-    // Devuelve la lista de recargas de los IDs de torres pedidas
+float AMandoDeJugador_EnPartida::ObtenerRecargaDeTorre(int ID) const {
 
 
-    TArray<float> ListaRecargas;
-
-    for (int ID : IDs) {
-        ListaRecargas.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetTiempoDeRecargaDeTorre(ID));
-    }
-    return ListaRecargas;
+    ConstructoraDeBlueprints* CdB = ConstructoraDeBlueprints::GetConstructoraDeBlueprints();
+    return CdB->GetTiempoDeRecargaDeTorre(ID);
 
 
 }
 
-TArray<bool> AMandoDeJugador_EnPartida::ObtenerEmpiezaRecargadosTorres(TArray<int> IDs) const {
+bool AMandoDeJugador_EnPartida::ObtenerEmpiezaRecargadoTorre(int ID) const {
 
-    // Devuelve la lista de si la torre deberia empezar recargada ya de los IDs de torres pedidas
 
-        
-    TArray<bool> ListaRecargaEmpezada;
-
-    for (int ID : IDs) {
-        ListaRecargaEmpezada.Add(ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetEmpiezaRecargadaTorre(ID));
-    }
-    return ListaRecargaEmpezada;
+    ConstructoraDeBlueprints* CdB = ConstructoraDeBlueprints::GetConstructoraDeBlueprints();
+ 
+    return CdB->GetEmpiezaRecargadaTorre(ID);
 }	
 
 
@@ -329,20 +313,35 @@ int AMandoDeJugador_EnPartida::SlotDeTorreDesbloqueadaEnPosDeSeleccion(int Slot)
     return -1;
 }
 
-void AMandoDeJugador_EnPartida::ProcesarClickEnSeleccionInicialDeTorres(int Slot, int& PosAccion, bool& PermiteEmpezar) {
+int AMandoDeJugador_EnPartida::IDDeTorreASlotDeSave(int ID) {
 
-    // Procesa un click en un slot. Si es la pala, la selecciona si no estaba seleccionada y la deselecciona si lo estaba
-    //                              Si es una torre, la deselecciona si estaba seleccionada y trata de seleccionarla si no lo estaba
-    //                                  Una torre es seleccionable si esta recargada y se puede permitir ponerla respecto a coste de energía
+    // Post: Recoge el id de torre pedido y busca la posicion en la que se desbloquea en el juego
+
+    for (int Pos = 0; Pos != this->IDsTorresDesbloqueadas.Num(); Pos++) {
+        if (this->IDsTorresDesbloqueadas[Pos] == ID) {
+            return Pos;
+        }
+    }
+
+    return -1;
+}
+
+void AMandoDeJugador_EnPartida::ProcesarClickEnSeleccionInicialDeTorres(int Slot, bool& AccionValida, bool& Eliminacion, int& CantidadSelecciones, TArray<int>& SlotsARetroceder, bool& PermiteEmpezar) {
+
+
 
     //   In: El slot pinchado. Cada slot es un tipo de torre distinto (el panel es el 0, el cañón el 1...)
-    // Post: PosAccion: (0-5) index que se ha eliminado, (-1) se ha insertado, (-2) no accion
-    //       PermiteEmpezar: Todas las torres seleccionadas desbloqueadas o al menos hay 6 elegidas
+    // Post: AccionValida: Si se hizo algun cambio en el array
+    //       Elimnacion: Si la accion realizada fue una eliminacion y no una insercion
+    //       CantidadSelecciones: Tras la accion, cuantas torres hay elegidas
+    //       SlotsARetrocder: las cards que deberían retroceder un espacio visualmente debido a una eliminación
+    //       PermiteEmpezar: Si tras la accion hay 6 torres elegidas or todas las torres desbloqueadas están elegidas
 
     int PosSeleccion = this->SlotDeTorreDesbloqueadaEnPosDeSeleccion(Slot); // Comprobar si la torre está elegida
+    AccionValida = true;
 
     if (PosSeleccion == -1) {
-
+        Eliminacion = false;
         // No está elegida, comprobar si se puede añadir (hay 6 huecos en el layout, ver si no hay 6 torres elegidas)
 
 
@@ -350,7 +349,6 @@ void AMandoDeJugador_EnPartida::ProcesarClickEnSeleccionInicialDeTorres(int Slot
             
             // Hay hueco, insertar la torre al final de la lista 
 
-            PosAccion = -1;
 
             this->IDsDeTorresElegidas.Add(this->IDsTorresDesbloqueadas[Slot]);
 
@@ -362,27 +360,30 @@ void AMandoDeJugador_EnPartida::ProcesarClickEnSeleccionInicialDeTorres(int Slot
 
             // No hay hueco, el usuario ya tiene 6 torres elegidas.
 
-             PosAccion = -2;
 
             PermiteEmpezar = true;
+            AccionValida = false;
         }
 
 
 
     } else {
         // Está elegida, proceder a quitarla de la lista. Se informa a la UI también de la posición de la lista con PosSeleccion a quitar visualmente
-        
-        PosAccion = PosSeleccion;
+        Eliminacion = true;
+        PermiteEmpezar = false;  // Tras quitar una torre debe haber al menos un espacio libre, por lo que no se permite empezar
+
+
+        for (int Pos = PosSeleccion+1; Pos != this->IDsDeTorresElegidas.Num(); Pos++) {
+            SlotsARetroceder.Add(this->IDDeTorreASlotDeSave(this->IDsDeTorresElegidas[Pos]));
+
+        }
 
 
         this->IDsDeTorresElegidas.RemoveAt(PosSeleccion); // Usar borrado más lento shifteando las posiciones del array hacia adelante para que encaje visualmente con la UI
 
-        // Tras quitar una torre debe haber al menos un espacio libre, por lo que no se permite empezar
-        PermiteEmpezar = false;
-
 
     }
-
+    CantidadSelecciones = this->IDsDeTorresElegidas.Num();
 }
 
 
@@ -437,16 +438,24 @@ void AMandoDeJugador_EnPartida::InicializarVariablesDePartida() {
 
 // Procesar click en torre
 
-void AMandoDeJugador_EnPartida::ElegirTorre(int PosTorre, bool& SeleccionCorrecta, int& SeleccionPrevia, bool& SeleccionPreviaCorrecta) {
+void AMandoDeJugador_EnPartida::ElegirTorre(int PosTorre, bool& Encender, bool& Correcto, int& SeleccionPrevia) {
 
     // Pre: Indica la torre que se ha pinchado
-    // Post: Devuelve si la selección actual no dio error (se podia permitir la torre si se elegió una torre), así como la selección anterior realizada como si fue correcta
+    // Post:
+    /*
+       Encender: Si se debe encender o apagar la seleccion
+       Correcto: Si se debe marcar como verde o rojo la seleccion
+       SelPrevia: La seleccion previa que se hizo (para apagarla)
+    
+    */
+
 
     // Necesitamos está información para saber que casilla nueva marcar y cual desmarcar en UI
 
     /*
         Para ello, usa actualiza la variable SeleccionDelJugador que toma como valores según el último click del usuario en la UI:
 
+         -1  no habia seleccion
         0-5  la torre elegida actualmente empezando por la izquierda (se ve en UI marcada en verde)
         6    la TNT elegida actualmente (se ve en UI marcada en verde)
         6-11 la torre elegida incorrectamente empezando por la izquierda (no estaba off cooldown o no teniamos suficiente energia) 
@@ -460,10 +469,8 @@ void AMandoDeJugador_EnPartida::ElegirTorre(int PosTorre, bool& SeleccionCorrect
 
     if (this->SeleccionDelJugador > 6) {
         SeleccionPrevia = this->SeleccionDelJugador - 7;
-        SeleccionPreviaCorrecta = false;
     } else {
         SeleccionPrevia = this->SeleccionDelJugador;
-        SeleccionPreviaCorrecta = true;
     }
 
     
@@ -477,22 +484,26 @@ void AMandoDeJugador_EnPartida::ElegirTorre(int PosTorre, bool& SeleccionCorrect
         if (this->SeleccionDelJugador == PosTorre) {
             // Lo estaba, deseleccionar
             this->SeleccionDelJugador = -1;
+            
+            Encender = false;
+
         } else {
             // No lo estaba, seleccionar
             this->SeleccionDelJugador = PosTorre;
-
+            
+            Encender = true;
         }
 
 
 
-        SeleccionCorrecta = true;
+        Correcto = true;
     } else {
 
         // No nos lo podemos permitir, marcar como seleccion erronea
 
         this->SeleccionDelJugador = PosTorre+7;
 
-        SeleccionCorrecta = false;   
+        Correcto = false;   
     }
 
 }

@@ -40,6 +40,10 @@ UUserWidget* AMandoDeJugador_EnMenu::CambiarAInterfaz(int ID) {
 
         case 3:
             ClaseUI = ClaseHUDPopUpJuegoCompleto;
+            break;
+        case 4:
+            ClaseUI = ClaseHUDAvisoJuegoNuevo;
+            break;
     }
 
     if (this->HUD) { // Quitar la interfaz anterior

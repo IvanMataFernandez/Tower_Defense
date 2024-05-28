@@ -337,9 +337,9 @@ void AGameMode_EnPartida::CargarDatosOleada() {
 
     if (this->GrandesOleadas.Contains(this->OleadaActual)) {
  
+        
         // Se aproxima FLAG de robots (oleada grande), esperar unos 6 segundos para mostrar por UI y hacer avisos sonoros antes de empezar a spawnear nada
 
-        this->ComunicarAvisoDeOleadaGrande();
 
         GetWorld()->GetTimerManager().SetTimer(this->TimerParaSpawnRobot, this, &AGameMode_EnPartida::GenerarOleadaGrande, 6.f, false);   
 
@@ -347,10 +347,16 @@ void AGameMode_EnPartida::CargarDatosOleada() {
         // Cambiar la música también para informar de la orda, la última orda tiene música distinta a las demás
         if (this->OleadaActual != this->OleadasTotales-1) {
             // No ultima orda
-             this->TocarMusica(1);
+             this->TocarMusica(1);     
+
+            this->ComunicarAvisoDeOleadaGrande(false); // Avisar a UI
+
         }  else {
             // Ultima orda
             this->TocarMusica(2);
+
+            this->ComunicarAvisoDeOleadaGrande(true);
+
         }          
 
 
@@ -804,7 +810,7 @@ void AGameMode_EnPartida::ProcesarCorrupcionDeDatos() {
     UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
     Guardado->Nivel = -1;
     
-    // Guardar la save con el nivel en -1
+    // Guardar la save con el nivel en -2
     UGameplayStatics::SaveGameToSlot(Guardado, TEXT("save"), 0);
 
     // Cargar este nivel de nuevo para que se carge la información del nuevo nivel al que apunta la save ahora (nivel -1 = error en juego)
@@ -856,8 +862,8 @@ void AGameMode_EnPartida::AvanzarNivel(int TorreDesbloqueo) {
         UGameplayStatics::OpenLevel(GetWorld(), TEXT("NivelPrincipal"));
     } else {
         
-        // Se completó el último nivel del juego
-        Guardado->UltimoNivelSuperado = true;
+        // Se completó el último nivel del juego, settear "Nivel" a 0 para indicar esto
+        Guardado->Nivel = 0;
         // Guardar los cambios
         UGameplayStatics::SaveGameToSlot(Guardado, TEXT("save"), 0);
 

@@ -39,6 +39,9 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> ClaseHUDPopUpJuegoCompleto;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> ClaseHUDAvisoJuegoNuevo;
+
 	UUserWidget* HUD;
 
 // Metodos

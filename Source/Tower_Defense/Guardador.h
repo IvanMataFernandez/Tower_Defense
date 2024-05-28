@@ -32,8 +32,6 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	int Nivel;
 	UPROPERTY(BlueprintReadWrite)
-	bool UltimoNivelSuperado;
-	UPROPERTY(BlueprintReadWrite)
 	bool JuegoCompleto;
 	UPROPERTY(BlueprintReadWrite)
 	TArray<int> IDsTorresDesbloqueadas;

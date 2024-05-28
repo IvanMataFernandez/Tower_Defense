@@ -148,7 +148,7 @@ protected:
 	void ComunicarAvanceOleadaUI();	
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void ComunicarAvisoDeOleadaGrande();	
+	void ComunicarAvisoDeOleadaGrande(bool UltimaOleada);	
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void ComunicarVictoria(int Nivel, float PosXDrop, float PosYDrop);	

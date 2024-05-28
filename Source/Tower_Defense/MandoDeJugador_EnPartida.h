@@ -79,7 +79,7 @@ public:
 
 	
 	UFUNCTION(BlueprintCallable)
-	void ProcesarClickEnSeleccionInicialDeTorres(int Slot, int& PosAccion, bool& PermiteEmpezar);
+	void ProcesarClickEnSeleccionInicialDeTorres(int Slot, bool& AccionValida, bool& Eliminacion, int& CantidadSelecciones, TArray<int>& SlotsARetroceder, bool& PermiteEmpezar);
 
 
 
@@ -116,22 +116,22 @@ public:
 
 
 	UFUNCTION(BlueprintCallable)
-	TArray<float> ObtenerRecargasDeTorres(TArray<int> IDs) const;
+	float ObtenerRecargaDeTorre(int ID) const;
 	UFUNCTION(BlueprintCallable)
-	TArray<bool> ObtenerEmpiezaRecargadosTorres(TArray<int> IDs) const;
+	bool ObtenerEmpiezaRecargadoTorre(int ID) const;
 
-	UFUNCTION(BlueprintCallable)
-	TArray<int> ObtenerCostesDeTorres(TArray<int> IDs) const;
+	UFUNCTION(BlueprintCallable)	
+	int ObtenerCosteDeTorre(int ID) const;
 	
 	UFUNCTION(BlueprintCallable)
-	TArray<UTexture2D*> ObtenerImagenesDeTorres(TArray<int> IDs) const;
+	UTexture2D* ObtenerImagenDeTorre(int ID) const;
 
 
 	UFUNCTION(BlueprintCallable)
 	void ObtenerTodasLasImagenesYCostesDeTorre(TArray<UTexture2D*>& Imagenes, TArray<int>& Costes) const;
 
 	UFUNCTION(BlueprintCallable)
-	void ElegirTorre(int PosTorre, bool& SeleccionCorrecta, int& SeleccionPrevia, bool& SeleccionPreviaCorrecta);
+	void ElegirTorre(int PosTorre, bool& Encender, bool& Correcto, int& SeleccionPrevia);
 
 	UFUNCTION(BlueprintCallable)
 	void ElegirTNT(int& SeleccionPrevia, bool& TntElegida);
@@ -164,6 +164,9 @@ public:
 private:
 
 	int SlotDeTorreDesbloqueadaEnPosDeSeleccion(int Slot);
+
+	int IDDeTorreASlotDeSave(int ID);
+
 
 	int ObtenerIDDeTorreElegidaEnPartida();
 

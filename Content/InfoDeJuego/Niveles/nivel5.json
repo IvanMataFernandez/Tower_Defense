@@ -2,22 +2,22 @@
 
     "header": {
         "robotsPermitidos": [0,8],
-        "tiempoSinEnemigos": 26
+        "tiempoSinEnemigos": 11
     },
 
     "oleadas": [
         {
             "id": 0,
-            "oleadaGrande": false,
+            "oleadaGrande": true,
             "peso": 1,
             "probabilidades": [1.0, 0.0],
-            "tiempoSiguienteOleada": 30
+            "tiempoSiguienteOleada": 11
             
         },
 
         {
             "id": 1,
-            "oleadaGrande": false,
+            "oleadaGrande": true,
             "peso": 1,
             "probabilidades": [1.0, 0.0],
             "tiempoSiguienteOleada": 20
