@@ -30,6 +30,7 @@ protected:
 private:
 	float SizeX;
 	float SizeZ;
+	FTimerHandle Timer;
 
 	UPROPERTY(EditAnywhere)
 	float FrecuenciaSpawnPorSegundo;
@@ -40,7 +41,9 @@ private:
 protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void SpawnProyectil(float posX, float posZ);
-	UFUNCTION(BlueprintCallable)
 	void ProgramarSpawn();
+
+	UFUNCTION(BlueprintCallable)
+	void DetenerSpawns();
 
 };

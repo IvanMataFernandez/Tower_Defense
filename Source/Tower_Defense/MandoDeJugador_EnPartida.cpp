@@ -49,23 +49,39 @@ UUserWidget* AMandoDeJugador_EnPartida::CrearHUD(int Seleccion) {
 
     // Cargar la interfaz elegida según su ID. Mantiene interfaces anteriores activas.
 
-    UUserWidget* HUD;
-    if (Seleccion == 0) {
-        HUD = CreateWidget(this, this->ClaseHUDElegirTorre);
-    } else if (Seleccion == 1) {
-        HUD = CreateWidget(this, this->ClaseHUDCuentaAtras);
 
-    } else if (Seleccion == 2) {
-        HUD = CreateWidget(this, this->ClaseHUDEnPartida);
-    } else if (Seleccion == 3) {
-        HUD = CreateWidget(this, this->ClaseHUDDerrota);
+    UUserWidget* HUD = nullptr;
 
-    } else if (Seleccion == 4) {
-        HUD = CreateWidget(this, this->ClaseHUDVictoria);
+    switch (Seleccion) {
+        case 0:
+            HUD = CreateWidget(this, this->ClaseHUDElegirTorre);
 
-    } else {
-        HUD = CreateWidget(this, this->ClaseHUDPausa);
-        
+            break;
+        case 1:
+            HUD = CreateWidget(this, this->ClaseHUDCuentaAtras);
+
+            break;
+        case 2:
+            HUD = CreateWidget(this, this->ClaseHUDEnPartida);
+
+            break;
+        case 3:
+            HUD = CreateWidget(this, this->ClaseHUDDerrota);
+
+            break;
+        case 4:
+            HUD = CreateWidget(this, this->ClaseHUDVictoria);
+
+            break;
+        case 5:
+            HUD = CreateWidget(this, this->ClaseHUDPausa);
+
+            break;
+        case 6:
+            HUD = CreateWidget(this, this->ClaseHUDCarga);
+            break;
+
+
     }
 
     HUD->AddToViewport();
@@ -110,6 +126,12 @@ void AMandoDeJugador_EnPartida::QuitarHUD(int Pos)  {
 }
 
 
+void AMandoDeJugador_EnPartida::QuitarTodasHUD() {
+
+    while (!this->HUDs.IsEmpty()) {
+        this->QuitarUltimaHUDAnadida();
+    }
+}
 
 
 

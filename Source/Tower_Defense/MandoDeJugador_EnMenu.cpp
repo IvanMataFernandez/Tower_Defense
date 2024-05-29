@@ -44,6 +44,10 @@ UUserWidget* AMandoDeJugador_EnMenu::CambiarAInterfaz(int ID) {
         case 4:
             ClaseUI = ClaseHUDAvisoJuegoNuevo;
             break;
+
+        case 5:
+            ClaseUI = ClaseHUDCarga;
+            break;
     }
 
     if (this->HUD) { // Quitar la interfaz anterior

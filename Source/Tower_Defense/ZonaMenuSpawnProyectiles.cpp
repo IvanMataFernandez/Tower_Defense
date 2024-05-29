@@ -22,7 +22,8 @@ void AZonaMenuSpawnProyectiles::BeginPlay()
 	Super::BeginPlay();
 	this->SizeX =  this->ZonaDeSpawn->GetScaledBoxExtent().X;
 	this->SizeZ =  this->ZonaDeSpawn->GetScaledBoxExtent().Z;
-	this->ProgramarSpawn(); // Spawnear proyectil cada X Tiempo
+
+	GetWorld()->GetTimerManager().SetTimer(this->Timer, this, &AZonaMenuSpawnProyectiles::ProgramarSpawn, 1/FrecuenciaSpawnPorSegundo, true);
 }
 
 
@@ -30,10 +31,11 @@ void AZonaMenuSpawnProyectiles::BeginPlay()
 void AZonaMenuSpawnProyectiles::ProgramarSpawn() {
 
 
-	 // Spawnear proyectil cada X Tiempo, se llama en bucle entre este método y el método en blueprint que hace aparecer el proyectil
+	 // Spawnear proyectil cada X Tiempo
+	 this->SpawnProyectil(this->SizeX * 2.f * (FMath::FRand()-0.5f), this->SizeZ * 2.f * (FMath::FRand()-0.5f));
     
-	FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &AZonaMenuSpawnProyectiles::SpawnProyectil, this->SizeX * 2.f * (FMath::FRand()-0.5f), this->SizeZ * 2.f * (FMath::FRand()-0.5f));
-	FTimerHandle Timer;
-    GetWorld()->GetTimerManager().SetTimer(Timer, Delegate, 1/FrecuenciaSpawnPorSegundo, false);
 
+}	
+void AZonaMenuSpawnProyectiles::DetenerSpawns() {
+	GetWorld()->GetTimerManager().ClearTimer(this->Timer);
 }

@@ -52,6 +52,9 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> ClaseHUDPausa;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> ClaseHUDCarga;
+
 	TArray<UUserWidget*> HUDs;
 
 
@@ -106,7 +109,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void QuitarHUD(int Pos);
 
-
+	UFUNCTION(BlueprintCallable)
+	void QuitarTodasHUD();
 
 
 
