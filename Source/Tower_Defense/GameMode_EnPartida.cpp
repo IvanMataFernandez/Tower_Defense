@@ -822,29 +822,20 @@ void AGameMode_EnPartida::ProcesarCorrupcionDeDatos() {
 
 
 
-void AGameMode_EnPartida::ProcesarClickEnRecompensa() {
-
-    // Cuando se hace click en la recompensa desde el droppeable en UI, se cambia a musica de victoria y se quita la interfaz de EnPartida (esto ultimo en blueprint)
-
-    this->TocarMusica(7);
-
-}
 
 
-void AGameMode_EnPartida::AvanzarNivel(int TorreDesbloqueo) {
 
-    // Cuando se pincha en siguiente nivel en la UI de victoria, venimos aquí:
+void AGameMode_EnPartida::AvanzarNivel() {
 
-    // Pre: Torre desbloqueo contiene la torre a desbloquear para añadir a la save por completar el nivel. 
-    // -1 indica que no hubo desbloqueo
-    // -2 indica que no hubo desbloqueo y que se completó el último nivel del juego
+    // Guardar la torre que toca desbloquear en el la save y avanzar el nivel
     
     
     UGuardador* Guardado = Cast<UGuardador>(UGameplayStatics::LoadGameFromSlot(TEXT("save"), 0));
     
-    // Avanzar contador del nivel
 
-    Guardado->Nivel = this->NivelActual + 1;
+    int TorreDesbloqueo = this->ConseguirDesbloqueo(this->NivelActual); // Comprobar la torre que toca desbloquear
+
+    Guardado->Nivel = this->NivelActual + 1; // Avanzar el contador de nivel en la save
 
     if (TorreDesbloqueo != -2) {
 
@@ -958,13 +949,6 @@ void AGameMode_EnPartida::CongelarMundoPorDerrota(ARobot* Causante) {
 
     this->Camara->MoverCamAIzquierda();
 
-
-
-
-
-
-
-
 }
 void AGameMode_EnPartida::FocusearCausanteDerrota() {
     
@@ -993,6 +977,31 @@ void AGameMode_EnPartida::FinalizarAnimacionDerrota() {
 
 
 }
+
+void AGameMode_EnPartida::InhabilitarNivel() {
+
+    // Deshabilita todos los spawns y elimina proyectiles y entidades del nivel. Se usa para unloadear el nivel antes de pasar
+    // al menú principal
+
+    GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
+    GetWorld()->GetTimerManager().ClearTimer(this->TimerParaSpawnRobot);
+
+    TArray<AActor*> Entidades;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEntidad::StaticClass(), Entidades);
+
+    for (AActor* Entidad: Entidades) {
+        Entidad->Destroy();
+    }
+
+    TArray<AActor*> Proyectiles;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEntidad::StaticClass(), Proyectiles);
+
+    for (AActor* Proyectil: Proyectiles) {
+        Proyectil->Destroy();
+    }
+   
+}
+
 
 
 

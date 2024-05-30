@@ -88,7 +88,8 @@ public:
 	void FinalizarAnimacionDerrota();
 
 
-
+	UFUNCTION(BlueprintCallable)
+	void InhabilitarNivel();
 
 
 
@@ -100,11 +101,9 @@ public:
 	void EmpezarJuego();
 
 
-	UFUNCTION(BlueprintCallable)
-	void ProcesarClickEnRecompensa();
 
 	UFUNCTION(BlueprintCallable)
-	void AvanzarNivel(int TorreDesbloqueo);
+	void AvanzarNivel();
 
 
 
