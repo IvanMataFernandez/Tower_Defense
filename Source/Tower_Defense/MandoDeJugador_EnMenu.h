@@ -45,6 +45,10 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> ClaseHUDCarga;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> ClaseHUDCreditos
+;
+
 	UUserWidget* HUD;
 
 // Metodos
