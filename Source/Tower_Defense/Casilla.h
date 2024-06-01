@@ -40,13 +40,8 @@ protected:
 
 private:
 
-
-
 	ATorre* Torre; 
-
 	static float VolumenEfectos;
-
-
 
 
 // Métodos:

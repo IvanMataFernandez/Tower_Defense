@@ -23,11 +23,17 @@ public:
 	void BeginPlay();
 
 
-// Atributos
 
-private:
+// Componentes
+
+protected:
+
+
 	UPROPERTY(EditDefaultsOnly)
 	USceneComponent* SpawnProyectiles;
+
+// Atributos
+private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "ClasesNecesarias")
 	TSubclassOf<AProyectil> ClaseBlueprintProyectil;

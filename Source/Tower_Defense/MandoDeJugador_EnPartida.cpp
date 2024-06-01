@@ -35,15 +35,6 @@ void AMandoDeJugador_EnPartida::BeginPlay() {
 }
 
 
-void AMandoDeJugador_EnPartida::Pausar() {
-    this->SetPause(true);
-}   
-
-void AMandoDeJugador_EnPartida::PausarEn(float Segundos) {
-    FTimerHandle TimerParaPausa;
-    GetWorld()->GetTimerManager().SetTimer(TimerParaPausa, this, &AMandoDeJugador_EnPartida::Pausar,Segundos, false);               
-
-}
 
 UUserWidget* AMandoDeJugador_EnPartida::CrearHUD(int Seleccion) {
 

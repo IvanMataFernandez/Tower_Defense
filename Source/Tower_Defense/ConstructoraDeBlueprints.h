@@ -60,16 +60,22 @@ enum class Robots :uint8 {
 
 class TOWER_DEFENSE_API ConstructoraDeBlueprints
 {
+
+// Constructoras:
+
 private:
 	ConstructoraDeBlueprints();
 
 public:
 	~ConstructoraDeBlueprints();
 
-// Atributos
+// Atributos:
 
 private:
 	static ConstructoraDeBlueprints Objeto;
+
+
+// Métodos:
 
 public:
 	static ConstructoraDeBlueprints* GetConstructoraDeBlueprints();

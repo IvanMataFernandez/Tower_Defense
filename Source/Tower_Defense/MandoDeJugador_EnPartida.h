@@ -24,9 +24,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-//public:	
-	// Called every frame
-//	virtual void Tick(float DeltaTime) override;
 
 
 
@@ -78,7 +75,6 @@ public:
 // Métodos
 
 
-	void PausarEn(float Segundos);
 
 	
 	UFUNCTION(BlueprintCallable)
@@ -175,7 +171,6 @@ private:
 	int ObtenerIDDeTorreElegidaEnPartida();
 
 
-	void Pausar();
 
 
 

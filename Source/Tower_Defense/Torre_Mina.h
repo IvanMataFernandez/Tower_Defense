@@ -24,12 +24,17 @@ protected:
 
 
 
-// Atributos
+// Componentes:
 
-private:
+protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* ZonaTrigger;
+
+
+// Atributos
+
+private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "datos")
 	float TiempoDePreparacion;

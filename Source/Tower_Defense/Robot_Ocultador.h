@@ -19,27 +19,23 @@ public:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+
+// Atributos:
+
 private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float TiempoParaAbrirCerrarPuntoExpuesto;	
 
 
+// Métodos:
 
 public:
 	void Ocultar();
 	void Desocultar();
 
 
-//public:
-//	virtual void InicializarMover() override;
-//	virtual void InicializarAtaque() override;
-//	virtual void InicializarMoverVertical() override;
-//	virtual void QuitarIA() override;
 
-//private:
-//	void TrasCerrarPuntoExpuesto();
-//	void TrasAbrirPuntoExpuesto();
-	
 
 };

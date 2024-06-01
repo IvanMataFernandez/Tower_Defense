@@ -28,7 +28,7 @@ public:
 
 
 
-// Componentes
+// Componentes:
 
 protected:
 
@@ -55,9 +55,6 @@ protected:
 
 
 private:
-
-
-
 
 	// Referir a ConstructoraDeBlueprints para info de IDs.
 	UPROPERTY(EditDefaultsOnly, Category = "ID")

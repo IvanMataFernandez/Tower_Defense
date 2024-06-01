@@ -25,14 +25,18 @@ protected:
 	virtual void BeginPlay() override;
 
 
-// Atributos
 
-private:
+// Componentes:
 
+protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* Placas;
 
+
+// Atributos
+
+private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	int CantidadProducida;

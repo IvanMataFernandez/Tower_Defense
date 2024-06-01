@@ -94,8 +94,7 @@ protected:
 private:
 
     UFUNCTION()
-    void EnChoque(UPrimitiveComponent* ComponenteNuestro, AActor* OtroActor, UPrimitiveComponent* OtroComponente, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Resultado
-);
+    void EnChoque(UPrimitiveComponent* ComponenteNuestro, AActor* OtroActor, UPrimitiveComponent* OtroComponente, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Resultado);
 
 	void SetVelocidadDeCola(float Vel);
 

@@ -20,6 +20,22 @@ public:
 	virtual void BeginPlay() override;
 
 
+
+
+protected:
+	
+// Componentes
+
+	UPROPERTY(EditDefaultsOnly)
+	USceneComponent* SpawnProyectiles;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UStaticMeshComponent* MeshDisparador;
+
+
+	UPROPERTY(EditDefaultsOnly, Category = "ClasesNecesarias")
+	TSubclassOf<AProyectil> ClaseBlueprintProyectil;
+
+
 // Atributos
 
 private:
@@ -38,18 +54,7 @@ private:
 	float DistanciaAObjetivo;
 
 
-protected:
-	
-// Componentes
 
-	UPROPERTY(EditDefaultsOnly)
-	USceneComponent* SpawnProyectiles;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* MeshDisparador;
-
-
-	UPROPERTY(EditDefaultsOnly, Category = "ClasesNecesarias")
-	TSubclassOf<AProyectil> ClaseBlueprintProyectil;
 
 // Métodos
 

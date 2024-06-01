@@ -32,8 +32,6 @@ protected:
 
 private:
 
-
-
 	UPROPERTY(EditDefaultsOnly, Category = "Datos")
 	float DanoDeExplosion;
 

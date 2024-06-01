@@ -53,10 +53,10 @@ private:
 	float TiempoTotalRot;
 	FRotator RotTarget;
 
-protected:
 
-	UPROPERTY(BlueprintReadOnly)
-	float DeltaTiempo = 0.2f;
+	float DeltaTiempo;
+
+
 
 // Métodos
 

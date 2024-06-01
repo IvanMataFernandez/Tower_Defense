@@ -24,7 +24,7 @@ protected:
 
 private:
 
-UPROPERTY(EditAnywhere, Category = "Datos")
+	UPROPERTY(EditAnywhere, Category = "Datos")
 	int NumEstados;
 
 	int Estado;  

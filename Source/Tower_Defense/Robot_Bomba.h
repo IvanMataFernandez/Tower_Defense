@@ -21,11 +21,15 @@ public:
 
 
 
-// Atributos
+// Componentes
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* AreaDeExplosion;
+
+
+// Atributos
+
 
 private:
 
