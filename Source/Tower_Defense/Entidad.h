@@ -93,7 +93,6 @@ protected:
 	void VisibilizarATorres();
 	void DesactivarHitbox();
 	void Destruir();
-	uint8 ObtenerID();
 
 	void ProgramarTimer(FTimerDelegate Delegate, float TiempoDeEspera, bool EnBucle);
 
@@ -102,6 +101,9 @@ protected:
 
 
 public:
+
+	uint8 ObtenerID();
+
 
 	UFUNCTION(BlueprintCallable)
 	static void SetVolumenEfectosDeEntidades(float Vol, UObject* ContextoMundo);

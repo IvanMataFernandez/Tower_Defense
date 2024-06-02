@@ -95,7 +95,7 @@ void APlayerPawn_EnPartida::MoverCamASeleccion() {
 	// Mueve la camara desde el punto por defecto al ángulo en el que se ven los robots en preview del nivel
 
 	this->DeltaTiempo = UGameplayStatics::GetWorldDeltaSeconds(this); // Cargar deltatime here porque en BeginPlay() no se puede obtener todavia y esta es la primera
-																	// Instruccion de la clase a ejecutar
+																	 // Instruccion de la clase a ejecutar
 
 	FVector Loc = this->GetActorLocation();
 

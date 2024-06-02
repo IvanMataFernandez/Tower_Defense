@@ -4,12 +4,10 @@
 #include "Robot.h"
 #include "Math/UnrealMathUtility.h"
 #include "Proyectil.h"
-#include "GameMode_EnPartida.h"
-#include "ConstructoraDeBlueprints.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/BoxComponent.h"
 #include "MandoDeIA.h"
-
+#include "ComponenteVida.h"
 
 
 // Todo robot implementa esta clase (los robots son móviles)
@@ -119,21 +117,6 @@ void ARobot::EnChoque(UPrimitiveComponent* ComponenteNuestro, AActor* OtroActor,
 
     if (OtroRobot) {
        
-
-        // TODO: Quitar el check de ver que la IA se ha cargado en version final, por ahora fallsave para que no casque el juego si hay dos robots spawneados juntos overlappeados (no deberia ocurrir en juego final)
-
-
-        if (!Super::GetMandoDeIA()) {
-            UE_LOG(LogTemp, Warning, TEXT("ERROR YO NO IA"));
-            return;
-        } else if (!OtroRobot->GetMandoDeIA()) {
-            UE_LOG(LogTemp, Warning, TEXT("error OTRO NO IA"));
-            return;
-        }
-
-
-
-
 
         // Se chocó contra otro robot, ver si voy delante o detrás
 
@@ -261,18 +244,6 @@ void ARobot::ProcesarFinDeVida() {
 
 void ARobot::Matar() {
 
-
-    // En el caso de los robots, se debe procesar el hecho de que se ha muerto para contabilizar cuando spawnear siguiente oleada y procesar win con logic.
-    int Peso = ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetPesoDeRobot(Super::ObtenerID());
-    
-
-    // TODO: En version final este cast siempre funciona, quitar este check. Por ahora se deja para poder testear bots en stages debug sin gamemode
-
-    if (AGameMode_EnPartida* GameMode = Cast<AGameMode_EnPartida>(GetWorld()->GetAuthGameMode())) {
-        GameMode->ProcesarMuerteDeRobot(Peso, this);
-    }
-
-
     this->RealizarAnimacion(2); // Parar la animacion de las ruedas
     Super::Matar();
 }
@@ -343,4 +314,9 @@ void ARobot::MoverVertical(float DeltaTime) {
 
 bool ARobot::EsLider() {
     return this->LideradoPor == nullptr;
+}
+
+float ARobot::ObtenerVidaMaxima() {
+    return FindComponentByClass<UComponenteVida>()->ObtenerVidaMaxima();
+    
 }

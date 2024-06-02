@@ -80,6 +80,8 @@ public:
 	void Mover(float DeltaTime);
 	void SetVelocidad(float Vel);
 
+	float ObtenerVidaMaxima();
+
 
 protected:
 

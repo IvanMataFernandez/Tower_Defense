@@ -44,7 +44,7 @@ void AZonaSpawnRobot::BeginPlay()
 
 }
 
-void AZonaSpawnRobot::SpawnearRobot(int ID, int Oleada) {
+ARobot* AZonaSpawnRobot::SpawnearRobot(int ID) {
 
 	// Post: Se spawnea el robot de tipo "ID" y se le settea su variable de aparición de oleada a "Oleada".
 	//       La fila en la que se spawnea la elige esta clase. Prioriza spawnear en filas en las que van un spawn por detrás
@@ -118,9 +118,9 @@ void AZonaSpawnRobot::SpawnearRobot(int ID, int Oleada) {
 
 	this->EspacioOcupadoPorFila[FilaElegida] = this->EspacioOcupadoPorFila[FilaElegida] + 200.f + FMath::FRand() * 200.f;
 
-	ARobot* Robot = this->MaterealizarRobot(ID, Pos);
-	Robot->SetOleada(Oleada);
+	return this->MaterealizarRobot(ID, Pos);
 	
+
 
 }
 

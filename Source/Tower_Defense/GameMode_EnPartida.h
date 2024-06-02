@@ -32,10 +32,9 @@ private:
 	int NivelActual;
 
 	int PesoRobotsVivo;
-	int PesoPorEliminarHastaSiguienteOleada;
+	float DanoHastaSiguienteOleada;
 
 	bool SeAproximaOrdaGrande;
-	bool SeQuiereSpawnearLaSiguienteOleada;
 
 	APlayerPawn_EnPartida* Camara;
 
@@ -82,6 +81,8 @@ public:
 	void SpawnearRobotsPreview();
 
 	void ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMatado);
+	void ProcesarDanoDeRobot(ARobot* RobotDanado, float DanoRecibido);
+
 
 	void CongelarMundoPorDerrota(ARobot* Causante);
 	void FocusearCausanteDerrota();
@@ -169,6 +170,7 @@ private:
 	void GenerarOleada();
 	void GenerarOleadaGrande();
 
+	void SpawnearOleada();
 	void GenerarRobot();
 	void SpawnearRobot(int PosRobotEntreDisponibles);
 

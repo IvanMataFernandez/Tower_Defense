@@ -56,7 +56,7 @@ protected:
 
 public:
 
-	void SpawnearRobot(int ID, int Oleada); 
+	ARobot* SpawnearRobot(int ID); 
 
 
 	void RefrescarNuevaOleada();

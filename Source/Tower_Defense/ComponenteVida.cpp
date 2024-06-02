@@ -32,34 +32,60 @@ bool UComponenteVida::EsVulnerable() {return this->Vulnerable;}
 
 void UComponenteVida::SetVulnerable(bool Vul) {this->Vulnerable = Vul;}
 
+bool UComponenteVida::EstaVivo() {
+	return this->Vida > 0.f;
+}
+
 void UComponenteVida::AplicarDano(AActor* Danado, float DanoBase, const UDamageType* TipoDano, AController* Instigator, AActor* Causador) {
 
 	// Aplicar daño absorbido, si la entidad está en un estado invulnerable (una mina que ya se ha descubierto, un robot ocultador con su escudo cerrado...)
 	// entonces no puede absorber daño y se salta la este método entero para omitir daño
 
+
+
+
 	if (this->Vulnerable) {
 
 		// Es vulnerable, aplicar el daño absorbido
-		this->Vida -= DanoBase;
 
-		if (this->Vida <= 0.f) {
+		if (this->Vida > DanoBase) {
+			this->UltimoDanoAbsorbido = DanoBase;
+			this->Vida -= this->UltimoDanoAbsorbido;
+
+
+		} else {
+			this->UltimoDanoAbsorbido = this->Vida;
+			this->Vida = 0.f;
 
 			// Si baja por debajo de 0 de vida, entonces procesar el método que acaba con la vida de la entidad.
-
 			Cast<AEntidad>(GetOwner())->ProcesarFinDeVida();
 
 			// Hacer la entidad inmune a todo daño para que por sí hace una animación de muerte o está todavía un rato en la pantalla, que no vuelva a activar
 			// la lógica de empezar a matarla si la hitbox absorbe más daño.
 
 			this->SetVulnerable(false);
+
 		}
 	
+	} else {
+		this->UltimoDanoAbsorbido = -1.f;
 	}
 
 
 
 
 
+}
+
+
+float UComponenteVida::ObtenerVidaMaxima() {
+	return this->VidaMaxima;
+}
+
+
+
+float UComponenteVida::ObtenerUltimoDanoRecibido() {
+	return this->UltimoDanoAbsorbido;
 }
 
 float UComponenteVida::ObtenerFraccionVidaRestante() {

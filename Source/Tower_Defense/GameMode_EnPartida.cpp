@@ -213,7 +213,6 @@ void AGameMode_EnPartida::EmpezarJuego() {
 
     this->PesoRobotsVivo = 0; // Al principio no hay robots vivos (no han spawneado todavía)
     this->OleadaActual = -1; // Las oleadas van como un iterador, 0 based indexing. -1 quiere decir que no está apuntando a ninguna oleada
-    this->SeQuiereSpawnearLaSiguienteOleada = false; // No spawnear la siguiente oleada si no se ha alcanzado el threshold de robots a matar de la oleada actual
     this->VictoriaPosible = false; // No es la última oleada todavía
 
 
@@ -251,7 +250,7 @@ void AGameMode_EnPartida::CargarDatosOleada() {
 
 
     this->OleadaActual++; // Nueva oleada
-
+    this->DanoHastaSiguienteOleada = 0.f; // Resetear danño hasta next wave
 
     // Recopilar datos de oleada actual del array creado a partir del json
 
@@ -265,7 +264,6 @@ void AGameMode_EnPartida::CargarDatosOleada() {
 
 
 
-    this->PesoPorEliminarHastaSiguienteOleada = 1 + this->PesoRestante / 2;   // Spawnear la siguiente oleada si muere la mitad del peso de esta + 1
 
                                                                                     
 
@@ -320,9 +318,7 @@ void AGameMode_EnPartida::CargarDatosOleada() {
         this->ProcesarCorrupcionDeDatos();
     }
 
-    // Ya que los datos cargados son validos...  Ya se han cargado los datos de esta oleada, programar la siguiente
 
-    this->EmpezarCargaDeSiguienteOleada(); 
 
 
 
@@ -395,7 +391,7 @@ void AGameMode_EnPartida::GenerarOleada() {
 
     this->ZonaSpawn->RefrescarNuevaOleada();
 
-    this->GenerarRobot(); // Empezar los spawns de robots
+    this->SpawnearOleada(); // Empezar los spawns de robots
 }
 
 
@@ -419,11 +415,12 @@ void AGameMode_EnPartida::GenerarOleadaGrande() {
     this->SpawnearRobot(-1); 
 
      // Hacer el spawn del resto de la oleada
-     this->GenerarRobot();
+     this->SpawnearOleada();
 
 
     // Determinar si esta gran oleada es la ultima, se debe tomar la decision tras spawnear el primer bot para que no sea posible que el juego
     // avance la oleada, no spawnee todavía y se mate el ultimo bot del nivel, haciendo pensar al juego que has ganado
+
 
     if (this->OleadaActual == this->OleadasTotales-1) {
         this->VictoriaPosible = true;
@@ -432,6 +429,23 @@ void AGameMode_EnPartida::GenerarOleadaGrande() {
 
 }
 
+
+void AGameMode_EnPartida::SpawnearOleada() {
+
+    while (this->PesoRestante != 0) {
+        this->GenerarRobot();
+
+    }
+
+
+
+
+    // Fin de spawn de oleada actual, programar la siguiente
+    this->EmpezarCargaDeSiguienteOleada(); 
+    
+
+
+}
 
 void AGameMode_EnPartida::GenerarRobot() {
 
@@ -540,33 +554,13 @@ void AGameMode_EnPartida::GenerarRobot() {
     if (Val) { 
         // SPAWN si se puedo elegir bot
 
-
         this->SpawnearRobot(Pos);
-
-
-        if (this->PesoRestante != 0) {
-            // Si queda budget, llamar a esta funcion de nuevo para hacer aparecer el siguiente robot
-            this->GenerarRobot();
-
-        } else if (this->SeQuiereSpawnearLaSiguienteOleada) {
-            
-            // Si no queda budget pero se habia triggeado el flag de querer spawnear la siguiente oleada YA, como justo hemos acabdo de spawnear esta, crear la siguiente.
-
-            this->SeQuiereSpawnearLaSiguienteOleada = false;
-
-            // Cancelar la programacion de la siguiente oleada para hacerlo YA en su lugar
-
-            GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
-            this->CargarDatosOleada();
-
-        }
     
     } else {
         // Si no se pudo spawnear bot porque no tenemos suficente budget, settear el budget a cero para indicar que no hay más spawns
         this->PesoRestante = 0;
-    }
- 
 
+    }
 
 
 
@@ -612,11 +606,34 @@ void AGameMode_EnPartida::SpawnearRobot(int Pos) {
 
     // Spawnear el bot con el ID indicado. La zona de spawn decide en que fila hacerlo aparecer y le settea al Robot spawneado el valor de la oleada actual
 
-    this->ZonaSpawn->SpawnearRobot(ID, this->OleadaActual); 
+    ARobot* Generado = this->ZonaSpawn->SpawnearRobot(ID); 
+	Generado->SetOleada(this->OleadaActual);
+
+    this->DanoHastaSiguienteOleada = this->DanoHastaSiguienteOleada + (Generado->ObtenerVidaMaxima() / 2.f);
 
 
 }
 
+void AGameMode_EnPartida::ProcesarDanoDeRobot(ARobot* RobotDanado, float DanoRecibido) {
+
+
+
+
+
+    if (RobotDanado->GetOleada() == this->OleadaActual) {
+        this->DanoHastaSiguienteOleada = this->DanoHastaSiguienteOleada - DanoRecibido;
+
+
+        if (this->DanoHastaSiguienteOleada <= 0.f && !this->SeAproximaOrdaGrande) {
+            
+            if (GetWorld()->GetTimerManager().IsTimerActive(this->TimerParaOleadas)) {
+              GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
+              this->CargarDatosOleada();
+            }
+        }
+    }
+
+}
 
 
 
@@ -628,58 +645,25 @@ void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMa
     // Restar el peso del robot de los robots vivos restantes
     this->PesoRobotsVivo = PesoRobotsVivo - PesoDeRobot;
 
-    // Restar el peso del robot del threshold para el spawn de la siguiente oleada si fue spawneado en esta misma oleada
 
-    if (RobotMatado->GetOleada() == this->OleadaActual) {
-        this->PesoPorEliminarHastaSiguienteOleada = this->PesoPorEliminarHastaSiguienteOleada -  PesoDeRobot;
-    }
 
-    // Determinar wincon / avanzar más rápido en el nivel:
+    if (this->PesoRobotsVivo == 0) {
+        // Si no hay robots vivos, dar la win al player si era la ultima oleada o avanzar a la siguiente si no lo era
 
-    if (this->OleadaActual != this->OleadasTotales-1) { // Determinar si es la ultima oleada o no
+        if (this->VictoriaPosible) {
+            this->JugadorGana(RobotMatado);
 
-        // Si no lo es, determinar si hemos hitteado el threshold para spawnear la siguiente oleada antes (no se pueden adelantar las oleadas gordas)
+        } else {
 
-        if (!this->SeAproximaOrdaGrande && this->PesoPorEliminarHastaSiguienteOleada <= 0) {
-
-            // Se quiere Adelantar la oleada, para ello mirar si la oleada anterior todavía está spawneando (no debería ser el caso, pero por medida de seguridad)
-
-            if (GetWorld()->GetTimerManager().IsTimerActive(this->TimerParaSpawnRobot)) {
-
-                // La oleada anterior está spawneando, marcar un flag para que cuando acabe de spawnear inmediatamente empiece con esta
-
-                this->SeQuiereSpawnearLaSiguienteOleada = true; 
-            
-            } else {
-
-                // Hay via libre, cancelar el timer del spawn de la siguiente oleada para hacerlo AHORA MISMO
-
-                GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
-                this->CargarDatosOleada();
+            if (GetWorld()->GetTimerManager().IsTimerActive(this->TimerParaOleadas)) {
+              GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
+              this->CargarDatosOleada();
             }
 
-        // Aunque no se puedan adelantar oleadas gordas, no tiene sentido quedarse esperando si no hay bots vivos (y no hay spawneando nuevos).
-        // en ese caso programos para que el aviso de oleada salte en 1 segundo
-
-        } else if (this->PesoRobotsVivo == 0 && this->PesoRestante == 0) {
-
-            GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
-            GetWorld()->GetTimerManager().SetTimer(this->TimerParaOleadas, this, &AGameMode_EnPartida::CargarDatosOleada, 1.f, false);               
-
         }
-
-    // Si es la última oleada, comprobar si hay robots vivos para dar la victoria al jugador o no. El flag victoria posible no se triggea hasta que spawnea
-    // el primer bot de la oleada final. Los pesos comprueban si hay bots vivos y si quedan por spawnear
-    } else if (this->VictoriaPosible && this->PesoRobotsVivo == 0 && this->PesoRestante == 0) { 
-
-
-        // Si el ultimo bot acaba de morir, dar la victoria al jugador
-
-        this->JugadorGana(RobotMatado);
-        
     }
 
-
+  
 
 
 

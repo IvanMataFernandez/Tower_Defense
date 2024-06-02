@@ -30,6 +30,7 @@ private:
 	float Vida;
 	bool Vulnerable;
 
+	float UltimoDanoAbsorbido;
 
 
 // Métodos
@@ -39,9 +40,12 @@ public:
 
 protected:
 	float ObtenerFraccionVidaRestante();
+	float ObtenerUltimoDanoRecibido();
+	bool EstaVivo();
 
 public:
 	bool EsVulnerable();
 	void SetVulnerable(bool Vulnerable);
+	float ObtenerVidaMaxima();
 
 };

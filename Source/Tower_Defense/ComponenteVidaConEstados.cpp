@@ -34,7 +34,6 @@ void UComponenteVidaConEstados::AplicarDano(AActor* Danado, float DanoBase, cons
         Cast<AEntidad>(this->GetOwner())->RealizarAnimacion(this->Estado * -1);
     }
     
-	
 
 
 }
