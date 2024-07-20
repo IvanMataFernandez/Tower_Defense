@@ -33,6 +33,7 @@ private:
 public:
 
 	bool SuficientesTorresEnRangoDeExplosion();
+	void ForzarExplosion();
 
 
 

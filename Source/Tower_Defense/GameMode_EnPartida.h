@@ -31,7 +31,7 @@ private:
 
 	int NivelActual;
 
-	int PesoRobotsVivo;
+	int CantidadRobotsVivos;
 	float DanoHastaSiguienteOleada;
 
 	bool SeAproximaOrdaGrande;
@@ -80,7 +80,7 @@ public:
 
 	void SpawnearRobotsPreview();
 
-	void ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMatado);
+	void ProcesarMuerteDeRobot(ARobot* RobotMatado);
 	void ProcesarDanoDeRobot(ARobot* RobotDanado, float DanoRecibido);
 
 
@@ -179,6 +179,7 @@ private:
 
 	void ProcesarCorrupcionDeDatos();
 
+	bool DetenerTimer(FTimerHandle Timer);
 
 	
 };

@@ -151,10 +151,6 @@ void AEntidad::Matar() {
 		this->AutoDestruir(); // Sirve para ocultar temporalmente la entidad fuera de la pantalla (para que suenen sus SFXs) hasta que se elimine
 		                      // definitivamente
 	}
-
-
-
-
 }
 
 void AEntidad::QuitarIA() {
@@ -202,9 +198,8 @@ void AEntidad::DespausarEntidad() {
 
 	AMandoDeIA* IA = Cast<AMandoDeIA>(this->GetController());
 
-	if (IA) {
-		IA->ActivarIA(true);
-	}
+	IA->ActivarIA(true);
+	
 
 	// La IA activa las animaciones de nuevo
 

@@ -2,22 +2,22 @@
 
     "header": {
         "robotsPermitidos": [0,8],
-        "tiempoSinEnemigos": 11
+        "tiempoSinEnemigos": 26
     },
 
     "oleadas": [
         {
             "id": 0,
-            "oleadaGrande": true,
+            "oleadaGrande": false,
             "peso": 1,
             "probabilidades": [1.0, 0.0],
-            "tiempoSiguienteOleada": 11
+            "tiempoSiguienteOleada": 30
             
         },
 
         {
             "id": 1,
-            "oleadaGrande": true,
+            "oleadaGrande": false,
             "peso": 1,
             "probabilidades": [1.0, 0.0],
             "tiempoSiguienteOleada": 20
@@ -91,7 +91,7 @@
             "id": 9,
             "oleadaGrande": true,
             "peso": 17,
-            "probabilidades": [0.8, 0.2],
+            "probabilidades": [0.65, 0.35],
             "tiempoSiguienteOleada": 20
             
         }

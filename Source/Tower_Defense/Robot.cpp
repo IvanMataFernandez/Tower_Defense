@@ -36,8 +36,7 @@ void ARobot::BeginPlay() {
     Super::BeginPlay();
 
     // Tan pronto como spawnea rollear rng para ver que velocidad tiene (robots de mismo tipo incluyen ligera desviación de velocidad)
-
-    this->VelocidadDeInstancia = this->VelocidadBase + (FMath::FRand() - 0.5) * 2 * this->DesviacionMaxVelocidad;
+    this->SetVelocidad(this->VelocidadBase + (FMath::FRand() - 0.5) * 2 * this->DesviacionMaxVelocidad);
     this->DistanciaRecorridaVertical = 0;
 
     // Programar el evento de choque con otros robots para que se puedan encolar si es el caso
@@ -291,6 +290,7 @@ void ARobot::InicializarMover() {
 
 
     float DeltaTiempo =  UGameplayStatics::GetWorldDeltaSeconds(this) * 1.3f;
+
     FTimerDelegate Delegate = FTimerDelegate::CreateUObject(this, &ARobot::Mover, DeltaTiempo); // Actualizar move 3 de cada 4 frames aproximadamente para ahorrar recursos
     Super::ProgramarTimer(Delegate, DeltaTiempo, true);
 

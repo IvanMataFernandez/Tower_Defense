@@ -44,12 +44,15 @@ void ATorre_Producidor::Click() {
     // Procesar click en la torre o en su casilla
 
     if (this->EnergiaDisponible) {
-        // Si está en el estado de producido, dar la energia al jugador
-        this->MandoDeJugador->ActualizarEnergiaPor(this->CantidadProducida);
-        
+
         // Repetir ciclo        
         Super::ClearTimer();
         Super::ProgramarTimerFinDeTareaIA(0.f);
+        
+        // Si está en el estado de producido, dar la energia al jugador
+        this->MandoDeJugador->ActualizarEnergiaPor(this->CantidadProducida);
+        
+
     }
 }
 

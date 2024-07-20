@@ -5,7 +5,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameMode_EnPartida.h"
 #include "Robot.h"
-#include "ConstructoraDeBlueprints.h"
 
 
 
@@ -34,8 +33,7 @@ void UComponenteVidaDeRobot::AplicarDano(AActor* Danado, float DanoBase, const U
             // En el caso de los robots, se debe procesar el hecho de que se ha muerto para contabilizar cuando spawnear siguiente oleada y procesar win con logic.
             // si el robot acaba de recibir el golpe de gracia
 
-            int Peso = ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetPesoDeRobot(Robot->ObtenerID());
-            Gamemode->ProcesarMuerteDeRobot(Peso, this->Robot);
+            Gamemode->ProcesarMuerteDeRobot(this->Robot);
         }
 
     } 

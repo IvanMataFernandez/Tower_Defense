@@ -112,7 +112,7 @@
 
                 
         {
-            "id": 9,
+            "id": 11,
             "oleadaGrande": false,
             "peso": 6,
             "probabilidades": [1.0],
@@ -121,37 +121,19 @@
         },
 
         {
-            "id": 10,
-            "oleadaGrande": false,
-            "peso": 7,
-            "probabilidades": [1.0],
-            "tiempoSiguienteOleada": 20
-            
-        },
-
-
-        {
-            "id": 11,
-            "oleadaGrande": false,
-            "peso": 7,
-            "probabilidades": [1.0],
-            "tiempoSiguienteOleada": 20
-            
-        },
-
-        {
             "id": 12,
             "oleadaGrande": false,
-            "peso": 8,
+            "peso": 7,
             "probabilidades": [1.0],
             "tiempoSiguienteOleada": 20
             
         },
+
 
         {
             "id": 13,
             "oleadaGrande": false,
-            "peso": 8,
+            "peso": 7,
             "probabilidades": [1.0],
             "tiempoSiguienteOleada": 20
             
@@ -160,7 +142,7 @@
         {
             "id": 14,
             "oleadaGrande": false,
-            "peso": 9,
+            "peso": 8,
             "probabilidades": [1.0],
             "tiempoSiguienteOleada": 20
             
@@ -169,7 +151,7 @@
         {
             "id": 15,
             "oleadaGrande": false,
-            "peso": 10,
+            "peso": 8,
             "probabilidades": [1.0],
             "tiempoSiguienteOleada": 20
             
@@ -178,7 +160,7 @@
         {
             "id": 16,
             "oleadaGrande": false,
-            "peso": 10,
+            "peso": 9,
             "probabilidades": [1.0],
             "tiempoSiguienteOleada": 20
             
@@ -187,11 +169,22 @@
         {
             "id": 17,
             "oleadaGrande": false,
-            "peso": 11,
+            "peso": 10,
             "probabilidades": [1.0],
-            "tiempoSiguienteOleada": 30
+            "tiempoSiguienteOleada": 20
             
         },
+
+        {
+            "id": 18,
+            "oleadaGrande": false,
+            "peso": 10,
+            "probabilidades": [1.0],
+            "tiempoSiguienteOleada": 20
+            
+        },
+
+ 
 
         {
             "id": 19,

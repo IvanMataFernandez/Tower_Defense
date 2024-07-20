@@ -185,19 +185,10 @@
         },
 
 
+
+
         {
             "id": 19,
-            "oleadaGrande": false,
-            "peso": 15,
-            "probabilidades": [0.6, 0.4],
-            "tiempoSiguienteOleada": 30
-            
-        },
-
-
-
-        {
-            "id": 20,
             "oleadaGrande": true,
             "peso": 22,
             "probabilidades": [0.6, 0.4],

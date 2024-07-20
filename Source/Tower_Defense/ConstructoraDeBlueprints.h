@@ -89,7 +89,7 @@ public:
 
 	int GetPesoDeRobot(uint8 Clase) const;
 
-	UTexture2D* ObtenerImagenDeTorre(int ID) const;
+	UTexture2D* GetImagenDeTorre(int ID) const;
 
 	bool TorrePermiteOverlappearRobot(int ID) const;
 

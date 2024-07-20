@@ -213,7 +213,7 @@ bool ConstructoraDeBlueprints::TorrePermiteOverlappearRobot(int ID) const {
 }
 
 
-UTexture2D* ConstructoraDeBlueprints::ObtenerImagenDeTorre(int ID) const {
+UTexture2D* ConstructoraDeBlueprints::GetImagenDeTorre(int ID) const {
     
 
         FString Ruta = TEXT("/Game/Assets/Texturas/Torre") + FString::Printf(TEXT("%d"), ID);

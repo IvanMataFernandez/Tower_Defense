@@ -3,6 +3,7 @@
 
 #include "Robot_BombaRadar.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // El robot bomba radar implementa esta clase
@@ -42,4 +43,13 @@ bool ARobot_BombaRadar::SuficientesTorresEnRangoDeExplosion() {
     return Resultado.Num() >= this->CantTorresParaDetonar;
 }
 
+void ARobot_BombaRadar::ForzarExplosion() {
+    
+    // Esta función se llama si el robot bomba radar desea estallar ya incluso cuando no ha perdido todos sus puntos de vida
+    // El bot solo puede estallar si no tiene vida restante (funcionalidad heredada de robot bomba)
+    // Para forzar la explosión sencillamente hacer que se cause inf daño interno para que pierda toda su vida y estalle por eso 
 
+
+	UGameplayStatics::ApplyDamage(this, 99999.f, nullptr, this, UDamageType::StaticClass());
+
+}

@@ -2,7 +2,7 @@
 
 
 #include "BTTask_RobotBombRad.h"
-#include "Robot.h"
+#include "Robot_BombaRadar.h"
 #include "BehaviorTree/BehaviorTreeTypes.h"
 #include "AIController.h"
 
@@ -22,7 +22,7 @@ UBTTask_RobotBombRad::UBTTask_RobotBombRad() {
  EBTNodeResult::Type UBTTask_RobotBombRad::ExecuteTask(UBehaviorTreeComponent &BT, uint8 *NodeMemory) {
 
     Super::ExecuteTask(BT,NodeMemory);
-    Cast<ARobot>(BT.GetAIOwner()->GetPawn())->ProcesarFinDeVida();
+    Cast<ARobot_BombaRadar>(BT.GetAIOwner()->GetPawn())->ForzarExplosion();
     return EBTNodeResult::InProgress;
 
 

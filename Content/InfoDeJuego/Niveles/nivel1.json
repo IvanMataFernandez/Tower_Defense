@@ -80,17 +80,9 @@
             
         },
 
-        {
-            "id": 8,
-            "oleadaGrande": false,
-            "peso": 5,
-            "probabilidades": [1.0],
-            "tiempoSiguienteOleada": 20
-            
-        },
 
         {
-            "id": 9,
+            "id": 8,
             "oleadaGrande": false,
             "peso": 6,
             "probabilidades": [1.0],
@@ -99,7 +91,7 @@
         },
 
         {
-            "id": 10,
+            "id": 9,
             "oleadaGrande": true,
             "peso": 8,
             "probabilidades": [1.0],

@@ -32,7 +32,8 @@ void AZonaTargetRobot::BeginPlay()
 
 void AZonaTargetRobot::EnOverlap(UPrimitiveComponent* OverlapComp, AActor* OtroActor, UPrimitiveComponent* OtroComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 
-	// El evento que se triggea cuando algo choca contra la zona
+	// El evento que se triggea cuando algo choca contra la zona. Se requiere incluir muchos parámetros ya que es una función predefenida en Unreal
+	// pero el único parámetro que se usa es "OtroActor", que guarda la referencia de quien triggeó el overlap
 
 	// Puede ser posible que un proyectil triggeé este evento para eliminarse él, por ello comprobar que en efecto un Robot ha entrado en la zona para
 	// dar el game over

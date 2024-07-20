@@ -179,10 +179,11 @@ void AGameMode_EnPartida::FinSeleccionTorres() {
 void AGameMode_EnPartida::CargarCuentaAtrasParaEmpezarJuego() {
 
     this->EliminarRobotsPreview(); // Quitar los robots de la pantalla de preview para que no consuman recursos (no son visibles desde nuestra cam)
-
-    this->CrearInterfazDeCuentaAtras(); // Cargar la cuenta atrás para empezar el nivel (desde blueprints porque es otra UI)
     // Hacer sonar cuenta atrás            
     this->TocarMusica(4);
+    
+    this->CrearInterfazDeCuentaAtras(); // Cargar la cuenta atrás para empezar el nivel (desde blueprints porque es otra UI)
+
 
     // Al acabar la cuenta atrás se llama a EmpezarJuego()
 
@@ -211,7 +212,7 @@ void AGameMode_EnPartida::EmpezarJuego() {
 
     // Cargar variables básicas para trackear el estado del juego
 
-    this->PesoRobotsVivo = 0; // Al principio no hay robots vivos (no han spawneado todavía)
+    this->CantidadRobotsVivos = 0; // Al principio no hay robots vivos (no han spawneado todavía)
     this->OleadaActual = -1; // Las oleadas van como un iterador, 0 based indexing. -1 quiere decir que no está apuntando a ninguna oleada
     this->VictoriaPosible = false; // No es la última oleada todavía
 
@@ -444,7 +445,6 @@ void AGameMode_EnPartida::SpawnearOleada() {
     this->EmpezarCargaDeSiguienteOleada(); 
     
 
-
 }
 
 void AGameMode_EnPartida::GenerarRobot() {
@@ -596,7 +596,7 @@ void AGameMode_EnPartida::SpawnearRobot(int Pos) {
 
     }
 
-    this->PesoRobotsVivo = this->PesoRobotsVivo + PesoRobot; // Contabilizar el peso de robot en el counter de robots vivos
+    this->CantidadRobotsVivos = this->CantidadRobotsVivos + 1; // Contabilizar el peso de robot en el counter de robots vivos
     this->PesoRestante = this->PesoRestante - PesoRobot; // Restar al budget de oleada
 
 
@@ -626,10 +626,10 @@ void AGameMode_EnPartida::ProcesarDanoDeRobot(ARobot* RobotDanado, float DanoRec
 
         if (this->DanoHastaSiguienteOleada <= 0.f && !this->SeAproximaOrdaGrande) {
             
-            if (GetWorld()->GetTimerManager().IsTimerActive(this->TimerParaOleadas)) {
-              GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
-              this->CargarDatosOleada();
+            if (this->DetenerTimer(this->TimerParaOleadas)) {
+                this->CargarDatosOleada();
             }
+
         }
     }
 
@@ -637,17 +637,17 @@ void AGameMode_EnPartida::ProcesarDanoDeRobot(ARobot* RobotDanado, float DanoRec
 
 
 
-void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMatado) {
+void AGameMode_EnPartida::ProcesarMuerteDeRobot(ARobot* RobotMatado) {
 
 
     // Este método se llama cada vez que muere un robot.
 
     // Restar el peso del robot de los robots vivos restantes
-    this->PesoRobotsVivo = PesoRobotsVivo - PesoDeRobot;
+    this->CantidadRobotsVivos = this->CantidadRobotsVivos - 1;
 
 
 
-    if (this->PesoRobotsVivo == 0) {
+    if (this->CantidadRobotsVivos == 0) {
         // Si no hay robots vivos, dar la win al player si era la ultima oleada o avanzar a la siguiente si no lo era
 
         if (this->VictoriaPosible) {
@@ -655,10 +655,10 @@ void AGameMode_EnPartida::ProcesarMuerteDeRobot(int PesoDeRobot, ARobot* RobotMa
 
         } else {
 
-            if (GetWorld()->GetTimerManager().IsTimerActive(this->TimerParaOleadas)) {
-              GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
+            if (this->DetenerTimer(this->TimerParaOleadas)) {
               this->CargarDatosOleada();
             }
+
 
         }
     }
@@ -677,8 +677,13 @@ void AGameMode_EnPartida::JugadorGana(ARobot* UltimoRobotMatado) {
     // Localizar donde murio el ultimo robot para poner el dropable ahí en UI
 
     APlayerController* MandoDeJugador = UGameplayStatics::GetPlayerController(GetWorld(), 0); 
-    FVector2D PosicionEnPantalla;
-    MandoDeJugador->ProjectWorldLocationToScreen(UltimoRobotMatado->GetActorLocation(), PosicionEnPantalla);
+    FVector2D PosicionEnPantalla; // Usado como parámetro de salida o valor de retorno de la siguiente función
+
+    if (!MandoDeJugador->ProjectWorldLocationToScreen(UltimoRobotMatado->GetActorLocation(), PosicionEnPantalla)) {
+        // Si falla y el robot eliminado está fuera de la pantalla
+        PosicionEnPantalla = FVector2D(400.f, 400.f); // Poner la recompensa en la posición (400,400) como fallsave si debería aparecer fuera de la pantalla
+    }
+    
 
 
 
@@ -704,6 +709,7 @@ void AGameMode_EnPartida::JugadorGana(ARobot* UltimoRobotMatado) {
     // Pausar todas las torres porque no se necesitan ya, también se han bloqueado los botones de la interfaz de donde se pueden poner mas torres
     // para no poder colocar mas tras ganar (en blueprint)
 
+    
     TArray<AActor*> Torres;
     
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATorre::StaticClass(), Torres);
@@ -713,7 +719,7 @@ void AGameMode_EnPartida::JugadorGana(ARobot* UltimoRobotMatado) {
         Cast<AEntidad>(Torre)->PausarEntidad();
     }
 
-
+    
 
 }
 
@@ -893,9 +899,10 @@ void AGameMode_EnPartida::CongelarMundoPorDerrota(ARobot* Causante) {
     this->TocarMusica(5);
    
     // Parar spawns
+    this->DetenerTimer(this->TimerParaOleadas);
+    this->DetenerTimer(this->TimerParaSpawnRobot);
 
-    GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
-    GetWorld()->GetTimerManager().ClearTimer(this->TimerParaSpawnRobot);
+
 
 
     // Quitar interfaz de juego durante game over screen
@@ -954,9 +961,9 @@ void AGameMode_EnPartida::FinalizarAnimacionDerrota() {
 
     // Finalmente cuando el robot ya haya entrado visualmente en la mina del jugador, despawnearlo
     this->CausanteDerrota->Destroy();
-    
-    this->CrearInterfazDeDerrota(); // Llamado por blueprint
     this->TocarMusica(6); // Hacer sonar música de derrota
+
+    this->CrearInterfazDeDerrota(); // Llamado por blueprint
 
 
 
@@ -967,8 +974,8 @@ void AGameMode_EnPartida::InhabilitarNivel() {
     // Deshabilita todos los spawns y elimina proyectiles y entidades del nivel. Se usa para unloadear el nivel antes de pasar
     // al menú principal
 
-    GetWorld()->GetTimerManager().ClearTimer(this->TimerParaOleadas);
-    GetWorld()->GetTimerManager().ClearTimer(this->TimerParaSpawnRobot);
+    this->DetenerTimer(this->TimerParaOleadas);
+    this->DetenerTimer(this->TimerParaSpawnRobot);
 
     TArray<AActor*> Entidades;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEntidad::StaticClass(), Entidades);
@@ -1076,6 +1083,17 @@ bool AGameMode_EnPartida::CargarNivel(int Nivel) {
 
 }
 
+bool AGameMode_EnPartida::DetenerTimer(FTimerHandle Timer) {
+
+    // Recoge el timer por entrada y lo para. Devuelve true si solo si el timer estaba activo y se consiguió parar.
+
+    if (GetWorld()->GetTimerManager().IsTimerActive(Timer)) {
+        GetWorld()->GetTimerManager().ClearTimer(Timer);
+        return true;
+    }
+
+    return false;
+}
 
 
 

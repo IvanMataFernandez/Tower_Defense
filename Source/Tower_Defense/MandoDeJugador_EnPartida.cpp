@@ -259,11 +259,10 @@ void AMandoDeJugador_EnPartida::ObtenerTodasLasImagenesYCostesDeTorre(TArray<UTe
 
     for (int ID : this->IDsTorresDesbloqueadas) {
         Imagenes.Add(this->ObtenerImagenDeTorre(ID));
+        Costes.Add(this->ObtenerCosteDeTorre(ID));
+
     }
 
-    for (int ID : this->IDsTorresDesbloqueadas) {
-        Costes.Add(this->ObtenerCosteDeTorre(ID));
-    }
 
 }
 
@@ -274,7 +273,7 @@ UTexture2D* AMandoDeJugador_EnPartida::ObtenerImagenDeTorre(int ID) const {
 
 
     ConstructoraDeBlueprints* CdB = ConstructoraDeBlueprints::GetConstructoraDeBlueprints();
-    return CdB->ObtenerImagenDeTorre(ID);
+    return CdB->GetImagenDeTorre(ID);
 }
 
 
@@ -420,13 +419,13 @@ void AMandoDeJugador_EnPartida::InicializarVariablesDePartida() {
     UWorld* Mundo = GetWorld();
     
     for (int ID : this->IDsDeTorresElegidas) {
-        int TiempoDeRecarga = CdB->GetTiempoDeRecargaDeTorre(ID);
+        float TiempoDeRecarga = CdB->GetTiempoDeRecargaDeTorre(ID);
 
         this->TiempoDeRecargaDeTorres.Add(TiempoDeRecarga);
         this->CosteDeTorres.Add(CdB->GetCosteDeTorre(ID));
 
 
-        if (ConstructoraDeBlueprints::GetConstructoraDeBlueprints()->GetEmpiezaRecargadaTorre(ID)) {
+        if (CdB->GetEmpiezaRecargadaTorre(ID)) {
             this->MomentoEnQueTorreRecarga.Add(Mundo->GetTimeSeconds());
 
         } else {
