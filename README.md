@@ -58,7 +58,7 @@ Haciendo click en "Content Drawer" en la esquina inferior izquierda abre el sist
 ![image](https://github.com/user-attachments/assets/e9c4cfb5-8c46-44ab-8673-6dc47d92183c)
 
 También te puedes mover por la escena usando "wasd" mientras se mantiene pulsado el click derecho del ratón.
-En el directorio "niveles" se encuentran archivos "mapa" en los que pinchando en ellos te puedes cambiar entre los distintos ambientes diseñados e integrados en el juego
+En el directorio "niveles" se encuentran archivos "mapa" en los que pinchando en ellos te puedes cambiar entre los distintos ambientes diseñados e integrados en el juego.
 
 #### Editor de código
 
