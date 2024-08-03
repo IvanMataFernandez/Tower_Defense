@@ -25,24 +25,58 @@ cambiar la versión del proyecto después). Este proceso puede tardar varios min
 
 Tras esto, instalar .NET Core 3.1.24 usando el siguiente enlace: https://dotnet.microsoft.com/es-es/download/dotnet/3.1 (se trata de una de las versiones sin vulnerabilidades de seguridad). En el caso de haber elegido una versión de UE más reciente, instalar .NET 6.0 en su lugar.
 
-A continuación, instalar Virtual Studio Community usando el siguiente enlace: https://visualstudio.microsoft.com/es/ (se debe elegir la opción community en el dropdownlist)
+A continuación, instalar Virtual Studio Community 2019 usando el siguiente enlace (a día de hoy el instalador no existe en la web oficial pero se puede adquirir en este repositorio drive): https://drive.google.com/drive/folders/1hQPwlHlzYXTOA2YRovmYxRpcE7TqGv-3?usp=sharing
 
-Durante su instalación, marcar las siguientes opciones recuadradas en rojo que no están elegidas por defecto. Su instalación puede durar varios minutos ![image](https://github.com/user-attachments/assets/dd363cd9-ca26-4715-a5f0-c1e00d469eb3)
+Durante su instalación, marcar las siguientes opciones recuadradas en rojo que no están elegidas por defecto. Su instalación puede durar varios minutos ![image](https://github.com/user-attachments/assets/216fc993-11da-4340-bab0-599aa906949b)
 
 Tras la instalación, abrir Virtual Studio y registrarse con una cuenta de Microsoft.
 
 Finalmente, descargar VSCode usando el siguiente enlace: https://code.visualstudio.com/download (aceptar la licencia y elegir las opciones por defecto propuestas en el instalador)
 
 
-#### El proyecto
+#### Abrir el proyecto
 
 Descargar el zip del proyecto usando los siguientes botones del repositorio: ![image](https://github.com/user-attachments/assets/2444786a-bb66-4946-aa3d-de8c7107855b)
 
-Abrir Unreal Engine 5.0.3 (es posible que la propia aplicación detecte que requiera .NET, la versión previa descargada debería funcionar, pero se puede aceptar esta instalación automática también por si acaso)
+Abrir Unreal Engine 5.0.3 
 
 Tras haber abierto UE, se debería haber creado un directorio llamado "Unreal Projects" en C:\Users\[TuUsuario]\Documents. Extraer los contenidos del zip del proyecto en ese directorio nuevo.
 
-Reinicia Unreal Engine y ahora debería figurar el proyecto en la siguiente pantalla de bienvenida preparado para ser abierto: ![image](https://github.com/user-attachments/assets/2e69a358-ed2c-4a1d-a7b7-cb050ea95f38)
+Reinicia Unreal Engine y ahora debería figurar el proyecto en la siguiente pantalla de bienvenida preparado para ser abierto: ![image](https://github.com/user-attachments/assets/2e69a358-ed2c-4a1d-a7b7-cb050ea95f38)  Pedirá reconstruir los modulos seguramente, acepta y tras un par de minutos el proyecto se abrirá (esta espera solo ocurre la primera vez que se abre). Se puede verificar que en efecto se está cargando el proyecto aunque no lo parezca abriendo el administrador de tareas y verificando que los compiladores c++ de microsoft están usando gran parte de la memoria del sistema durante esta espera.
+
+
+##### Navegar por el proyecto
+
+###### Editores y aspectos visuales
+
+Haciendo click en "Content Drawer" en la esquina inferior izquierda abre el sistema de carpetas donde se almacenan todos los recursos del juego (incluyendo las clases)
+En el directorio "niveles" se encuentran archivos "mapa" en los que pinchando en ellos te puedes cambiar entre los distintos ambientes diseñados e integrados en el juego
+![image](https://github.com/user-attachments/assets/cf3ec24f-43ba-4420-a0ac-b4951ac075a5)
+
+También te puedes mover por la escena usando "wasd" mientras se mantiene pulsado el click derecho del ratón
+
+###### Editor de código
+
+Se puede ir a Tools > Abrir VSCode para abrir el IDE del proyecto y ver las clases c++ definidas en código:
+
+![image](https://github.com/user-attachments/assets/aec8a406-0150-40c1-a5c9-15125f2a4e52)
+
+Es posible que aparezca otro IDE que no sea VSCode en esa opción como el IDE a abrir, pero se puede editar siguiendo los siguientes pasos:
+
+Pincha en "editar > preferencias del editor"
+
+![image](https://github.com/user-attachments/assets/8f9aed66-8c40-4ff9-bc3f-87233443fa74)
+
+En la nueva ventana abierta, bajo General > Código fuente se encuentra la opción para elegir el IDE adecuado.
+
+![image](https://github.com/user-attachments/assets/0d56f2dc-8132-4e27-9d52-481d4bfd8d2f)
+
+
+Dentro de VSCode, se puede ver el contenido en sí pinchando en los directorios "Source > Tower_Defense"
+
+![image](https://github.com/user-attachments/assets/0a1ff5f6-0731-4098-a198-6b765237a3f5)
+
+
 
 
 
