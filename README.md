@@ -54,11 +54,11 @@ Reinicia Unreal Engine y ahora debería figurar el proyecto en la siguiente pant
 #### Editores y aspectos visuales
 
 Haciendo click en "Content Drawer" en la esquina inferior izquierda abre el sistema de carpetas donde se almacenan todos los recursos del juego (incluyendo las clases)
-En el directorio "niveles" se encuentran archivos "mapa" en los que pinchando en ellos te puedes cambiar entre los distintos ambientes diseñados e integrados en el juego
+
 ![image](https://github.com/user-attachments/assets/e9c4cfb5-8c46-44ab-8673-6dc47d92183c)
 
-
 También te puedes mover por la escena usando "wasd" mientras se mantiene pulsado el click derecho del ratón
+En el directorio "niveles" se encuentran archivos "mapa" en los que pinchando en ellos te puedes cambiar entre los distintos ambientes diseñados e integrados en el juego
 
 #### Editor de código
 
