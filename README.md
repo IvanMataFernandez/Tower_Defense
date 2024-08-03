@@ -11,7 +11,7 @@ El juego en sí no puede ser subido a GitHub porque excede los limites de capaci
 ### Descargar las herramientas fundamentales y el proyecto
 NOTA: Este tutorial de instalación es para Windows. Se requieren unos 50GB para el motor de juego, 10GB para su IDE, y 15GB para el proyecto.
 
-TODOOOOOOOOOOOOO
+
 
 
 #### Unreal Engine (Motor de juego)
