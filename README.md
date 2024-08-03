@@ -72,7 +72,7 @@ Pincha en "editar > preferencias del editor"
 
 ![image](https://github.com/user-attachments/assets/8f9aed66-8c40-4ff9-bc3f-87233443fa74)
 
-En la nueva ventana abierta, bajo General > Código fuente se encuentra la opción para elegir el IDE adecuado.
+En la nueva ventana abierta, bajo "General > Código fuente" se encuentra la opción para elegir el IDE adecuado.
 
 ![image](https://github.com/user-attachments/assets/0d56f2dc-8132-4e27-9d52-481d4bfd8d2f)
 
