@@ -26,7 +26,7 @@ Tras esto, instalar .NET Core 3.1.24 usando el siguiente enlace (se debe bajar a
 
 A continuación, instalar Virtual Studio Community 2019 usando el siguiente enlace (a día de hoy el instalador no existe en la web oficial pero se puede adquirir en este repositorio drive): https://drive.google.com/drive/folders/1hQPwlHlzYXTOA2YRovmYxRpcE7TqGv-3?usp=sharing
 
-Durante su instalación, marcar las siguientes opciones recuadradas en rojo que no están elegidas por defecto. Su instalación puede durar varios minutos ![image](https://github.com/user-attachments/assets/adebf3f5-53fe-42e2-8e77-9461c0e4d8d2)
+Durante su instalación, marcar las siguientes opciones recuadradas en rojo que no están elegidas por defecto (su instalación puede durar varios minutos): ![image](https://github.com/user-attachments/assets/adebf3f5-53fe-42e2-8e77-9461c0e4d8d2)
 
 
 Tras la instalación, abrir Virtual Studio y registrarse con una cuenta de Microsoft.
