@@ -49,7 +49,7 @@ Tras haber abierto UE, se debería haber creado un directorio llamado "Unreal Pr
 Reinicia Unreal Engine y ahora debería figurar el proyecto en la siguiente pantalla de bienvenida preparado para ser abierto: ![image](https://github.com/user-attachments/assets/2e69a358-ed2c-4a1d-a7b7-cb050ea95f38)  Pedirá reconstruir los modulos seguramente, acepta y tras un par de minutos el proyecto se abrirá (esta espera solo ocurre la primera vez que se abre). Se puede verificar que en efecto se está cargando el proyecto aunque no lo parezca abriendo el administrador de tareas y verificando que los compiladores c++ de microsoft están usando gran parte de la memoria del sistema durante esta espera.
 
 
-#### Navegar por el proyecto
+### Navegar por el proyecto
 
 #### Editores y aspectos visuales
 
