@@ -44,7 +44,7 @@ Descargar el zip del proyecto usando los siguientes botones del repositorio: ![i
 
 
 
-Tras esto, abrir Unreal Engine 5.0.3. Al hacer esto, se debería haber creado un directorio llamado "Unreal Projects" en C:\Users\[TuUsuario]\Documents. Extraer los contenidos del zip del proyecto en ese directorio nuevo.
+Tras esto, abre Unreal Engine 5.0.3. Al hacer esto, se debería haber creado un directorio llamado "Unreal Projects" en C:\Users\[TuUsuario]\Documents. Extrae los contenidos del zip del proyecto en ese directorio nuevo.
 
 Reinicia Unreal Engine y ahora debería figurar el proyecto en la siguiente pantalla de bienvenida preparado para ser abierto: ![image](https://github.com/user-attachments/assets/2e69a358-ed2c-4a1d-a7b7-cb050ea95f38)  Alternativamente, se puede hacer click sobre el ejecutable del proyecto. En cualquier caso, se pedirá reconstruir los modulos seguramente: acepta y tras un par de minutos el proyecto se abrirá (esta espera solo ocurre la primera vez que se abre). Se puede verificar que en efecto se está cargando el proyecto aunque no lo parezca abriendo el administrador de tareas y verificando que los compiladores c++ de microsoft están usando gran parte de la memoria del sistema durante esta espera.
 
