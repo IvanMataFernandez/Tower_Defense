@@ -17,8 +17,7 @@ NOTA: Este tutorial de instalación es para Windows. Se requieren unos 50GB para
 #### Unreal Engine (Motor de juego)
 Primero de todo, si no se dispone del iniciador de Epic Games, descargarlo usando el siguiente enlace: https://store.epicgames.com/es-ES/download
 
-Después, se debe abrir el lanzador y seleccionar en la pestaña de Unreal Engine obtener la versión 5.0.3 (se puede elegir otra más reciente pero se deberá
-cambiar la versión del proyecto después). Este proceso puede tardar varios minutos.
+Después, se debe abrir el lanzador y seleccionar en la pestaña de Unreal Engine obtener la versión 5.0.3, ya que es sobre la que se ha desarrollado el trabajo. Este proceso puede tardar varios minutos.
 ![image](https://github.com/user-attachments/assets/01d4b7ad-3101-43ff-b632-7c585ce67f0d)
 
 #### Virtual Studio Code y sus componentes (IDE)
