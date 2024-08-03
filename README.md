@@ -38,7 +38,7 @@ Tras la instalación, abrir Visual Studio y registrarse con una cuenta de Micros
 Finalmente, descargar VSCode usando el siguiente enlace: https://code.visualstudio.com/download (aceptar la licencia y elegir las opciones por defecto propuestas en el instalador)
 
 
-#### Abrir el proyecto
+### Abrir el proyecto
 
 Descargar el zip del proyecto usando los siguientes botones del repositorio: ![image](https://github.com/user-attachments/assets/2444786a-bb66-4946-aa3d-de8c7107855b)
 
@@ -49,9 +49,9 @@ Tras haber abierto UE, se debería haber creado un directorio llamado "Unreal Pr
 Reinicia Unreal Engine y ahora debería figurar el proyecto en la siguiente pantalla de bienvenida preparado para ser abierto: ![image](https://github.com/user-attachments/assets/2e69a358-ed2c-4a1d-a7b7-cb050ea95f38)  Pedirá reconstruir los modulos seguramente, acepta y tras un par de minutos el proyecto se abrirá (esta espera solo ocurre la primera vez que se abre). Se puede verificar que en efecto se está cargando el proyecto aunque no lo parezca abriendo el administrador de tareas y verificando que los compiladores c++ de microsoft están usando gran parte de la memoria del sistema durante esta espera.
 
 
-##### Navegar por el proyecto
+#### Navegar por el proyecto
 
-###### Editores y aspectos visuales
+#### Editores y aspectos visuales
 
 Haciendo click en "Content Drawer" en la esquina inferior izquierda abre el sistema de carpetas donde se almacenan todos los recursos del juego (incluyendo las clases)
 En el directorio "niveles" se encuentran archivos "mapa" en los que pinchando en ellos te puedes cambiar entre los distintos ambientes diseñados e integrados en el juego
@@ -59,7 +59,7 @@ En el directorio "niveles" se encuentran archivos "mapa" en los que pinchando en
 
 También te puedes mover por la escena usando "wasd" mientras se mantiene pulsado el click derecho del ratón
 
-###### Editor de código
+#### Editor de código
 
 Se puede ir a Tools > Abrir VSCode para abrir el IDE del proyecto y ver las clases c++ definidas en código:
 
