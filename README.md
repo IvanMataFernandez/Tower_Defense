@@ -23,7 +23,7 @@ Después, se debe abrir el lanzador y seleccionar en la pestaña de Unreal Engin
 #### Virtual Studio Code y sus componentes (IDE)
 
 ##### .NET
-Tras esto, instalar .NET Core 3.1.24 usando el siguiente enlace (se debe bajar algo en la página ya que la primera versión que aparece no es la que nos interesa): https://dotnet.microsoft.com/es-es/download/dotnet/3.1 (se trata de una de las versiones sin vulnerabilidades de seguridad). 
+Instalar .NET Core 3.1.24 usando el siguiente enlace (se debe bajar algo en la página ya que la primera versión que aparece no es la que nos interesa): https://dotnet.microsoft.com/es-es/download/dotnet/3.1 (se trata de una de las versiones sin vulnerabilidades de seguridad). 
 
 ##### Visual Studio
 A continuación, instalar Visual Studio Community 2019 usando el siguiente enlace (a día de hoy el instalador no existe en la web oficial pero se puede adquirir en este repositorio drive): https://drive.google.com/drive/folders/1hQPwlHlzYXTOA2YRovmYxRpcE7TqGv-3?usp=sharing
