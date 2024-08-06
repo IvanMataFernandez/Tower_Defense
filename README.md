@@ -77,7 +77,7 @@ En la nueva ventana abierta, bajo "General > Código fuente" se encuentra la opc
 ![image](https://github.com/user-attachments/assets/0d56f2dc-8132-4e27-9d52-481d4bfd8d2f)
 
 
-Dentro de VSCode, se puede ver el contenido en sí pinchando en los directorios "Source > Tower_Defense"
+Dentro de VSCode, se puede ver el contenido del código c++ escrito para el proyecto en las distintas clases pinchando en los directorios "Source > Tower_Defense"
 
 ![image](https://github.com/user-attachments/assets/0a1ff5f6-0731-4098-a198-6b765237a3f5)
 
