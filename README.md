@@ -62,7 +62,7 @@ En el directorio "niveles" se encuentran archivos "mapa" en los que pinchando en
 
 #### Editor de código
 
-Se puede ir a Tools > Abrir VSCode para abrir el IDE del proyecto y ver las clases c++ definidas en código:
+Se puede ir a "Tools > Abrir VSCode" para abrir el IDE del proyecto y ver las clases c++ definidas en código:
 
 ![image](https://github.com/user-attachments/assets/aec8a406-0150-40c1-a5c9-15125f2a4e52)
 
